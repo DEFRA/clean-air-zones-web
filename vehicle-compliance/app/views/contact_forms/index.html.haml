@@ -1,0 +1,45 @@
+= link_to 'Back', @return_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if @errors.present?
+        .govuk-error-summary{'aria-labelledby': 'error-summary-title',
+                             'data-module': 'govuk-error-summary',
+                             role: 'alert',
+                             tabindex: '-1'}
+          %h2#error-summary-title.govuk-error-summary__title
+            There is a problem
+          .govuk-error-summary__body
+            %ul.govuk-list.govuk-error-summary__list
+              %li
+                -# Remove duplicated messages `Email and email address confirmation must be the same`
+                - remove_duplicated_messages(@errors).each_with_index do |error, index|
+                  %li.custom-csv-error
+                    = link_to(error.first, "#govuk-error-#{error.second}", id: "#{error.second}-#{index}")
+
+      %h1.govuk-heading-xl
+        Contact Clean Air Zones
+      %p
+        You can use this form to send us your questions and comments. Please provide as much
+        information as possible and select a type of enquiry most suited to your question. Alternatively, you can contact us on 0345 873 6070.
+      = form_for(ContactForm.new, url: contact_forms_path, method: :post, html: { autocomplete: 'off' }) do |f|
+        %fieldset.govuk-fieldset
+          %legend.govuk-visually-hidden
+            Contact Clean Air Zones
+
+          - if @errors.present?
+            = render 'contact_forms/form_input/errored', form: f, errors: @errors
+          - else
+            = render 'contact_forms/form_input/normal', form: f
+
+          = f.submit 'Send', class: 'govuk-button', 'data-module': 'govuk-button'
+
+    .govuk-grid-column-one-third
+      %aside#related-items-label.app-related-items{role: 'complementary'}
+        %h2.govuk-heading-m
+          Related tasks
+        %nav{'aria-labelledby': 'related-items-label', role: 'navigation'}
+          %ul.govuk-list{class: 'govuk-!-font-size-16'}
+            %li
+              = link_to 'Check another vehicle', enter_details_vehicle_checkers_path, id: 'check-another-vrn'

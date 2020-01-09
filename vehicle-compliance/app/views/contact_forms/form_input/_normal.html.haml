@@ -1,0 +1,26 @@
+.govuk-form-group
+  = form.label :first_name, class: 'govuk-label'
+  = form.text_field :first_name, class: 'govuk-input', maxlength: 45
+
+.govuk-form-group
+  = form.label :last_name, class: 'govuk-label'
+  = form.text_field :last_name, class: 'govuk-input', maxlength: 45
+
+.govuk-form-group
+  = form.label :email, 'Email address', class: 'govuk-label'
+  = form.text_field :email, class: 'govuk-input', maxlength: 45
+
+.govuk-form-group
+  = form.label :email_confirmation, 'Email address confirmation', class: 'govuk-label'
+  = form.text_field :email_confirmation, class: 'govuk-input', maxlength: 45
+
+.govuk-form-group
+  = form.label :type_of_enquiry, 'Type of enquiry', class: 'govuk-label'
+  = form.select(:type_of_enquiry,
+                ['Compliance', 'General enquiry', 'Non-UK reg vehicle', 'Paying a charge'],
+                { prompt: 'Please select...' },
+                { class: 'govuk-select' })
+
+.govuk-form-group
+  = form.label :message, 'Your message', class: 'govuk-label'
+  = form.text_area :message, class: 'govuk-textarea', rows: 10, maxlength: 2000

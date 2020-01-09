@@ -1,0 +1,48 @@
+inherit_from: ./lib/rubocop/blacklist.yml
+
+inherit_gem:
+  rubocop-govuk:
+    - config/default.yml
+    - config/rails.yml
+
+AllCops:
+  TargetRubyVersion: 2.6.5
+
+Style/Documentation:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 99
+  IgnoredPatterns: ['(\A|\s)#']
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+  Exclude:
+    - 'config/routes.rb'
+    - 'config/environments/*.rb'
+
+Style/MixinUsage:
+  Exclude:
+    - 'features/step_definitions/*.rb'
+
+# `rubocop-govuk` excludes
+Style/StringLiterals:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Layout/AccessModifierIndentation:
+  Enabled: false

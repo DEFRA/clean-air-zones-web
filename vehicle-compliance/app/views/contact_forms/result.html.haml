@@ -1,0 +1,15 @@
+= link_to 'Return to the homepage', root_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if alert
+        %h1.govuk-heading-l
+          Clean Air Zones Contact Form Was Not Sent
+      - else
+        %h1.govuk-heading-l
+          Clean Air Zones Contact Form Sent
+        %p
+          Thank you for your enquiry. Your form has been successfully submitted.
+        %p
+          The Clean Air Zones Support Team will respond to you as soon as possible.

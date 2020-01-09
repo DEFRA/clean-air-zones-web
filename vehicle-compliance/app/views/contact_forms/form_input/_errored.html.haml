@@ -1,0 +1,66 @@
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:first_name].present?)}
+  = form.label :first_name, class: 'govuk-label'
+  %span#govuk-error-first_name.govuk-error-message
+    - if errors[:first_name].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:first_name].join(', ')
+  = form.text_field :first_name,
+                    class: "govuk-input #{'govuk-input--error' if errors[:first_name].present?}",
+                    value: params.dig(:contact_form, :first_name),
+                    maxlength: 45
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:last_name].present?)}
+  = form.label :last_name, class: 'govuk-label'
+  %span#govuk-error-last_name.govuk-error-message
+    - if errors[:last_name].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:last_name].join(', ')
+  = form.text_field :last_name,
+                    class: "govuk-input #{'govuk-input--error' if errors[:last_name].present?}",
+                    value: params.dig(:contact_form, :last_name),
+                    maxlength: 45
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:email].present?)}
+  = form.label :email, 'Email address', class: 'govuk-label'
+  %span#govuk-error-email.govuk-error-message
+    - if errors[:email].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:email].join(', ')
+  = form.text_field :email,
+                     class: "govuk-input #{'govuk-input--error' if errors[:email].present?}",
+                     value: params.dig(:contact_form, :email),
+                     maxlength: 45
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:email_confirmation].present?)}
+  = form.label :email_confirmation, 'Emails address confirmation', class: 'govuk-label'
+  %span#govuk-error-email_confirmation.govuk-error-message
+    - if errors[:email_confirmation].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:email_confirmation].join(', ')
+  = form.text_field :email_confirmation,
+                     class: "govuk-input #{'govuk-input--error' if errors[:email_confirmation].present?}",
+                     value: params.dig(:contact_form, :email_confirmation),
+                     maxlength: 45
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:type_of_enquiry].present?)}
+  = form.label :type_of_enquiry, 'Type of enquiry', class: 'govuk-label'
+  %span#govuk-error-type_of_enquiry.govuk-error-message
+    - if errors[:type_of_enquiry].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:type_of_enquiry].join(', ')
+  = form.select(:type_of_enquiry,
+                ['Compliance', 'General enquiry', 'Non-UK reg vehicle', 'Paying a charge'],
+                { prompt: 'Please select...', selected: params.dig(:contact_form, :type_of_enquiry) },
+                { class: "govuk-select #{'govuk-input--error' if errors[:type_of_enquiry].present?}" })
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:message].present?)}
+  = form.label :message, class: 'govuk-label'
+  %span#govuk-error-message.govuk-error-message
+    - if errors[:message].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:message].join(', ')
+  = form.text_area :message,
+                    class: "govuk-textarea #{'govuk-input--error' if errors[:message].present?}",
+                    value: params.dig(:contact_form, :message),
+                    rows: 10,
+                    maxlength: 2000

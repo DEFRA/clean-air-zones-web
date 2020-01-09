@@ -1,0 +1,18 @@
+- content_for(:title, 'Check vehicle compliance')
+= link_to 'Back', enter_details_vehicle_checkers_path, class: 'govuk-back-link'
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l.not-found-title Vehicle details could not be found
+      %table.govuk-table
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'}
+            %td.govuk-table__cell
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} You searched for
+            %th.govuk-table__cell= @vehicle_registration
+
+      %p
+        If you are sure that you entered the correct registration number and you need to make a further enquiries please contact
+        = link_to 'DVLA', 'https://www.gov.uk/change-vehicle-details-registration-certificate', target: '_blank'

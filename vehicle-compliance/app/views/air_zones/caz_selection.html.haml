@@ -1,0 +1,34 @@
+= link_to 'Back', confirm_details_vehicle_checkers_path, class: 'govuk-back-link'
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if alert
+        = render 'common/error_summary',
+          error_msg_div: '#caz-selection-error',
+          error_msg: alert
+
+      = form_tag compliance_air_zones_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset{'aria-describedby': 'caz-hint'}
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                Which Clean Air Zone do you want to drive through?
+            %span#caz-hint.govuk-hint
+              Select all locations that apply.
+            - if alert
+              %span#caz-selection-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = I18n.t('caz_selection_form.la_missing')
+            .govuk-checkboxes
+              - @clean_air_zones.each_with_index do |zone, index|
+                .govuk-checkboxes__item
+                  %input.govuk-checkboxes__input{name: 'caz[]',
+                                                 type: 'checkbox',
+                                                 value: zone.id,
+                                                 id: "caz-#{index}",
+                                                 checked: zone.checked?(@checked_zones)}
+                  %label.govuk-label.govuk-checkboxes__label{for: "caz-#{index}"}
+                    = zone.name
+                    = link_to '(see Clean Air Zone map)', zone.boundary_url, target: '_blank'
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

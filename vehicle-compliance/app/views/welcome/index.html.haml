@@ -1,0 +1,43 @@
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l Check if you’ll be charged to drive in a Clean Air Zone
+      %p
+        From summer 2020 Birmingham and Leeds will be introducing Clean Air Zones where polluting
+        vehicles will have to pay a daily charge to enter the city centre.
+      %p
+        Use this service to check if a specific vehicle will be charged when it drives through a
+        charging Clean Air Zone.
+      %p You'll need to know the registration details (number plate) of the vehicle you wish to check.
+      %a.govuk-button.govuk-button--start{role: 'button',
+                                          'data-draggable': false,
+                                          'data-module': 'govuk-button',
+                                          href: enter_details_vehicle_checkers_path,
+                                          id: 'start-now'}
+        Start now
+        %svg.govuk-button__start-icon{focusable: 'false',
+                                      height: '19',
+                                      role: 'presentation',
+                                      viewbox: '0 0 33 40',
+                                      width: '17.5',
+                                      xmlns: 'http://www.w3.org/2000/svg'}
+          %path{d: 'M0 0h13l20 20-20 20H0l20-20z', fill: 'currentColor'}
+      %h2.govuk-heading-m More information
+      %p
+        Charging Clean Air Zones in England will have their own emissions standards, charges and
+        exemptions.
+      %h2.govuk-heading-m Explore the topic
+      %p
+        = link_to 'Clean Air Zones',
+                  'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/612592/clean-air-zone-framework.pdf',
+                  id: 'caz',
+                  target: '_blank'
+
+    .govuk-grid-column-one-third
+      %aside#related-items-label.app-related-items{role: 'complementary'}
+        %h2.govuk-heading-m
+          Related content
+        %nav{'aria-labelledby': 'related-items-label', role: 'navigation'}
+          %ul.govuk-list{class: 'govuk-!-font-size-16'}
+            %li
+              = link_to 'Contact Clean Air Zones', contact_forms_path, id: 'contact-form'

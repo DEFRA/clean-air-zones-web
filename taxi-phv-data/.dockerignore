@@ -1,0 +1,17 @@
+tmp/*
+log/*
+.byebug_history
+.env
+.git
+.gitignore
+.drone.yml
+.github
+.scannerwork
+coverage
+.idea
+#config/ssl
+node_modules
+public/packs
+public/packs-test
+jmeter/
+build_utils/
