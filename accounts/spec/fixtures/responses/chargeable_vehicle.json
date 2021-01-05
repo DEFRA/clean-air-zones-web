@@ -1,0 +1,16 @@
+{
+  "firstVrn": "",
+  "lastVrn": "",
+  "chargeableAccountVehicles": {
+    "results": [
+      {
+        "vrn": "PAY001",
+        "paidDates": [
+          "2020-02-28"
+        ],
+        "charge": 50.0,
+        "tariffCode": "BCC01-HEAVY GOODS VEHICLE"
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+- title_and_header = 'This vehicle is exempt from charges in all Clean Air Zones'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', enter_details_vehicles_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p
+        Number plate
+        = @vehicle_registration
+        is exempt from all Clean Air Zone charges and there is no charge to drive it in any of the zones.
+        The Ultra Low Emission Zone in London may have different exemption rules that you can check with
+        = external_link_to('Transport for London',
+                           'https://tfl.gov.uk/modes/driving/check-your-vehicle-35896',
+                           class: 'caz-inline-link',
+                           id: 'transport-for-london')
+        if you need to drive in London.
+
+      = form_tag confirm_and_add_exempt_vehicle_to_fleet_vehicles_path, method: :post do
+        %input{name: 'confirm-vehicle', type: 'hidden', value: 'yes'}
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

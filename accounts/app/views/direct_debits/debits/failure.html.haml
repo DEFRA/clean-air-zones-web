@@ -1,0 +1,27 @@
+- title_and_header = 'Payment unsuccessful'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p
+        The charge for your journey is not paid. You may receive a penalty charge notice (PCN) if payment is not made within 7 days from driving in the zone.
+      %p
+        If you would like to try the payment again
+        = succeed '.' do
+          = link_to 'return to Account home', root_path, id: 'return-to-account'
+      = render 'shared/print_link'
+      %p
+        You can contact Clean Air Zone support if you cannot use the online service or you need help.
+      %h2.govuk-heading-m
+        Contact Clean Air Zone Support
+      %p
+        = link_to('Online contact form', 'https://contact.dvla.gov.uk/caz/')
+        %br
+        Telephone: 0300 029 8888
+        %br
+        Monday to Friday, 10am to 4pm
+        %br
+        = link_to('Find out about call charges', 'https://www.gov.uk/call-charges')

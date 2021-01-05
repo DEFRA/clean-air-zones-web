@@ -1,0 +1,12 @@
+%h2.govuk-tabs__title
+  Contents
+%ul.govuk-tabs__list{role: 'tablist'}
+  - if @dates[:past].present?
+    %li.govuk-tabs__list-item.govuk-tabs__list-item--selected{role: 'presentation'}
+      = link_to('Previous days',
+                '#past-week',
+                class: 'govuk-tabs__tab')
+  %li.govuk-tabs__list-item{role: 'presentation'}
+    = link_to('Next 7 days',
+              '#next-week',
+              class: 'govuk-tabs__tab')

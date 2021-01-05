@@ -1,0 +1,100 @@
+- title_and_header = "Which permissions do you want #{session.dig(:new_user, 'name')} to have?"
+- content_for(:title, title_and_header)
+- errors = flash[:errors]
+
+= link_to 'Back', new_user_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if errors && errors[:permissions]
+        = render 'shared/error_summary',
+                 error_msg_div: '#permissions-error',
+                 error_msg: errors[:permissions].first
+
+      = form_for('new_user', url: add_permissions_users_path, method: :post) do |f|
+        .govuk-form-group{class: ('govuk-form-group--error' if errors)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+
+            = render 'users_management/d_day_notice' unless @payment_features_enabled
+
+            %span#permissions-hint.govuk-hint
+              Select all that apply.
+
+            - if errors && errors[:permissions]
+              %span#permissions-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = errors[:permissions].first
+
+            .govuk-checkboxes
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'new_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'MANAGE_VEHICLES',
+                                               id: 'manage-vehicles-permission',
+                                               checked: checked_permission?('MANAGE_VEHICLES'),
+                                               'aria-describedby': 'manage-vehicles-permission-hint'}
+                %label.govuk-label.govuk-checkboxes__label{for: 'manage-vehicles-permission'}
+                  %b Manage vehicles
+                %span#manage-vehicles-permission-hint.govuk-hint.govuk-checkboxes__hint
+                  Add and remove vehicles
+              - if direct_debits_enabled?
+                .govuk-checkboxes__item
+                  %input.govuk-checkboxes__input{name: 'new_user[permissions][]',
+                                                 type: 'checkbox',
+                                                 value: 'MANAGE_MANDATES',
+                                                 id: 'manage-mandates-permission',
+                                                 checked: checked_permission?('MANAGE_MANDATES'),
+                                                 'aria-describedby': 'manage-mandates-permission-hint'}
+                  %label.govuk-label.govuk-checkboxes__label{for: 'manage-mandates-permission'}
+                    %b Set up Direct Debits
+                  %span#manage-mandates-permission-hint.govuk-hint.govuk-checkboxes__hint
+                    Create Direct Debit mandates
+
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'new_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'MAKE_PAYMENTS',
+                                               id: 'make-payments-permission',
+                                               checked: checked_permission?('MAKE_PAYMENTS'),
+                                               'aria-describedby': 'make-payments-permission-hint'}
+                %label.govuk-label.govuk-checkboxes__label{for: 'make-payments-permission'}
+                  %b
+                    Make payments
+                    = '(available when charging starts)' unless @payment_features_enabled
+                %span#make-payments-permission-hint.govuk-hint.govuk-checkboxes__hint
+                  By credit/debit card
+                  - if direct_debits_enabled?
+                    and Direct Debit
+
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'new_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'MANAGE_USERS',
+                                               id: 'manage-users-permission',
+                                               checked: checked_permission?('MANAGE_USERS'),
+                                               'aria-describedby': 'manage-users-permission-hint'}
+                %label.govuk-label.govuk-checkboxes__label{for: 'manage-users-permission'}
+                  %b Manage users
+                %span#manage-users-permission-hint.govuk-hint.govuk-checkboxes__hint
+                  Add and remove users and edit permissions
+
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'new_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'VIEW_PAYMENTS',
+                                               id: 'view-payments-permission',
+                                               checked: checked_permission?('VIEW_PAYMENTS'),
+                                               'aria-describedby': 'view-payments-permission-hint'}
+                %label.govuk-label.govuk-checkboxes__label{for: 'view-payments-permission'}
+                  %b
+                    View payment history
+                    = '(available when charging starts)' unless @payment_features_enabled
+                %span#view-payments-permission-hint.govuk-hint.govuk-checkboxes__hint
+                  View all charges paid by the company
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

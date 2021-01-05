@@ -1,0 +1,18 @@
+- title_and_header = 'Uploading vehicles'
+- content_for(:title, title_and_header)
+
+= javascript_pack_tag 'autorefresh_page'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l{role: 'status'}
+        = title_and_header
+      %p
+        We are processing your file which may take a few minutes.
+      %p
+        Do not leave this page.
+      %p
+        If the page does not automatically refresh in 30 seconds, you can
+        = succeed '.' do
+          = link_to 'refresh it yourself', processing_uploads_path

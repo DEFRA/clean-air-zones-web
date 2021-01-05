@@ -1,0 +1,14 @@
+- title_and_header = 'Uploading vehicles'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l{role: 'status'}
+        = title_and_header
+      %p We are uploading the vehicles and calculating their charges.
+      %p As there are a large number of vehicles, this can take some time.
+      %p We will email you when the process is complete.
+      %p
+        %br
+        = link_to 'Return to Account home', dashboard_path, id: 'return-to-account', class: 'govuk-button'

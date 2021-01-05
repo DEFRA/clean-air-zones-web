@@ -1,0 +1,9 @@
+AllCops:
+  Exclude:
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'bin/**/*'
+    - 'log/**/*'
+    - 'node_modules/**/*'
+    - 'script/**/*'
+    - 'lib/tasks/cucumber.rake'

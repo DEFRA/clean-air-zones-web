@@ -1,0 +1,45 @@
+{
+  "vehicles": [
+    {
+      "vrn": "CAS301",
+      "isExempt": false,
+      "isRetrofitted": false,
+      "vehicleType": "caz vehicle type",
+      "cachedCharges": [
+        {
+          "cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37",
+          "charge": 100,
+          "tariffCode": "tariffCode"
+        }
+      ]
+    },
+    {
+      "vrn": "CAS302",
+      "isExempt": false,
+      "isRetrofitted": false,
+      "vehicleType": "caz vehicle type",
+      "cachedCharges": [
+        {
+          "cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37",
+          "charge": 200,
+          "tariffCode": "tariffCode"
+        }
+      ]
+    },
+    {
+      "vrn": "CAS303",
+      "isExempt": false,
+      "isRetrofitted": false,
+      "vehicleType": "caz vehicle type",
+      "cachedCharges": [
+        {
+          "cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37",
+          "charge": 300,
+          "tariffCode": "tariffCode"
+        }
+      ]
+    }
+  ],
+  "totalVehiclesCount": 3,
+  "pageCount": 1
+}

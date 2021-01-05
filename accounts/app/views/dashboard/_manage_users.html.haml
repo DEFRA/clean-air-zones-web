@@ -1,0 +1,13 @@
+%article.dashboard-total-group.govuk-grid-column-one-third
+
+  - if @users_present
+    %p.govuk-body{class: 'govuk-!-font-size-16 govuk-!-margin-top-9'}
+      %strong
+        = link_to('Manage users', users_path, id: 'manage-users')
+    %p.govuk-body Add and remove users or change their permissions.
+
+  - else
+    %p.govuk-body{class: 'govuk-!-font-size-16 govuk-!-margin-top-9'}
+      %strong
+        = link_to('Add a user', new_user_path, id: 'add-user')
+    %p.govuk-body Add team members to help manage your account.

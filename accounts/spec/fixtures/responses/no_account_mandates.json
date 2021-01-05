@@ -1,0 +1,14 @@
+{
+  "mandates": [
+    {
+       "cazId": "fb828cb0-3a66-49f2-a376-18ffb13adb62",
+       "cazName": "Leeds",
+       "mandate": null
+    },
+    {
+       "cazId": "d8baa2c0-9855-4e79-ac46-92d7ab27f697",
+       "cazName": "Birmingham",
+       "mandate": null
+    }
+  ]
+}

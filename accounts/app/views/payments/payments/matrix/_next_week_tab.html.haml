@@ -1,0 +1,15 @@
+%section.govuk-tabs__panel.govuk-tabs__panel--hidden{id: 'next-week'}
+  %h2.govuk-heading-l
+    Next 7 days
+  %p
+    %strong
+      Check a box for each vehicle and date it will drive in a Clean Air Zone.
+  %p
+    %strong
+      Select all that apply.
+
+  - unless @charges.all_days_unpaid?
+    %p
+      If you have already paid for a date, it will show as Paid.
+
+  = render 'payments/payments/matrix/table', direction: :next

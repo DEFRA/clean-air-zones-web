@@ -1,0 +1,9 @@
+%span#govuk-error-message.govuk-error-message
+  %span.govuk-visually-hidden Error:
+  = message
+%input.govuk-input.transform{name: 'payment[vrn_search]',
+                             id: 'vrn-search',
+                             type: 'text',
+                             class: 'govuk-input--error govuk-input--width-10',
+                             maxlength: 15,
+                             value: @search}

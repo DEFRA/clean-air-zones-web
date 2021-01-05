@@ -1,0 +1,21 @@
+- title_and_header = "You searched for #{@search}"
+- content_for(:title, title_and_header)
+
+= render 'shared/js_back_link'
+
+%main.govuk-main-wrapper.govuk-main-wrapper--auto-spacing#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-full
+      = render 'shared/error' if alert
+
+      %h1.govuk-heading-l= title_and_header
+      = render 'vehicles_management/fleets/search'
+
+      %h2.govuk-heading-l We could not find that vehicle
+      %p
+        It might be because:
+        %ul.govuk-list-govuk-list--bullet
+          %li
+            %p You did not upload that vehicle to your list
+          %li
+            %p It is not charged in any zone and you have hidden those vehicles

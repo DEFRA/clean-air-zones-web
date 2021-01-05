@@ -1,0 +1,59 @@
+- title_and_header = 'Direct Debits'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+
+      %p You need to make single payments each time you want to pay by Direct Debit.
+
+      %details.govuk-details{'data-module': 'govuk-details'}
+        %summary.govuk-details__summary
+          %span.govuk-details__summary-text
+            Help with changing or cancelling a Direct Debit
+        .govuk-details__text
+          To cancel a Direct Debit you need to contact your bank.
+          %br
+          %br
+          To change the details of a Direct Debit you need to cancel the Direct Debit and set up another one with the new details.
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: 'col'} Clean Air Zone
+            %th.govuk-table__header{scope: 'col'} Mandate ID
+            %th.govuk-table__header{scope: 'col'} Status
+        %tbody.govuk-table__body
+          - @mandates.each do |mandate|
+            %tr.govuk-table__row
+              %th.govuk-table__header{scope: 'col'}
+                = mandate.zone_name
+              %td.govuk-table__cell
+                = mandate.id
+              %td.govuk-table__cell
+                = mandate.status
+      %p
+        %strong Pending
+        \- It takes 3 working days for your payment to go through the first time you set up a Direct Debit.
+      %p
+        %strong Active
+        \- Once set up it will take 2 days each time you pay.
+
+      %ul.govuk-list.govuk-list--bullet
+        %li payments will appear on bank statements as Drive in a Clean Air Zone
+        %li whoever makes the payment will be emailed a receipt
+        %li
+          the creator of the mandate will also receive an email every time a Direct Debit payment is made
+          to let them know when money will be taken from the bank account
+
+
+      - if @zones_without_mandate.present? && @mandates.present?
+        = button_to('Set up new Direct Debit', new_debit_path, method: :get, class: 'govuk-button')
+      - else
+        %p
+          You have created a Direct Debit for every Clean Air Zone.
+      %p
+        = link_to 'Return to Account home', root_path, id: 'return-to-account'

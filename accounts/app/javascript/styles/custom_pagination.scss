@@ -1,0 +1,15 @@
+.custom-pagination {
+  text-align: center;
+  margin-top: 10px;
+
+  .is-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .is-disabled > a {
+    display: inline-block;  // For IE11/ MS Edge bug
+    pointer-events: none;
+    text-decoration: none;
+  }
+}

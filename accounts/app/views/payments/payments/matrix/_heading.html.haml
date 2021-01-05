@@ -1,0 +1,18 @@
+- title_and_header = 'Which vehicles and days are you paying for?'
+- content_for(:title, title_and_header)
+
+%h1.govuk-heading-l= title_and_header
+
+- if @charges.any_results?
+  %p
+    %strong
+      This list only contains vehicles that will be charged in
+      = succeed('.') do
+        = @zone.name
+  %p
+    You can pay for
+    - if @dates[:past].present?
+      = "the past #{pluralize(@dates[:past].count, 'day')} and"
+    the next 7 days, which includes today.
+  %p
+    A daily charge runs from midnight to midnight.

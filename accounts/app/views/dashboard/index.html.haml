@@ -1,0 +1,36 @@
+- title_and_header = "#{current_user.actual_account_name} account home"
+- content_for(:title, title_and_header)
+- disable_payment_features = !@payment_features_enabled && (allow_make_payments? || allow_view_payment_history?)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      = render 'shared/banners'
+
+      %h1.govuk-heading-l= title_and_header
+
+      = render 'update_password_notice' if @days_count && @days_count <= 10
+
+      %p
+        This service works by you telling us the number of days your vehicles drive in a Clean Air Zone.
+        The number plates determine if the vehicles meet emissions standards in a zone.
+        If they don't, you can see what the charges are and pay them.
+      - if @vehicles_count == 0
+        .govuk-inset-text
+          You need to upload all your number plates before making a payment.
+      - elsif @vehicles_count == 1
+        .govuk-inset-text
+          You need to add at least one more vehicle before making a payment.
+
+  = render 'd_day_notice' if disable_payment_features
+
+  .govuk-grid-row
+    = render 'manage_vehicles' if allow_manage_vehicles?
+    = render 'direct_debit' if direct_debits_enabled? && allow_manage_mandates?
+    = render 'manage_users' if allow_manage_users?
+    - if !disable_payment_features
+      = render 'make_payment' if allow_make_payments? && @vehicles_count >= 2
+      = render 'user_payment_history' if allow_make_payments?
+      = render 'company_payment_history' if allow_view_payment_history? && @multi_payer_account
+    = render 'help'

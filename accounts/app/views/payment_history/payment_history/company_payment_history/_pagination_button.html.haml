@@ -1,0 +1,21 @@
+- active ||= false
+- form_class ||= nil
+- id = "pagination-button-#{transform_to_id(button_text)}"
+
+- if active
+  %li.moj-pagination__item.moj-pagination__item--active{id: id}
+    = button_text
+    - if button_text.is_a?(Integer)
+      %span.govuk-visually-hidden
+        page
+
+- else
+  %li.moj-pagination__item{id: id, class: ("moj-pagination__item--#{form_class}" if form_class)}
+    = link_to(company_payment_history_path(page: page), class: 'moj-pagination__link') do
+      = button_text
+      - if button_text.is_a?(Integer)
+        %span.govuk-visually-hidden
+          page
+      - if button_text.is_a?(String)
+        %span.govuk-visually-hidden
+          set of pages

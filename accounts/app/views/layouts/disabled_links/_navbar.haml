@@ -1,0 +1,23 @@
+%button.govuk-header__menu-button.govuk-js-header-toggle{'aria-controls': 'navigation',
+                                                         'aria-label': 'Show or hide Top Level Navigation',
+                                                         role: 'button',
+                                                         type: 'button',
+                                                         id: 'menu'} Menu
+%nav
+  %ul#navigation.govuk-header__navigation{'aria-label': 'Top Level Navigation'}
+    - if user_signed_in?
+      %li.govuk-header__navigation-item{class: current_path?(authenticated_root_path)}
+        = link_to('Account home', authenticated_root_path, class: 'govuk-header__link disabled-link', id: 'home')
+      %li.govuk-header__navigation-item{class: current_path?(primary_users_account_details_path) || current_path?(non_primary_users_account_details_path)}
+        = link_to('Account details',
+            current_user.owner ? primary_users_account_details_path : non_primary_users_account_details_path,
+            class: 'govuk-header__link disabled-link', id: 'account-details')
+      %li.govuk-header__navigation-item{class: current_path?(help_path)}
+        = link_to('Help', help_path, class: 'govuk-header__link disabled-link', id: 'navbar-help')
+      %li.govuk-header__navigation-item
+        = link_to('Sign out', destroy_user_session_path, method: :delete, class: 'govuk-header__link disabled-link', id: 'sign-out')
+    - else
+      %li.govuk-header__navigation-item{class: current_path?(new_user_session_path)}
+        = link_to('Sign In', new_user_session_path, class: 'govuk-header__link disabled-link', id: 'sign-in')
+      %li.govuk-header__navigation-item{class: current_path?(organisations_path) || current_path?(new_credentials_organisations_path)}
+        = link_to('Create an account', organisations_path, class: 'govuk-header__link disabled-link', id: 'new-account')

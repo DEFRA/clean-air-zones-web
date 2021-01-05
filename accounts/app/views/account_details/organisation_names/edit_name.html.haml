@@ -1,0 +1,44 @@
+- title_and_header = 'Update company name'
+- content_for(:title, title_and_header)
+
+= render 'shared/js_back_link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if @error
+        = render 'shared/error_summary',
+                  error_msg_div: '#company_name-error',
+                  error_msg: "#{@error}"
+
+      = form_for('primary_user', url: update_name_primary_users_path, method: :get) do |f|
+        .govuk-form-group{class: ('govuk-form-group--error' if @error)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+
+            - if @error
+              .govuk-form-group.govuk-form-group--error
+                %span#name-error.govuk-error-message
+                  %span.govuk-visually-hidden Error:
+                  = @error
+
+                = f.label :company_name, 'Company name', class: 'govuk-label'
+                = f.text_field :company_name,
+                               name: 'company_name',
+                               class: 'govuk-input govuk-!-width-two-thirds',
+                               value: params[:company_name]
+
+            - else
+              .govuk-form-group
+                = f.label :company_name, 'Company name', class: 'govuk-label'
+                = f.text_field :company_name,
+                               name: 'company_name',
+                               class: 'govuk-input govuk-!-width-two-thirds',
+                               value: @user.account_name
+
+        = submit_tag 'Save changes', class: 'govuk-button', 'data-module': 'govuk-button', id: 'save-changes'
+
+        %p
+          = link_to 'Exit without saving', primary_users_account_details_path, class: 'govuk-link', id: 'exit'

@@ -1,0 +1,37 @@
+- title_and_header = 'Account details'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l= title_and_header
+
+      %dl.govuk-summary-list
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            Name
+          %dd.govuk-summary-list__value{id: 'name'}
+            = @user.name
+          %dd.govuk-summary-list__actions
+            = link_to edit_name_non_primary_users_path, class: 'govuk-link', id: 'edit-name' do
+              Change
+              %span.govuk-visually-hidden
+                name
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            Email address
+          %dd.govuk-summary-list__value{id: 'email'}
+            = @user.email
+          %dd.govuk-summary-list__actions
+
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            Password
+          %dd.govuk-summary-list__value
+            ***********
+          %dd.govuk-summary-list__actions
+            = link_to edit_password_path, class: 'govuk-link', id: 'edit-password' do
+              Change
+              %span.govuk-visually-hidden
+                password

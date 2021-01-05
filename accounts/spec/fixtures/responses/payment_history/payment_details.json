@@ -1,0 +1,60 @@
+{
+  "centralPaymentReference": 2981,
+  "paymentProviderId": "gr4q4tedct2vqqo39uvb2o1ei4",
+  "paymentDate": "2020-07-29",
+  "totalPaid": 50.0,
+  "telephonePayment": false,
+  "payerName": "John Doe",
+  "lineItems": [
+    {
+
+      "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
+      "chargePaid": 50.0,
+      "paymentStatus": "paid",
+      "travelDate": "2020-07-26",
+      "vrn": "TST004"
+    },
+    {
+      "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
+      "chargePaid": 50.0,
+      "paymentStatus": "paid",
+      "travelDate": "2020-07-29",
+      "vrn": "TST004"
+    },
+    {
+      "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
+      "chargePaid": 12.5,
+      "paymentStatus": "paid",
+      "travelDate": "2020-07-26",
+      "vrn": "TST003"
+    },
+    {
+      "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
+      "chargePaid": 12.5,
+      "paymentStatus": "paid",
+      "travelDate": "2020-07-27",
+      "vrn": "TST003"
+    },
+    {
+      "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
+      "chargePaid": 12.5,
+      "paymentStatus": "paid",
+      "travelDate": "2020-07-29",
+      "vrn": "TST003"
+    },
+    {
+      "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
+      "chargePaid": 50.0,
+      "paymentStatus": "paid",
+      "travelDate": "2020-07-26",
+      "vrn": "TST008"
+    },
+    {
+      "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
+      "chargePaid": 50.0,
+      "paymentStatus": "paid",
+      "travelDate": "2020-07-28",
+      "vrn": "TST008"
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "1": {
+    "vehicles": [
+      {
+        "vrn": "CAZ101",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ102",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ103",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ104",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ105",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ106",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ107",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ108",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ109",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ110",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      }
+    ],
+    "perPage": 10,
+    "page": 1,
+    "pageCount": 2,
+    "totalVehiclesCount": 12,
+    "anyUndeterminedVehicles": false
+  },
+  "2": {
+    "vehicles": [
+      {
+        "vrn": "CAZ201",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "VAN",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 50, "tariffCode": "VAN-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 12.5, "tariffCode": "VAN-123"}
+        ]
+      },
+      {
+        "vrn": "CAZ202",
+        "isExempt": false,
+        "isRetrofitted": false,
+        "vehicleType": "CAR",
+        "cachedCharges": [
+          {"cazId": "5cd7441d-766f-48ff-b8ad-1809586fea37", "charge": 8, "tariffCode": "CAR-123"},
+          {"cazId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3", "charge": 0, "tariffCode": "CAR-123"}
+        ]
+      }
+    ],
+    "perPage": 10,
+    "page": 2,
+    "pageCount": 2,
+    "totalVehiclesCount": 12,
+    "anyUndeterminedVehicles": true
+  }
+}
