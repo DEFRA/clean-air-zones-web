@@ -1,0 +1,10 @@
+.govuk-form-group
+  %span#vrn-hint.govuk-hint#vrn-label{for: 'vrn'}
+    = I18n.t('labels.vrn')
+
+  %input#vrn.govuk-input.vrn-input{'aria-labelledby': 'vrn-label',
+                                   'aria-describedby': 'vrn',
+                                   name: 'vrn',
+                                   type: 'text',
+                                   maxlength: 15,
+                                   value: session.dig(:vehicle_details, 'vrn') || params[:vrn]}
