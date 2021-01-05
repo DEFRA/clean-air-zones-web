@@ -1,0 +1,6 @@
+- formatted_date = @bath_d_day_date&.strftime('%e %B %Y')
+
+.govuk-grid-row
+  .govuk-grid-column-full
+    = render 'shared/warning' do
+      = "Payment features will be enabled on this account when charging starts in Bath on #{formatted_date}"

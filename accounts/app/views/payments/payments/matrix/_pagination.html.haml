@@ -1,0 +1,18 @@
+%nav.moj-pagination.custom-pagination#pagination-label
+  %p.govuk-visually-hidden{'aria-labelledby': 'pagination-label'}
+    Pagination navigation
+  %ul.moj-pagination__list
+    - if @charges.previous_page?
+      %li.moj-pagination__item.moj-pagination__item--prev
+        = hidden_field_tag('payment[previous_vrn]', @charges.first_vrn)
+        = link_to('#', class: 'moj-pagination__link', id: 'pagination-previous-link') do
+          Previous vehicles page
+          %span.govuk-visually-hidden
+            set of pages
+    - if @charges.next_page?
+      %li.moj-pagination__item.moj-pagination__item--next
+        = hidden_field_tag('payment[next_vrn]', @charges.last_vrn)
+        = link_to('#', class: 'moj-pagination__link', id: 'pagination-next-link') do
+          Next vehicles page
+          %span.govuk-visually-hidden
+            set of pages

@@ -1,0 +1,18 @@
+- title_and_header = 'Business accounts are for multiple vehicles'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', fleet_check_organisations_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l= title_and_header
+      %p
+        - if @payment_features_enabled
+          = succeed '.' do
+            If you are only paying for 1 vehicle, the easiest and quickest option is to go to
+            = link_to 'Pay a charge for a single vehicle', Rails.configuration.x.payments_ui_url
+        - else
+          = succeed '.' do
+            If you are only checking 1 vehicle, the easiest and quickest option is to
+            = link_to 'Check a charge for a single vehicle', Rails.configuration.x.check_air_standard_url

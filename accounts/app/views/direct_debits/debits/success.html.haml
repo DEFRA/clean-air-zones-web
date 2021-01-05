@@ -1,0 +1,71 @@
+- title_and_header = 'Payment complete'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      .govuk-panel.govuk-panel--confirmation
+        %h1.govuk-panel__title
+          = title_and_header
+        .govuk-panel__body
+          Payment reference
+          %br
+            %strong
+              = @payment_details.reference
+          %br
+          Payment ID
+          %br
+            %strong
+              = @payment_details.external_id
+      %p
+        A receipt will be sent to
+        = succeed '.' do
+          = @payment_details.user_email
+      %p You can use the payment reference above as proof of payment.
+
+      %h2.govuk-heading-m You have paid for:
+      %dl.govuk-summary-list
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key Clean Air Zone
+          %dd.govuk-summary-list__value
+            = @payment_details.caz_name
+          %dd.govuk-summary-list__actions
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key Entries paid for
+          %dd.govuk-summary-list__value
+            = @payment_details.entries_paid
+          %dd.govuk-summary-list__actions
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key Total charge
+          %dd.govuk-summary-list__value
+            = parse_charge(@payment_details.total_charge)
+          %dd.govuk-summary-list__actions
+            = link_to 'View details', post_payment_details_payments_path
+
+      %h2.govuk-heading-m Alternatives to paying the charge
+      %p
+        If you own, lease or operate vehicles that do not meet the emissions standards,
+        you may qualify for financial help to modify, retrofit or replace your vehicles.
+
+      %ul.govuk-list.govuk-list--bullet
+        - if @payment_details.caz_name == 'Leeds'
+          %li
+            Find out about upgrades and retrofits for buses, coaches and HGVs by visiting
+            = charge_alternative_url_for(@payment_details.caz_name, 'fleet')
+          %li
+            Find out about upgrades and retrofits for taxis and Private Hire Vehicles by visiting
+            = charge_alternative_url_for(@payment_details.caz_name, 'non_fleet')
+        - else
+          %li
+            Find out about upgrades and retrofits for your vehicles by visiting
+            = charge_alternative_url_for(@payment_details.caz_name, 'fleet')
+
+      = render 'shared/print_link'
+
+    .govuk-grid-column-one-third
+      %h2.govuk-heading-m Other tasks
+      %ul.govuk-list.govuk-list--bullet
+        %li
+          = link_to 'Pay for another Clean Air Zone', payments_path, id: 'pay-another-caz'
+        %li
+          = link_to 'Back to Your account', root_path

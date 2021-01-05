@@ -1,0 +1,72 @@
+- title_and_header = 'Review the payment'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', matrix_payments_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if alert
+        = render 'shared/error_summary',
+                  error_msg_div: '#govuk-error-message',
+                  error_msg: alert
+
+      %h1.govuk-heading-l
+        = title_and_header
+
+      %dl.govuk-summary-list
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            Clean Air Zone
+          %dd.govuk-summary-list__value
+            = @zone.name
+          %dd.govuk-summary-list__actions
+            = link_to payments_path, class: 'govuk-link' do
+              Change
+              %span.govuk-visually-hidden
+                Clean Air Zone
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            Entries selected
+          %dd.govuk-summary-list__value
+            = @days_to_pay
+          %dd.govuk-summary-list__actions
+            = link_to matrix_payments_path, class: 'govuk-link' do
+              Change
+              %span.govuk-visually-hidden
+                dates
+        .govuk-summary-list__row
+          %dt.govuk-summary-list__key
+            Total charge
+          %dd.govuk-summary-list__value
+            = parse_charge(@total_to_pay)
+          %dd.govuk-summary-list__actions
+            = link_to('View details', review_details_payments_path)
+
+      = form_tag confirm_review_payments_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-visually-hidden
+              = I18n.t('payment_review.errors.confirmation_alert')
+
+            - if alert
+              %span#unrecognised-vehicle-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = I18n.t('payment_review.errors.confirmation_alert')
+
+            .govuk-checkboxes
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'confirm_not_exemption',
+                                               type: 'checkbox',
+                                               value: 'yes',
+                                               id: 'confirm_not_exemption',
+                                               checked: session[:new_payment]['confirm_not_exemption'] == 'yes'}
+                %label.govuk-label.govuk-checkboxes__label{for: 'confirm_not_exemption'}
+                  I confirm I do not have an exemption from the #{@zone.name} Clean Air Zone charge.
+                  = precede '(' do
+                    = succeed ').' do
+                      Find out who can apply for an exemption in
+                      = exemption_url_for(@zone)
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'
+

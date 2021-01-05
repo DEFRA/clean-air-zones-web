@@ -1,0 +1,8 @@
+%p
+  A charge could not be calculated based on your registration information. If the details we
+  hold are incorrect you should contact
+  = succeed '.' do
+    = external_link_to('DVLA',
+                       'https://www.gov.uk/change-vehicle-details-registration-certificate/how-to-tell-dvla',
+                       id: 'update_record_link',
+                       class: 'govuk-link')

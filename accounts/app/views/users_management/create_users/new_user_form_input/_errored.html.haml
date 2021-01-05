@@ -1,0 +1,20 @@
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:name])}
+  = f.label :name, t('add_new_user_form.labels.name'), class: 'govuk-label'
+  - if errors[:name]
+    %span#name-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = errors[:name].join(', ')
+  = f.text_field :name,
+                  class: determinate_input_class(errors[:name]),
+                  value: session.dig('new_user', 'name')
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:email])}
+  = f.label :email, t('add_new_user_form.labels.email'), class: 'govuk-label'
+  %span.govuk-hint#email-hint
+    = t('add_new_user_form.hints.email')
+  - if errors[:email]
+    %span#email-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = errors[:email].join(', ')
+  = f.text_field :email,
+                  class: determinate_input_class(errors[:email]),
+                  value: session.dig('new_user', 'email')

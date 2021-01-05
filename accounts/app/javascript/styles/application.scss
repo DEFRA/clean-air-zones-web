@@ -1,0 +1,75 @@
+$govuk-global-styles: true;
+$govuk-assets-path: '/packs/media/';
+$moj-assets-path: '/application/assets';
+
+@import '~govuk-frontend/govuk/all';
+@import '~@ministryofjustice/frontend/moj/all';
+@import 'cookie_control';
+@import 'custom_pagination';
+@import 'payment_summary';
+
+html {
+  background-color: govuk-colour($colour: 'light-grey');
+}
+
+.transform {
+  text-transform: uppercase;
+}
+
+.custom-csv-error {
+  color: govuk-colour($colour: 'red');
+  font-weight: 700;
+}
+
+.moj-pagination {
+  margin-bottom: 30px;
+}
+
+.draft-tag {
+  margin-bottom: 10px;
+}
+
+.vehicle-management-column {
+  white-space: nowrap;
+  width: 22.5%;
+}
+
+@media (max-width: 40.0525em) {
+  .scrollable-table {
+    overflow: scroll;
+    margin-bottom: 20px;
+  }
+}
+
+.matrix-table-past {
+  .govuk-table__cell {
+    width: 14%;
+  }
+
+  .govuk-table__cell.vrn {
+    width: 16%;
+  }
+}
+
+@media print {
+  .govuk-back-link {
+    width: 100%;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.disabled-link {
+  pointer-events: none;
+  user-select: none;
+
+  &.transparent {
+    opacity: 0.6;
+  }
+}
+
+.dashboard-total-group:nth-child(3n+1) {
+  clear: left;
+}

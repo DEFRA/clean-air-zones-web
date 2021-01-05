@@ -1,0 +1,25 @@
+- title_and_header = "No chargeable vehicles in the #{@clean_air_zone_name} Clean Air Zone"
+- content_for(:title, title_and_header)
+
+= link_to 'Back', payments_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+
+      %p
+        There is no charge for the vehicles in the
+        = @clean_air_zone_name
+        Clean Air Zone.
+        %br
+        All the vehicles comply with emissions standards.
+
+      %p
+        They may be charged in other Clean Air Zones.
+        %br
+        = link_to 'Check vehicles', fleets_path
+        to see where they may be charged.
+
+      %p= link_to 'Pay for another Clean Air Zone', payments_path

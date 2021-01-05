@@ -1,0 +1,19 @@
+.govuk-form-group
+  %label.govuk-label{for: 'vrn-search'}
+    Search for a number plate
+  - if alert
+    = render 'payments/payments/matrix/vrn_input/errored', message: alert
+  - else
+    = render 'payments/payments/matrix/vrn_input/normal'
+  %input{value: 'Search',
+         type: 'button',
+         id: 'search-form-submit',
+         class: 'govuk-button govuk-button--secondary',
+         'data-module': 'govuk-button'}
+
+- if @search.present?
+  %p
+    = link_to "Clear search (does not remove your selections)",
+              clear_search_payments_path,
+              id: 'clear-search-link',
+              class: 'govuk-link'

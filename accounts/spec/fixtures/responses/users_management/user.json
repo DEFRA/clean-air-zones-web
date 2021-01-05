@@ -1,0 +1,6 @@
+{
+  "name": "John Doe",
+  "email": "test@example.com",
+  "owner": false,
+  "permissions": ["VIEW_PAYMENTS"]
+}

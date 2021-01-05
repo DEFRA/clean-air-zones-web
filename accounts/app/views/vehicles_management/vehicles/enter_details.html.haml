@@ -1,0 +1,21 @@
+- title_and_header = 'Enter the number plate of the vehicle'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', fleets_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if @errors.present?
+        = render 'shared/error_summary',
+                  error_msg_div: '#vrn-error',
+                  error_msg: @errors[:vrn].first
+
+      = form_tag enter_details_vehicles_path, method: :post do
+        %fieldset.govuk-fieldset
+          %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+            %h1.govuk-fieldset__heading
+              = title_and_header
+          = render @errors.present? ? 'vehicles_management/vehicles/vrn_input/errored' : 'vehicles_management/vehicles/vrn_input/normal'
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

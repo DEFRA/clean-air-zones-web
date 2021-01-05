@@ -1,0 +1,14 @@
+%section.govuk-tabs__panel{id: 'past-week'}
+  %h2.govuk-heading-l
+    Previous days
+  %p
+    %strong
+      Check a box for each vehicle and date it drove in a Clean Air Zone.
+  %p
+    %strong
+      Select all that apply.
+
+  - unless @charges.all_days_unpaid?
+    %p
+      If you have already paid for a date, it will show as Paid.
+  = render 'payments/payments/matrix/table', direction: :past

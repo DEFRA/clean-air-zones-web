@@ -1,0 +1,44 @@
+- title_and_header = "You searched for #{@search}"
+- content_for(:title, title_and_header)
+
+= link_to 'Back', clear_search_payments_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper.govuk-main-wrapper--auto-spacing#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-full
+      = render 'shared/error' if alert
+
+      %h1.govuk-heading-l= title_and_header
+      = render 'payments/payments/matrix/details'
+
+      = form_for('payment', url: vrn_not_found_payments_path, method: :post) do |f|
+        .govuk-form-group
+          %label.govuk-label{for: 'vrn-search'}
+            Search for a number plate
+          - if alert
+            = render 'payments/payments/matrix/vrn_input/errored', message: alert
+          - else
+            = render 'payments/payments/matrix/vrn_input/normal'
+
+          = f.submit 'Search',
+                     class: 'govuk-button govuk-button--secondary',
+                     id: 'search-form-submit',
+                     'data-module': 'govuk-button'
+
+          %p
+            = link_to "Clear search (does not remove your selections)",
+                      clear_search_payments_path,
+                      id: 'clear-search-link',
+                      class: 'govuk-link'
+
+
+      %h2.govuk-heading-l We could not find that vehicle
+      %p
+        It might be because:
+        %ul.govuk-list-govuk-list--bullet
+          %li
+            %p You did not upload that vehicle to the list
+          %li
+            %p
+              It is not subject to a charge in
+              = @zone.name

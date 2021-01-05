@@ -1,0 +1,13 @@
+- title_and_header = 'An invite has been sent'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p= "An email has been sent to #{@new_user_email}."
+      %p
+        Once they have received it they should click on the link to confirm their access to the account.
+
+      = link_to 'Continue', users_path, class: 'govuk-button'

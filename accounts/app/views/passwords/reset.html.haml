@@ -1,0 +1,31 @@
+- title_and_header = 'Reset your password'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if @errors.present?
+        = render 'shared/errors_summary', errors: @errors
+
+      %h1.govuk-heading-l
+        = title_and_header
+      = form_for('passwords', url: reset_passwords_path, method: :post,
+        html: {autocomplete: 'off', novalidate: 'novalidate'}) do |f|
+
+        .govuk-form-group{class: ('govuk-form-group--error' if @errors.present?)}
+          = f.label :email_address, 'Email address', class: 'govuk-label'
+          %span.govuk-hint We'll send a reset link to the address you provide
+          - if @errors.present?
+            %span#email_address-error.govuk-error-message
+              %span.govuk-visually-hidden Error:
+              = @errors[:email_address].join(', ')
+          = f.text_field :email_address,
+                          value: params.dig(:passwords, :email_address),
+                          maxlength: 45,
+                          spellcheck: false,
+                          class: "govuk-input govuk-!-width-two-thirds #{'govuk-input--error' if @errors.present?}"
+        .govuk-form-group
+          = f.submit 'Send email', class: 'govuk-button', 'data-module': 'govuk-button'

@@ -1,0 +1,16 @@
+- title_and_header = 'Reset your password'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      .govuk-panel.govuk-panel--confirmation
+        %h1.govuk-panel__title
+          = title_and_header
+        .govuk-panel__body
+          We have successfully updated your password
+      %h2.govuk-heading-m What happens next
+      %p
+        You can now
+        = link_to 'log in', new_user_session_path
+        using your new password

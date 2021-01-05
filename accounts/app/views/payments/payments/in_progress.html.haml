@@ -1,0 +1,23 @@
+- title_and_header = 'Payment in progress'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', payments_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p
+        = "#{@user.email} is paying charges for #{@zone&.name} Clean Air Zone."
+      %p
+        To avoid the possibility of you both paying the same charge, you need to wait till they have finished 
+        before making your payment.
+      %p
+        Try again later.
+
+      %p
+        = link_to 'Pay for another Clean Air Zone', payments_path
+
+      %p
+        = link_to 'Return to Your account', dashboard_path

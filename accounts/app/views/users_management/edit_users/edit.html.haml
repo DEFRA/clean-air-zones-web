@@ -1,0 +1,96 @@
+- title_and_header = 'Edit user details'
+- content_for(:title, title_and_header)
+- errors = flash[:errors]
+
+= link_to 'Back', users_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if errors
+        = render 'shared/error_summary',
+                 error_msg_div: '#permissions-error',
+                 error_msg: errors
+
+      = form_for('edit_user', url: user_path(@user.account_user_id), method: :patch) do |f|
+        .govuk-form-group{class: ('govuk-form-group--error' if errors)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading= title_and_header
+
+            = render 'users_management/d_day_notice' unless @payment_features_enabled
+
+            %table.govuk-table
+              %caption.govuk-table__caption User details
+              %thead.govuk-table__head
+                %tr.govuk-table__row
+                  %th.govuk-table__header{scope:  'col'} Name
+                  %th.govuk-table__header{scope:  'col'} Email address
+                  %td.govuk-table__header{scope:  'col'}
+              %tbody.govuk-table__body
+                %tr.govuk-table__row
+                  %td.govuk-table__cell
+                    = @user.name
+                  %td.govuk-table__cell
+                    = @user.email
+                  %td.govuk-table__cell
+                    = link_to remove_user_path(@user.account_user_id), class: 'govuk-link', id: 'remove-user' do
+                      Remove
+
+            %p
+              %strong User permissions
+
+            - if errors
+              %span#permissions-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = errors
+            .govuk-checkboxes
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'edit_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'MANAGE_VEHICLES',
+                                               id: 'manage-vehicles-permission',
+                                               checked: edit_user_permission?('MANAGE_VEHICLES')}
+                %label.govuk-label.govuk-checkboxes__label{for: 'manage-vehicles-permission'}
+                  Manage vehicles
+
+              .govuk-checkboxes__item{class: ('hidden' unless direct_debits_enabled?) }
+                %input.govuk-checkboxes__input{name: 'edit_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'MANAGE_MANDATES',
+                                               id: 'manage-mandates-permission',
+                                               checked: edit_user_permission?('MANAGE_MANDATES')}
+                %label.govuk-label.govuk-checkboxes__label{for: 'manage-mandates-permission'}
+                  Set up Direct Debits
+
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'edit_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'MAKE_PAYMENTS',
+                                               id: 'make-payments-permission',
+                                               checked: edit_user_permission?('MAKE_PAYMENTS')}
+                %label.govuk-label.govuk-checkboxes__label{for: 'make-payments-permission'}
+                  Make payments
+                  = '(available when charging starts)' unless @payment_features_enabled
+
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'edit_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'MANAGE_USERS',
+                                               id: 'manage-users-permission',
+                                               checked: edit_user_permission?('MANAGE_USERS')}
+                %label.govuk-label.govuk-checkboxes__label{for: 'manage-users-permission'}
+                  Manage users
+
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'edit_user[permissions][]',
+                                               type: 'checkbox',
+                                               value: 'VIEW_PAYMENTS',
+                                               id: 'view-payments-permission',
+                                               checked: edit_user_permission?('VIEW_PAYMENTS')}
+                %label.govuk-label.govuk-checkboxes__label{for: 'view-payments-permission'}
+                  View payment history
+                  = '(available when charging starts)' unless @payment_features_enabled
+
+        = submit_tag 'Save changes', class: 'govuk-button', 'data-module': 'govuk-button', id: 'save-changes'

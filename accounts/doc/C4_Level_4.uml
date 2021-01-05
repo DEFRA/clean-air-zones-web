@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Ruby</ID>
+  <OriginalElement>ApplicationController</OriginalElement>
+  <nodes>
+    <node x="9064.0" y="782.0">LocalAuthorityForm</node>
+    <node x="7351.2" y="107.0">FileUtils</node>
+    <node x="514.0" y="1275.0">ActiveSupport::Configurable::ClassMethods</node>
+    <node x="711.0" y="1275.0">FleetsHelper</node>
+    <node x="7419.2" y="321.0">Rake::DSL</node>
+    <node x="1095.0" y="1275.0">Encryption</node>
+    <node x="9478.0" y="645.0">BaseApi</node>
+    <node x="1487.0" y="919.0">ActionController::Base</node>
+    <node x="2145.0" y="919.0">SessionManipulation::SetPaymentDetails</node>
+    <node x="696.0" y="1173.0">VehiclesController</node>
+    <node x="9600.0" y="645.0">CleanAirZone</node>
+    <node x="1160.0" y="1173.0">DashboardController</node>
+    <node x="2532.0" y="1173.0">PasswordsController</node>
+    <node x="2463.0" y="782.0">SessionManipulation::BaseManipulator</node>
+    <node x="5036.0" y="919.0">Encryption::Encrypt</node>
+    <node x="1664.0" y="1173.0">DebitsController</node>
+    <node x="9458.0" y="782.0">AccountsApi</node>
+    <node x="7871.2" y="645.0">Fleet</node>
+    <node x="262.0" y="1173.0">UploadsController</node>
+    <node x="928.0" y="1173.0">SessionsController</node>
+    <node x="4808.0" y="782.0">CreateAccount</node>
+    <node x="2711.0" y="919.0">SessionManipulation::AddPaymentDetails</node>
+    <node x="9296.0" y="782.0">PaymentsApi</node>
+    <node x="7325.2" y="645.0">ChargeableFleet</node>
+    <node x="484.0" y="1173.0">FleetsController</node>
+    <node x="8812.0" y="782.0">EmailAndPasswordForm</node>
+    <node x="7257.2" y="321.0">PP::ObjectMixin</node>
+    <node x="8590.0" y="782.0">ResetPasswordForm</node>
+    <node x="7582.2" y="438.0">Object</node>
+    <node x="1579.0" y="919.0">SessionManipulation::SetPaymentId</node>
+    <node x="10610.0" y="645.0">Module</node>
+    <node x="908.0" y="1275.0">RSpec::Mocks::AnyInstance</node>
+    <node x="5434.0" y="782.0">InvalidFleetCheckException</node>
+    <node x="6400.0" y="782.0">UserAlreadyConfirmedException</node>
+    <node x="3125.0" y="919.0">SessionManipulation::AddCurrentPayment</node>
+    <node x="6148.0" y="782.0">NewPasswordException</node>
+    <node x="7296.0" y="782.0">NewPasswordForm</node>
+    <node x="4914.0" y="919.0">Encryption::Decrypt</node>
+    <node x="0.0" y="1275.0">SessionManipulation</node>
+    <node x="2367.0" y="919.0">SessionManipulation::AddVehicleDetails</node>
+    <node x="2774.0" y="1173.0">OrganisationsController</node>
+    <node x="5243.55" y="645.0">LoginForm</node>
+    <node x="8014.0" y="782.0">CompanyNameForm</node>
+    <node x="4196.0" y="645.0">BaseService</node>
+    <node x="1953.0" y="919.0">SessionManipulation::ClearVrnSearch</node>
+    <node x="1560.5" y="782.0">ActionController::Metal</node>
+    <node x="4100.0" y="782.0">BasePayment</node>
+    <node x="5746.0" y="782.0">AccountForMultipleVehiclesException</node>
+    <node x="3868.0" y="782.0">ValidateFleetCheck</node>
+    <node x="8162.5" y="645.0">BaseForm</node>
+    <node x="3594.0" y="782.0">Sqs::Base</node>
+    <node x="5031.55" y="645.0">ConfirmationForm</node>
+    <node x="1876.0" y="1173.0">EmailsController</node>
+    <node x="6148.0" y="645.0">ApplicationException</node>
+    <node x="4656.0" y="782.0">UploadFile</node>
+    <node x="6971.2" y="645.0">DirectDebit</node>
+    <node x="9875.330305131762" y="782.0">ComplianceCheckerApi</node>
+    <node x="4990.0" y="782.0">Encryption::Base</node>
+    <node x="3974.970596393896" y="645.0">ApiException</node>
+    <node x="1348.5" y="782.0">Responders::ControllerMethod</node>
+    <node x="7336.2" y="214.0">Rake::FileUtilsExt</node>
+    <node x="2933.0" y="919.0">SessionManipulation::SetCompanyName</node>
+    <node x="6742.0" y="782.0">CsvUploadException</node>
+    <node x="1310.6205963938955" y="438.0">ActiveSupport::DescendantsTracker</node>
+    <node x="5082.0" y="782.0">UnableToCreateAccountException</node>
+    <node x="7527.2" y="645.0">ApplicationRecord</node>
+    <node x="7749.2" y="645.0">Vehicle</node>
+    <node x="7775.2" y="321.0">ActiveSupport::Tryable</node>
+    <node x="7336.2" y="0.0">FileUtils::StreamUtils_</node>
+    <node x="8216.0" y="782.0">SubmissionMethodForm</node>
+    <node x="9772.0" y="645.0">DirectDebitDetails</node>
+    <node x="9306.0" y="919.0">DebitsApi</node>
+    <node x="4484.0" y="782.0">PaymentDates</node>
+    <node x="2422.5" y="645.0">PaymentsHelper</node>
+    <node x="3686.0" y="782.0">VerifyAccount</node>
+    <node x="10196.0" y="645.0">ChargeableVehicle</node>
+    <node x="7663.2" y="321.0">Kernel</node>
+    <node x="1542.620596393896" y="438.0">ActiveSupport::Configurable</node>
+    <node x="6697.2" y="645.0">PaymentStatus</node>
+    <node x="4262.0" y="782.0">CreateUserAccount</node>
+    <node x="2589.0" y="919.0">SessionManipulation::AddLaId</node>
+    <node x="1504.5" y="645.0">AbstractController::Base</node>
+    <node x="1402.0" y="1026.0">ApplicationController</node>
+    <node x="9468.0" y="919.0">FleetsApi</node>
+    <node x="7897.2" y="321.0">Cucumber::Glue::Dsl</node>
+    <node x="10613.0" y="438.0">Module::Concerning</node>
+    <node x="1402.0" y="1173.0">StaticPagesController</node>
+    <node x="1272.0" y="1275.0">Sqs</node>
+    <node x="10615.0" y="782.0">Class</node>
+    <node x="10004.0" y="645.0">PaymentDetails</node>
+    <node x="7501.2" y="321.0">BasicObject</node>
+    <node x="6974.0" y="782.0">InvalidCompanyNameException</node>
+    <node x="3976.5" y="919.0">MakeCardPayment</node>
+    <node x="7498.0" y="782.0">SearchVrnForm</node>
+    <node x="6879.2" y="645.0">User</node>
+    <node x="2320.0" y="1173.0">ErrorsController</node>
+    <node x="3529.0" y="919.0">Sqs::VerificationEmail</node>
+    <node x="7133.2" y="645.0">VehicleDetails</node>
+    <node x="0.0" y="1173.0">CreditCardsController</node>
+    <node x="1751.0" y="919.0">SessionManipulation::AddQueryDetails</node>
+    <node x="267.0" y="1275.0">ApplicationHelper</node>
+    <node x="3347.0" y="919.0">SessionManipulation::SetFleetCheck</node>
+    <node x="2088.0" y="1173.0">PaymentsController</node>
+    <node x="10418.0" y="645.0">PaginatedFleet</node>
+    <node x="7872.0" y="782.0">TokenForm</node>
+    <node x="8735.075173370322" y="645.0">Mandate</node>
+    <node x="7680.0" y="782.0">FleetCheckForm</node>
+    <node x="4178.5" y="919.0">MakeDebitPayment</node>
+    <node x="8468.0" y="782.0">VrnForm</node>
+    <node x="1596.5" y="645.0">ActionController::Testing::Functional</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="FileUtils" target="FileUtils::StreamUtils_">
+      <point x="-30.5" y="-28.5" />
+      <point x="7381.7" y="82.0" />
+      <point x="7374.2" y="82.0" />
+      <point x="-38.0" y="28.5" />
+    </edge>
+    <edge source="PaymentDates" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="4560.0" y="752.0" />
+      <point x="4288.3" y="752.0" />
+      <point x="21.300000000000182" y="28.5" />
+    </edge>
+    <edge source="ErrorsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="2416.0" y="1123.0" />
+      <point x="1597.4615384615386" y="1123.0" />
+      <point x="74.46153846153857" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::SetCompanyName" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="3019.0" y="879.0" />
+      <point x="2599.5" y="879.0" />
+      <point x="45.5" y="28.5" />
+    </edge>
+    <edge source="ConfirmationForm" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="5127.55" y="555.0" />
+      <point x="7596.2" y="555.0" />
+      <point x="-32.0" y="28.5" />
+    </edge>
+    <edge source="UploadsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="363.0" y="1113.0" />
+      <point x="1429.9230769230771" y="1113.0" />
+      <point x="-93.0769230769231" y="28.5" />
+    </edge>
+    <edge source="AbstractController::Base" target="Object">
+      <point x="24.0" y="-28.5" />
+      <point x="1564.5" y="525.0" />
+      <point x="7584.2" y="525.0" />
+      <point x="-44.0" y="28.5" />
+    </edge>
+    <edge source="Fleet" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="7912.2" y="615.0" />
+      <point x="7636.2" y="615.0" />
+      <point x="8.0" y="28.5" />
+    </edge>
+    <edge source="FleetCheckForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="7766.0" y="742.0" />
+      <point x="8190.5" y="742.0" />
+      <point x="-28.0" y="28.5" />
+    </edge>
+    <edge source="TokenForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="7933.0" y="752.0" />
+      <point x="8201.7" y="752.0" />
+      <point x="-16.800000000000182" y="28.5" />
+    </edge>
+    <edge source="LocalAuthorityForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="9170.0" y="722.0" />
+      <point x="8268.9" y="722.0" />
+      <point x="50.40000000000009" y="28.5" />
+    </edge>
+    <edge source="Class" target="Module">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="UnableToCreateAccountException" target="ApplicationException">
+      <point x="0.0" y="-28.5" />
+      <point x="5248.0" y="742.0" />
+      <point x="6164.571428571428" y="742.0" />
+      <point x="-99.42857142857156" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::AddVehicleDetails" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="2468.0" y="899.0" />
+      <point x="2544.8999999999996" y="899.0" />
+      <point x="-9.100000000000364" y="28.5" />
+    </edge>
+    <edge source="MakeCardPayment" target="BasePayment">
+      <point x="0.0" y="-28.5" />
+      <point x="4067.5" y="899.0" />
+      <point x="4135.5" y="899.0" />
+      <point x="-35.5" y="28.5" />
+    </edge>
+    <edge source="DirectDebit" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="7042.2" y="605.0" />
+      <point x="7616.2" y="605.0" />
+      <point x="-12.0" y="28.5" />
+    </edge>
+    <edge source="ApplicationException" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="6264.0" y="575.0" />
+      <point x="7604.2" y="575.0" />
+      <point x="-24.0" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::BaseManipulator" target="BaseService">
+      <point x="45.5" y="-28.5" />
+      <point x="2599.5" y="722.0" />
+      <point x="4203.1" y="722.0" />
+      <point x="-63.899999999999636" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::BaseManipulator" target="PaymentsHelper">
+      <point x="-45.5" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="PaymentDetails" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="10090.0" y="555.0" />
+      <point x="7660.2" y="555.0" />
+      <point x="32.0" y="28.5" />
+    </edge>
+    <edge source="AccountForMultipleVehiclesException" target="ApplicationException">
+      <point x="0.0" y="-28.5" />
+      <point x="5937.0" y="762.0" />
+      <point x="6230.857142857143" y="762.0" />
+      <point x="-33.14285714285688" y="28.5" />
+    </edge>
+    <edge source="ApiException" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="4050.970596393896" y="535.0" />
+      <point x="7588.2" y="535.0" />
+      <point x="-40.0" y="28.5" />
+    </edge>
+    <edge source="Module" target="Module::Concerning">
+      <point x="23.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="CreateUserAccount" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="4363.0" y="762.0" />
+      <point x="4274.1" y="762.0" />
+      <point x="7.100000000000364" y="28.5" />
+    </edge>
+    <edge source="CleanAirZone" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="9676.0" y="575.0" />
+      <point x="7652.2" y="575.0" />
+      <point x="24.0" y="28.5" />
+    </edge>
+    <edge source="MakeDebitPayment" target="BasePayment">
+      <point x="0.0" y="-28.5" />
+      <point x="4274.5" y="899.0" />
+      <point x="4206.5" y="899.0" />
+      <point x="35.5" y="28.5" />
+    </edge>
+    <edge source="PaymentsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="2194.0" y="1133.0" />
+      <point x="1578.8461538461538" y="1133.0" />
+      <point x="55.84615384615381" y="28.5" />
+    </edge>
+    <edge source="InvalidFleetCheckException" target="ApplicationException">
+      <point x="0.0" y="-28.5" />
+      <point x="5580.0" y="752.0" />
+      <point x="6197.714285714285" y="752.0" />
+      <point x="-66.28571428571468" y="28.5" />
+    </edge>
+    <edge source="FleetsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="580.0" y="1123.0" />
+      <point x="1448.5384615384614" y="1123.0" />
+      <point x="-74.46153846153857" y="28.5" />
+    </edge>
+    <edge source="VrnForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="8519.0" y="752.0" />
+      <point x="8235.3" y="752.0" />
+      <point x="16.800000000000182" y="28.5" />
+    </edge>
+    <edge source="ActionController::Base" target="ActionController::Metal">
+      <point x="18.0" y="-28.5" />
+      <point x="1541.0" y="899.0" />
+      <point x="1601.5" y="899.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="Sqs::VerificationEmail" target="Sqs::Base">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="NewPasswordException" target="ApplicationException">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="ChargeableVehicle" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="10297.0" y="545.0" />
+      <point x="7664.2" y="545.0" />
+      <point x="36.0" y="28.5" />
+    </edge>
+    <edge source="EmailAndPasswordForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="8928.0" y="732.0" />
+      <point x="8257.7" y="732.0" />
+      <point x="39.19999999999982" y="28.5" />
+    </edge>
+    <edge source="CreditCardsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="121.0" y="1103.0" />
+      <point x="1411.3076923076924" y="1103.0" />
+      <point x="-111.69230769230762" y="28.5" />
+    </edge>
+    <edge source="CompanyNameForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="8105.0" y="762.0" />
+      <point x="8212.9" y="762.0" />
+      <point x="-5.599999999999909" y="28.5" />
+    </edge>
+    <edge source="Rake::DSL" target="Rake::FileUtilsExt">
+      <point x="0.0" y="-28.5" />
+      <point x="38.0" y="28.5" />
+    </edge>
+    <edge source="EmailsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="1972.0" y="1143.0" />
+      <point x="1560.2307692307695" y="1143.0" />
+      <point x="37.23076923076928" y="28.5" />
+    </edge>
+    <edge source="DebitsApi" target="PaymentsApi">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="UserAlreadyConfirmedException" target="ApplicationException">
+      <point x="0.0" y="-28.5" />
+      <point x="6561.0" y="762.0" />
+      <point x="6297.142857142857" y="762.0" />
+      <point x="33.14285714285688" y="28.5" />
+    </edge>
+    <edge source="InvalidCompanyNameException" target="ApplicationException">
+      <point x="0.0" y="-28.5" />
+      <point x="7125.0" y="742.0" />
+      <point x="6363.428571428572" y="742.0" />
+      <point x="99.42857142857156" y="28.5" />
+    </edge>
+    <edge source="DirectDebitDetails" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="9878.0" y="565.0" />
+      <point x="7656.2" y="565.0" />
+      <point x="28.0" y="28.5" />
+    </edge>
+    <edge source="SubmissionMethodForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="8332.0" y="762.0" />
+      <point x="8224.1" y="762.0" />
+      <point x="5.599999999999909" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::ClearVrnSearch" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="2039.0" y="879.0" />
+      <point x="2508.5" y="879.0" />
+      <point x="-45.5" y="28.5" />
+    </edge>
+    <edge source="VehiclesController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="802.0" y="1133.0" />
+      <point x="1467.1538461538462" y="1133.0" />
+      <point x="-55.84615384615381" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::SetFleetCheck" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="3428.0" y="859.0" />
+      <point x="2635.8999999999996" y="859.0" />
+      <point x="81.89999999999964" y="28.5" />
+    </edge>
+    <edge source="Rake::FileUtilsExt" target="Rake::FileUtilsExt">
+      <point x="-38.0" y="28.5" />
+      <point x="7374.2" y="291.0" />
+      <point x="7316.2" y="291.0" />
+      <point x="7316.2" y="242.5" />
+      <point x="-76.0" y="-0.0" />
+    </edge>
+    <edge source="Object" target="ActiveSupport::Tryable">
+      <point x="23.0" y="-28.5" />
+      <point x="7651.2" y="408.0" />
+      <point x="7826.2" y="408.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="NewPasswordForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="7387.0" y="722.0" />
+      <point x="8168.1" y="722.0" />
+      <point x="-50.40000000000009" y="28.5" />
+    </edge>
+    <edge source="Encryption::Decrypt" target="Encryption::Base">
+      <point x="0.0" y="-28.5" />
+      <point x="4965.0" y="899.0" />
+      <point x="5008.0" y="899.0" />
+      <point x="-18.0" y="28.5" />
+    </edge>
+    <edge source="Encryption::Encrypt" target="Encryption::Base">
+      <point x="0.0" y="-28.5" />
+      <point x="5087.0" y="899.0" />
+      <point x="5044.0" y="899.0" />
+      <point x="18.0" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::AddQueryDetails" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="1842.0" y="869.0" />
+      <point x="2490.2999999999993" y="869.0" />
+      <point x="-63.70000000000073" y="28.5" />
+    </edge>
+    <edge source="ResetPasswordForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="8691.0" y="742.0" />
+      <point x="8246.5" y="742.0" />
+      <point x="28.0" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::SetPaymentId" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="1655.0" y="859.0" />
+      <point x="2472.1000000000004" y="859.0" />
+      <point x="-81.89999999999964" y="28.5" />
+    </edge>
+    <edge source="ActionController::Metal" target="AbstractController::Base">
+      <point x="-20.5" y="-28.5" />
+      <point x="1581.0" y="762.0" />
+      <point x="1540.5" y="762.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="DebitsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="1760.0" y="1153.0" />
+      <point x="1541.6153846153848" y="1153.0" />
+      <point x="18.615384615384528" y="28.5" />
+    </edge>
+    <edge source="Object" target="Cucumber::Glue::Dsl">
+      <point x="38.33333333333303" y="-28.5" />
+      <point x="7666.533333333333" y="418.0" />
+      <point x="7928.2" y="418.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="AbstractController::Base" target="ActiveSupport::DescendantsTracker">
+      <point x="-24.0" y="-28.5" />
+      <point x="1516.5" y="625.0" />
+      <point x="1416.6205963938955" y="625.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::AddCurrentPayment" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="3226.0" y="869.0" />
+      <point x="2617.7000000000007" y="869.0" />
+      <point x="63.70000000000073" y="28.5" />
+    </edge>
+    <edge source="BaseApi" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="9529.0" y="585.0" />
+      <point x="7648.2" y="585.0" />
+      <point x="20.0" y="28.5" />
+    </edge>
+    <edge source="ActionController::Base" target="Responders::ControllerMethod">
+      <point x="-18.0" y="-28.5" />
+      <point x="1505.0" y="899.0" />
+      <point x="1444.5" y="899.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="CreateAccount" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="4889.0" y="732.0" />
+      <point x="4316.7" y="732.0" />
+      <point x="49.69999999999982" y="28.5" />
+    </edge>
+    <edge source="Module" target="Object">
+      <point x="-23.0" y="-28.5" />
+      <point x="10633.0" y="525.0" />
+      <point x="7672.2" y="525.0" />
+      <point x="44.0" y="28.5" />
+    </edge>
+    <edge source="BaseForm" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="8218.5" y="605.0" />
+      <point x="7640.2" y="605.0" />
+      <point x="12.0" y="28.5" />
+    </edge>
+    <edge source="Vehicle" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="7800.2" y="625.0" />
+      <point x="7632.2" y="625.0" />
+      <point x="4.0" y="28.5" />
+    </edge>
+    <edge source="User" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="6915.2" y="595.0" />
+      <point x="7612.2" y="595.0" />
+      <point x="-16.0" y="28.5" />
+    </edge>
+    <edge source="CsvUploadException" target="ApplicationException">
+      <point x="0.0" y="-28.5" />
+      <point x="6848.0" y="752.0" />
+      <point x="6330.285714285715" y="752.0" />
+      <point x="66.28571428571468" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::AddLaId" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="2640.0" y="899.0" />
+      <point x="2563.1000000000004" y="899.0" />
+      <point x="9.100000000000364" y="28.5" />
+    </edge>
+    <edge source="AbstractController::Base" target="ActiveSupport::Configurable">
+      <point x="0.0" y="-28.5" />
+      <point x="1540.5" y="515.0" />
+      <point x="1618.620596393896" y="515.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="Rake::FileUtilsExt" target="FileUtils">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="ChargeableFleet" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="7416.2" y="625.0" />
+      <point x="7624.2" y="625.0" />
+      <point x="-4.0" y="28.5" />
+    </edge>
+    <edge source="ValidateFleetCheck" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="3974.0" y="752.0" />
+      <point x="4245.7" y="752.0" />
+      <point x="-21.300000000000182" y="28.5" />
+    </edge>
+    <edge source="SessionsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="1034.0" y="1143.0" />
+      <point x="1485.7692307692305" y="1143.0" />
+      <point x="-37.23076923076928" y="28.5" />
+    </edge>
+    <edge source="StaticPagesController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="PasswordsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="2643.0" y="1113.0" />
+      <point x="1616.0769230769229" y="1113.0" />
+      <point x="93.0769230769231" y="28.5" />
+    </edge>
+    <edge source="VehicleDetails" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="7219.2" y="615.0" />
+      <point x="7620.2" y="615.0" />
+      <point x="-8.0" y="28.5" />
+    </edge>
+    <edge source="Mandate" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="8786.075173370322" y="595.0" />
+      <point x="7644.2" y="595.0" />
+      <point x="16.0" y="28.5" />
+    </edge>
+    <edge source="ApplicationController" target="ActionController::Base">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="VerifyAccount" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="3767.0" y="742.0" />
+      <point x="4231.5" y="742.0" />
+      <point x="-35.5" y="28.5" />
+    </edge>
+    <edge source="BaseService" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="4267.0" y="545.0" />
+      <point x="7592.2" y="545.0" />
+      <point x="-36.0" y="28.5" />
+    </edge>
+    <edge source="UploadFile" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="4722.0" y="742.0" />
+      <point x="4302.5" y="742.0" />
+      <point x="35.5" y="28.5" />
+    </edge>
+    <edge source="Object" target="PP::ObjectMixin">
+      <point x="-38.33333333333303" y="-28.5" />
+      <point x="7589.866666666667" y="418.0" />
+      <point x="7328.2" y="418.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="Encryption::Base" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="5026.0" y="722.0" />
+      <point x="4330.9" y="722.0" />
+      <point x="63.899999999999636" y="28.5" />
+    </edge>
+    <edge source="ComplianceCheckerApi" target="BaseApi">
+      <point x="0.0" y="-28.5" />
+      <point x="9991.330305131762" y="762.0" />
+      <point x="9563.0" y="762.0" />
+      <point x="34.0" y="28.5" />
+    </edge>
+    <edge source="ActionController::Metal" target="ActionController::Testing::Functional">
+      <point x="20.5" y="-28.5" />
+      <point x="1622.0" y="762.0" />
+      <point x="1662.5" y="762.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="Object" target="Kernel">
+      <point x="7.66666666666697" y="-28.5" />
+      <point x="7635.866666666667" y="398.0" />
+      <point x="7709.2" y="398.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="OrganisationsController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="2905.0" y="1103.0" />
+      <point x="1634.6923076923076" y="1103.0" />
+      <point x="111.69230769230762" y="28.5" />
+    </edge>
+    <edge source="PaginatedFleet" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="10504.0" y="535.0" />
+      <point x="7668.2" y="535.0" />
+      <point x="40.0" y="28.5" />
+    </edge>
+    <edge source="PaymentStatus" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="6778.2" y="585.0" />
+      <point x="7608.2" y="585.0" />
+      <point x="-20.0" y="28.5" />
+    </edge>
+    <edge source="ApplicationRecord" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="BasePayment" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="4171.0" y="762.0" />
+      <point x="4259.9" y="762.0" />
+      <point x="-7.100000000000364" y="28.5" />
+    </edge>
+    <edge source="FleetsApi" target="AccountsApi">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::SetPaymentDetails" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="2246.0" y="889.0" />
+      <point x="2526.7000000000007" y="889.0" />
+      <point x="-27.299999999999272" y="28.5" />
+    </edge>
+    <edge source="DashboardController" target="ApplicationController">
+      <point x="0.0" y="-28.5" />
+      <point x="1271.0" y="1153.0" />
+      <point x="1504.3846153846152" y="1153.0" />
+      <point x="-18.615384615384528" y="28.5" />
+    </edge>
+    <edge source="Sqs::Base" target="BaseService">
+      <point x="0.0" y="-28.5" />
+      <point x="3630.0" y="732.0" />
+      <point x="4217.3" y="732.0" />
+      <point x="-49.69999999999982" y="28.5" />
+    </edge>
+    <edge source="PaymentsApi" target="BaseApi">
+      <point x="0.0" y="-28.5" />
+      <point x="9367.0" y="762.0" />
+      <point x="9495.0" y="762.0" />
+      <point x="-34.0" y="28.5" />
+    </edge>
+    <edge source="Object" target="BasicObject">
+      <point x="-7.66666666666697" y="-28.5" />
+      <point x="7620.533333333333" y="398.0" />
+      <point x="7572.2" y="398.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="SessionManipulation::AddPaymentDetails" target="SessionManipulation::BaseManipulator">
+      <point x="0.0" y="-28.5" />
+      <point x="2812.0" y="889.0" />
+      <point x="2581.2999999999993" y="889.0" />
+      <point x="27.299999999999272" y="28.5" />
+    </edge>
+    <edge source="AccountsApi" target="BaseApi">
+      <point x="0.0" y="-28.5" />
+      <point x="0.0" y="28.5" />
+    </edge>
+    <edge source="LoginForm" target="Object">
+      <point x="0.0" y="-28.5" />
+      <point x="5304.55" y="565.0" />
+      <point x="7600.2" y="565.0" />
+      <point x="-28.0" y="28.5" />
+    </edge>
+    <edge source="SearchVrnForm" target="BaseForm">
+      <point x="0.0" y="-28.5" />
+      <point x="7579.0" y="732.0" />
+      <point x="8179.3" y="732.0" />
+      <point x="-39.19999999999982" y="28.5" />
+    </edge>
+    <edge source="Object" target="Rake::DSL">
+      <point x="-23.0" y="-28.5" />
+      <point x="7605.2" y="408.0" />
+      <point x="7450.2" y="408.0" />
+      <point x="0.0" y="28.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.4244109947643979" x="1518.0" y="586.0" />
+  <SelectedNodes>
+    <node>ApplicationController</node>
+  </SelectedNodes>
+  <Categories />
+</Diagram>
+

@@ -1,0 +1,14 @@
+- title_and_header = 'Your account could not be verified'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = title_and_header
+      %p
+        The link in your verification email has expired.
+        %br
+        Go to
+        = link_to 'Create an account', organisations_path
+        to start the process again.

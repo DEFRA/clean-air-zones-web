@@ -1,0 +1,24 @@
+- title_and_header = 'Your business account has been created'
+- content_for(:title, title_and_header)
+- errors = request.env['warden'].errors
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = title_and_header
+      %p
+        Your email address has been verified and your business account has been activated.
+      %p
+        Enter your email address and password to sign in.
+
+      = form_for(@user, as: @user, url: session_path(@user)) do |f|
+        = render 'shared/sign_in/error_summary', errors: errors
+        %fieldset.govuk-fieldset
+          %legend.govuk-visually-hidden
+            Submit your login credentials
+          = render 'shared/sign_in/email_field', form: f, errors: errors
+          = render 'shared/sign_in/password_field', form: f, errors: errors
+        %p
+          = link_to('Forgotten your password?', reset_passwords_path)
+        = f.submit 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

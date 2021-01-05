@@ -1,0 +1,60 @@
+- title_and_header = 'Update password'
+- content_for(:title, title_and_header)
+
+= render 'shared/js_back_link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = render 'shared/errors_summary', errors: @errors.sort.to_h if @errors
+
+      %h1.govuk-heading-l= title_and_header
+
+      = form_for('passwords',
+                 url: edit_password_path,
+                 method: :patch,
+                 html: {autocomplete: 'off', novalidate: 'novalidate'}) do |f|
+
+        .govuk-form-group{class: ('govuk-form-group--error' if @errors && @errors[:old_password].present?)}
+          = f.label :old_password, 'Old password', class: 'govuk-label'
+
+          - if @errors && @errors[:old_password].present?
+            %span.govuk-error-message{id: 'old_password-error'}
+              %span.govuk-visually-hidden Error:
+              = @errors[:old_password].first
+
+          = f.password_field :old_password,
+                              class: 'govuk-input govuk-!-width-two-thirds',
+                              maxlength: 45
+
+        .govuk-form-group{class: ('govuk-form-group--error' if @errors && @errors[:password].present?)}
+          = f.label :password, 'New password', class: 'govuk-label'
+          %span.govuk-hint#password-hint
+            = t('input_form.hints.password')
+
+          - if @errors && @errors[:password].present?
+            %span.govuk-error-message{id: 'password-error'}
+              %span.govuk-visually-hidden Error:
+              = @errors[:password].first
+
+          = f.password_field :password,
+                              class: 'govuk-input govuk-!-width-two-thirds',
+                              maxlength: 45
+
+        .govuk-form-group{class: ('govuk-form-group--error' if @errors && @errors[:password_confirmation].present?)}
+          = f.label :password_confirmation, 'Confirm new password', class: 'govuk-label'
+
+          - if @errors && @errors[:password_confirmation].present?
+            %span.govuk-error-message{id: 'password_confirmation-error'}
+              %span.govuk-visually-hidden Error:
+              = @errors[:password_confirmation].first
+
+          = f.password_field :password_confirmation,
+                              class: 'govuk-input govuk-!-width-two-thirds',
+                              maxlength: 45
+
+        .govuk-form-group
+          = f.submit 'Save changes', class: 'govuk-button', 'data-module': 'govuk-button', id: 'save-changes'
+
+          %p
+            = link_to 'Exit without saving', @back_button_url, class: 'govuk-link', id: 'exit'

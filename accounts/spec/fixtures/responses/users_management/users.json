@@ -1,0 +1,82 @@
+{
+    "multiPayerAccount": true,
+    "users": [
+        {
+            "accountUserId": "4fedcde2-d18d-4f49-8f71-f9fac3f38158",
+            "name": "John Bosco",
+            "email": "test@example.com",
+            "owner": true,
+            "removed": false
+        },
+        {
+            "accountUserId": "5cd7441d-766f-48ff-b8ad-1809586fea37",
+            "name": "John Doe",
+            "email": "john@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "7aabd64a-6521-4692-81de-33752192dd3b",
+            "name": "Maximilian Mejia",
+            "email": "maximilian@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "106d1103-70e0-47ac-ba7e-c00eaa69af3e",
+            "name": "Annabel Wolf",
+            "email": "annabel@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "377f31ff-acd7-43a7-b82a-8236a82e645b",
+            "name": "Kristopher Gates",
+            "email": "kristopher@example.com",
+            "owner": false,
+            "removed": true
+        },
+        {
+            "accountUserId": "86b0f6b2-2009-43ff-9861-5cef741eee61",
+            "name": "Raya Pratt",
+            "email": "raya@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "6ffc41fd-ff2d-4cc1-a2a2-90006ae26446",
+            "name": "anisah Melendez",
+            "email": "anisah@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "0b7f997c-8519-469d-b822-1c188169aae5",
+            "name": "Kelsea Mack",
+            "email": "kelsea@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "6674f316-28e3-4385-87c6-a27cc2dee352",
+            "name": "Reef Giles",
+            "email": "reef@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "b1e1ff36-c95d-401f-877e-385e2621bd94",
+            "name": "Marwan Castro",
+            "email": "marwan@example.com",
+            "owner": false,
+            "removed": false
+        },
+        {
+            "accountUserId": "a27cc2dee352-c95d-401f-877e-385e2621bd94",
+            "name": "Giles Kelsea",
+            "email": "giles@example.com",
+            "owner": false,
+            "removed": false
+        }
+    ]
+}

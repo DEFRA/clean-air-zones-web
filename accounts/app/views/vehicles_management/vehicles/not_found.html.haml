@@ -1,0 +1,58 @@
+= link_to 'Back', enter_details_vehicles_path, class: 'govuk-back-link', id: 'back-link'
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if alert
+        = render 'shared/error_summary',
+                  error_msg_div: '#unrecognised-vehicle-error',
+                  error_msg: I18n.t('vehicle_not_found.errors.confirmation_alert')
+
+      %h1.govuk-heading-xl Vehicle details could not be found
+      %p
+        Try
+        = link_to 'entering the details', enter_details_vehicles_path, class: 'govuk-link'
+        again making sure you have not mixed up letters and numbers (for example, the letters
+        %b I
+        and
+        %b O
+        with the numbers
+        %b 1
+        and
+        %b 0
+        ).
+
+      %h1.govuk-heading-m Check the registration details
+      %p
+        If the details still can not be found and you believe the vehicle should be registered in
+        the UK, you can
+        = external_link_to('update the details',
+                           'https://www.gov.uk/change-vehicle-details-registration-certificate/how-to-tell-dvla',
+                           id: 'dvla-link')
+        the DVLA holds for the vehicle.
+
+      %p
+        Confirm the number plate
+        %b
+          = @vrn
+        is correct and add it to this account.
+
+      = form_tag confirm_not_found_vehicles_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-visually-hidden
+              = I18n.t('vehicle_not_found.errors.confirmation_alert')
+
+            - if alert
+              %span#unrecognised-vehicle-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = I18n.t('vehicle_not_found.errors.confirmation_alert')
+
+            .govuk-checkboxes
+              .govuk-checkboxes__item
+                %input.govuk-checkboxes__input{name: 'confirm-registration',
+                                               type: 'checkbox',
+                                               value: 'yes',
+                                               id: 'confirm-registration'}
+                %label.govuk-label.govuk-checkboxes__label{for: 'confirm-registration'}
+                  I confirm the number plate is correct and I want to add it to this account.
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

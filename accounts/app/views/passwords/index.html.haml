@@ -1,0 +1,45 @@
+- title_and_header = 'Update your password'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', root_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if @errors.present?
+        = render 'shared/errors_summary', errors: @errors
+
+      %h1.govuk-heading-l
+        = title_and_header
+
+      %p Please enter your new password below
+
+      = form_for('passwords', url: passwords_path, method: :post,
+        html: {autocomplete: 'off', novalidate: 'novalidate'}) do |f|
+        = hidden_field_tag(:token, @token)
+
+        .govuk-form-group{class: @errors.present? && @errors[:password].present? ? 'govuk-form-group--error': nil}
+          = f.label :password, class: 'govuk-label'
+          %span.govuk-hint#password-hint
+            = t('input_form.hints.password')
+          - if @errors.present? && @errors[:password].present?
+            %span.govuk-error-message{id: 'password-error'}
+              %span.govuk-visually-hidden Error:
+              = @errors[:password].first
+          = f.password_field :password,
+                              class: 'govuk-input govuk-!-width-two-thirds',
+                              maxlength: 45
+
+        .govuk-form-group{class: @errors.present? && @errors[:password_confirmation].present? ? 'govuk-form-group--error': nil}
+          = f.label :password_confirmation, class: 'govuk-label'
+          - if @errors.present? && @errors[:password_confirmation].present?
+            %span.govuk-error-message{id: 'password_confirmation-error'}
+              %span.govuk-visually-hidden Error:
+              = @errors[:password_confirmation].first
+          = f.password_field :password_confirmation,
+                              class: 'govuk-input govuk-!-width-two-thirds',
+                              maxlength: 45
+
+        .govuk-form-group
+          = f.submit 'Update password', class: 'govuk-button', 'data-module': 'govuk-button'

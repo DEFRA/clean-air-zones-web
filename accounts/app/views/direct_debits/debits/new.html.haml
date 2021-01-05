@@ -1,0 +1,48 @@
+- title_and_header = 'Choose which zone to set up a Direct Debit with'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if alert
+        = render 'shared/error_summary',
+                 error_msg_div: '#caz-selection-error',
+                 error_msg: alert
+
+      = form_tag debits_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset{'aria-describedby': 'caz-hint'}
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+            - if alert
+              %span#caz-selection-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = alert
+
+            %p#caz-hint
+              What you need to know before setting up a mandate:
+
+              %ul.govuk-list.govuk-list--bullet
+                %li you need to set up a mandate with each zone
+                %li paying by Direct Debit means you make single, one-off payments - they are not recurring payments
+                %li whoever makes the payment will be emailed a receipt
+                %li the creator of the mandate will also receive an email every time a Direct Debit payment is made to let them know when money will be taken from the bank account
+
+            %p
+              Zones you haven’t set up a Direct Debit mandate with and where
+              the local authority supports this type of payment will appear here.
+            .govuk-form-group
+              .govuk-radios
+                - @zones.each do |mandate|
+                  .govuk-radios__item
+                    %input.govuk-radios__input{name: 'caz_id',
+                                               type: 'radio',
+                                               value: mandate.zone_id,
+                                               id: mandate.zone_name.downcase}
+                    %label.govuk-label.govuk-radios__label{for: mandate.zone_name.downcase}
+                      = mandate.zone_name
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

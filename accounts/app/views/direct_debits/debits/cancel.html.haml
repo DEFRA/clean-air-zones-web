@@ -1,0 +1,12 @@
+- title_and_header = 'Your payment has been cancelled'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p
+        No money has been taken from your account.
+
+      = link_to 'Continue', failure_debits_path, class: 'govuk-button'

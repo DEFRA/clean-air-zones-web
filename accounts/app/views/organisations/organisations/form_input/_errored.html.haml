@@ -1,0 +1,43 @@
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:email].present?)}
+  = form.label :email, t('input_form.labels.email'), class: 'govuk-label'
+  - if errors[:email].present?
+    %span#email-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = errors[:email].join(', ')
+  = form.text_field :email,
+                    class: determinate_input_class(errors[:email]),
+                    value: session.dig('new_account', 'email'),
+                    maxlength: 45
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:email_confirmation].present?)}
+  = form.label :email_confirmation, t('input_form.labels.email_confirmation'), class: 'govuk-label'
+  - if errors[:email_confirmation].present?
+    %span#email_confirmation-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = errors[:email_confirmation].join(', ')
+  = form.text_field :email_confirmation,
+                    class: determinate_input_class(errors[:email_confirmation]),
+                    value: session.dig('new_account', 'email_confirmation'),
+                    maxlength: 45
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:password].present?)}
+  = form.label :password, t('input_form.labels.password'), class: 'govuk-label'
+  %span.govuk-hint#password-hint
+    = t('input_form.hints.password')
+  - if errors[:password].present?
+    %span#password-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = errors[:password].join(', ')
+  = form.password_field :password,
+                         class: determinate_input_class(errors[:password]),
+                         maxlength: 45
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:password_confirmation].present?)}
+  = form.label :password_confirmation, t('input_form.labels.password_confirmation'), class: 'govuk-label'
+  - if errors[:password_confirmation].present?
+    %span#password_confirmation-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = errors[:password_confirmation].join(', ')
+  = form.password_field :password_confirmation,
+                         class: determinate_input_class(errors[:password_confirmation]),
+                         maxlength: 45

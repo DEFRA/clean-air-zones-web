@@ -1,0 +1,20 @@
+{
+  "firstVrn": "CU12345",
+  "lastVrn": "CU34567",
+  "chargeableAccountVehicles": {
+    "results": [
+      {
+        "vrn": "CU12345",
+        "paidDates": [],
+        "charge": 50.0,
+        "tariffCode": "BCC01-HEAVY GOODS VEHICLE"
+      },
+      {
+        "vrn": "CU34567",
+        "paidDates": [],
+        "charge": 50.0,
+        "tariffCode": "BCC01-HEAVY GOODS VEHICLE"
+      }
+    ]
+  }
+}

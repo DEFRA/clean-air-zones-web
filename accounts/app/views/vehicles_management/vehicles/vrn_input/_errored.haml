@@ -1,0 +1,12 @@
+.govuk-form-group.govuk-form-group--error
+  %span#vrn-hint.govuk-hint
+    For example, CU57ABC
+  %span#vrn-error.govuk-error-message
+    %span.govuk-visually-hidden Error:
+    = @errors[:vrn].first
+  %input#vrn.govuk-input.transform{'aria-labelledby': 'vrn-hint',
+                                   name: 'vrn',
+                                   type: 'text',
+                                   maxlength: 10,
+                                   value: session[:vrn],
+                                   class: 'govuk-input--error govuk-!-width-one-quarter'}

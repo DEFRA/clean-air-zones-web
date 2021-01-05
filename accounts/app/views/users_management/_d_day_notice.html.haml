@@ -1,0 +1,5 @@
+- formatted_date = @bath_d_day_date&.strftime('%e %B %Y')
+
+= render 'shared/warning' do
+  = "You can give permissions to payment features, however, 
+    they won't be enabled until charging starts in Bath on #{formatted_date}"

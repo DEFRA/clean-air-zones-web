@@ -1,0 +1,42 @@
+- title_and_header = 'Confirm your payment'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l Confirm your payment
+
+      = form_for('confirm', url: initiate_debits_path, method: :post) do |f|
+        = hidden_field_tag('mandate_id', @mandate_id)
+        %table.govuk-table
+          %tbody.govuk-table__body
+            %tr.govuk-table__row
+              %td.govuk-table__cell Payment method
+              %th.govuk-table__header{scope: 'row'} Direct Debit
+            %tr.govuk-table__row
+              %td.govuk-table__cell Clean Air Zone
+              %th.govuk-table__header{scope: 'row'}
+                = @zone_name
+            %tr.govuk-table__row
+              %td.govuk-table__cell Mandate ID
+              %th.govuk-table__header{scope: 'row'}
+                = @mandate_id
+            %tr.govuk-table__row
+              %td.govuk-table__cell Date created
+              %th.govuk-table__header{scope: 'row'}
+                = formatted_timestamp(@created_at)
+        = f.submit 'Confirm payment', class: 'govuk-button', 'data-module': 'govuk-button'
+
+      %p
+        = link_to 'Cancel payment', cancel_payments_path, id: 'cancel_payment'
+
+    .govuk-grid-column-one-third.payment-summary
+      %h2.govuk-heading-m
+        Payment summary
+      %p Drive in a Clean Air Zone
+      %h3.govuk-heading-s
+        Total charge
+      %h2#charge.govuk-heading-m{name: 'charge'}
+        = parse_charge(@total_to_pay)

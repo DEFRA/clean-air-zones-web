@@ -1,0 +1,117 @@
+- title_content = 'Manage vehicles and view charges'
+- title_and_header = flash[:success] ? "Upload successful - #{title_content}" : title_content
+- content_for(:title, title_and_header)
+
+= back_link_to_dashboard
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-full
+      = render 'shared/error' if alert
+      = render 'shared/banners'
+
+      %h1.govuk-heading-l= title_content
+      %p
+        Charge information for vehicles in each Clean Air Zone.
+      .govuk-inset-text
+        %b Live
+        \- you must pay a charge to drive in the zone
+        %br
+        %b Upcoming
+        \- you do not need to pay until charging starts, you can see the dates on the
+        = link_to('help page', help_path, class: 'govuk-link', id: 'help')
+
+      -# = render 'vehicles_management/fleets/search'
+
+      %table.govuk-table
+        %caption.govuk-table__caption
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: 'col', class: 'vehicle-management-column'} Number plate
+            %th.govuk-table__header{scope: 'col', class: 'vehicle-management-column'} Type
+            - @zones.each do |zone|
+              %th.govuk-table__header{scope: 'col', class: 'vehicle-management-column'}
+                = zone.name
+                %br
+                = zone.live? ? '(Live)' : '(Upcoming)'
+            %th.govuk-table__header{scope: 'col'}
+              .govuk-visually-hidden Actions
+        %tbody.govuk-table__body
+          - @pagination.vehicle_list.each do |vehicle|
+            %tr.govuk-table__row
+              %td.govuk-table__cell{scope: 'row', class: 'vehicle-management-column'}
+                = vehicle.vrn
+              %td.govuk-table__cell{scope: 'row', class: 'vehicle-management-column'}
+                = vehicle.type
+              - @zones.each do |zone|
+                %td.govuk-table__cell{scope: 'row', class: 'vehicle-management-column'}
+                  = vehicle.formatted_charge(zone.id)
+              %td.govuk-table__cell{scope: 'row'}
+                = link_to('Remove', assign_delete_fleets_path(vrn: vehicle.vrn), id: "remove_#{vehicle.vrn}")
+
+      = render 'pagination'
+
+      = form_tag(fleets_path, method: :get) do
+        .govuk-form-group
+          %fieldset.govuk-fieldset{'aria-describedby': 'only_chargeable'}
+            %legend.govuk-visually-hidden Hide vehicles that are not charge in any Zone
+            .govuk-checkboxes
+              .govuk-checkboxes__item
+                = hidden_field_tag(:vrn, params[:vrn])
+                = check_box_tag('only_chargeable',
+                               true,
+                               params['only_chargeable'],
+                               class: 'govuk-checkboxes__input',
+                               onclick: 'this.form.submit()')
+                = label_tag('only_chargeable',
+                            'Hide vehicles that are not charged in any Zone',
+                            class: 'govuk-label govuk-checkboxes__label')
+
+      %p
+        = link_to('Download a spreadsheet (CSV) of the charges you would pay to drive in all Clean Air Zones',
+                  export_fleets_path,
+                  id: 'csv-export',
+                  class: 'govuk-link')
+
+      %p{id: 'csv-export__notice', style: 'display: none;'}
+        Your export is downloading...
+      
+      = javascript_pack_tag 'export_button_notice'
+
+      - if @fleet.any_undetermined_vehicles
+        %details.govuk-details{'data-module': 'govuk-details'}
+          %summary.govuk-details__summary
+            %span.govuk-details__summary-text
+              What does undetermined mean?
+          .govuk-details__text
+            - unless @payment_features_enabled
+              = render 'vehicles_management/fleets/charge_cannot_be_calculated'
+            - else
+              = render 'vehicles_management/fleets/charge_cannot_be_calculated'
+              %p
+                The charge still needs to be paid but must be done per individual vehicle.
+                = succeed '.' do
+                  = link_to('Use the Pay a Clean Air Zone charge service for an individual vehicle',
+                            single_vehicle_payment_link,
+                            id: 'pay_clean_air_zone_link',
+                            class: 'govuk-link')
+
+      %h2.govuk-heading-m Add vehicles
+      %p
+        You can add multiple vehicles by overriding this list with a new
+        = succeed '.' do
+          = link_to('list of vehicles', uploads_path, id: 'reupload', class: 'govuk-link')
+      
+      %p
+        = succeed '.' do
+          = link_to('Add individual vehicles one by one',
+                    enter_details_vehicles_path,
+                    id: 'individual-payment',
+                    class: 'govuk-link')
+      
+      - if allow_make_payments? && @pagination.total_vehicles_count >= 2 && @payment_features_enabled
+        %hr.govuk-section-break.govuk-section-break--m
+        = link_to('Make a payment', payments_path, id: 'payment-button', class: 'govuk-button', 'data-module': 'govuk-button')
+      
+      %p
+        = link_to('Return to Account home', dashboard_path, id: 'return-to-account', class: 'govuk-link')

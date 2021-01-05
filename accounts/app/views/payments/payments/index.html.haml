@@ -1,0 +1,39 @@
+- title_and_header = 'Which Clean Air Zone do you need to pay for?'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if alert
+        = render 'shared/error_summary',
+                  error_msg_div: '#caz_id-error',
+                  error_msg: alert
+
+      = form_tag local_authority_payments_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+            %p
+              You need to pay separately for each Clean Air Zone you drive in.
+
+            - if alert
+              %span#caz_id-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = alert
+
+            .govuk-radios
+              - @zones.each do |zone|
+                .govuk-radios__item
+                  %input.govuk-radios__input{name: 'caz_id',
+                                             type: 'radio',
+                                             value: zone.id,
+                                             id: zone.name.downcase,
+                                             checked: zone.id == new_payment_data[:caz_id]}
+                  %label.govuk-label.govuk-radios__label{for: zone.name.downcase}
+                    = zone.name
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

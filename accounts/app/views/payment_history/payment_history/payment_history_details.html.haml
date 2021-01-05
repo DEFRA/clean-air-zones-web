@@ -1,0 +1,49 @@
+- title_and_header = 'Charge details'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-l
+        = title_and_header
+
+      - if session[:company_payment_history]
+        %p
+          %strong Payment made by:
+          = @details.payer_name
+        %p
+          %strong Date of payment:
+          = @details.date
+      %p
+        %strong Payment reference:
+        = @details.reference
+      %p
+        %strong Payment ID:
+        = @details.provider_payment_id
+
+
+      - unless @payments.empty?
+        %table.govuk-table
+          %caption.govuk-table__caption
+            .govuk-visually-hidden Charge details table
+          %thead.govuk-table__head
+            %tr.govuk-table__row
+              %th.govuk-table__header{scope: 'col'} Number plate
+              %th.govuk-table__header{scope: 'col'} Dates of entry
+              %th.govuk-table__header{scope: 'col'} Total
+          %tbody.govuk-table__body
+            - @payments.each_with_index do |payment|
+              %tr.govuk-table__row
+                %td.govuk-table__cell= payment.vrn
+                %td.govuk-table__cell
+                  - payment.dates.each do |date|
+                    = date
+                    %br
+                %td.govuk-table__cell= parse_charge(payment.total_paid)
+                %td.govuk-table__cell
+
+      %p
+        = link_to 'Return to payment history', @back_button_url
+      = render 'shared/print_link' if session[:company_payment_history]

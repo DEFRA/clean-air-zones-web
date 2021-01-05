@@ -1,0 +1,34 @@
+- title_and_header = 'Your payment history'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-full
+      %h1.govuk-heading-l
+        = title_and_header
+
+      - unless @pagination.payments_list.empty?
+        %table.govuk-table
+          %caption.govuk-table__caption
+            %p View payments made by you.
+          %thead.govuk-table__head
+            %tr.govuk-table__row
+              %th.govuk-table__header{scope: 'col'} Date of payment
+              %th.govuk-table__header{scope: 'col'} Clean Air Zone
+              %th.govuk-table__header{scope: 'col'} Entries paid for
+              %th.govuk-table__header{scope: 'col'} Amount paid
+              %th.govuk-table__header{scope: 'col'} Charge details
+          %tbody.govuk-table__body
+            - @pagination.payments_list.each_with_index do |payment, index|
+              %tr.govuk-table__row
+                %th.govuk-table__header{scope: 'row'}= payment.date
+                %td.govuk-table__cell= payment.caz_name
+                %td.govuk-table__cell= payment.entries_count
+                %td.govuk-table__cell= parse_charge(payment.total_paid)
+                %td.govuk-table__cell
+                  = link_to payment_history_details_path(payment_id: payment.payment_id), class: 'govuk-link', id: "payment-#{index}" do
+                    View details
+
+        = render 'payment_history/payment_history/user/pagination'

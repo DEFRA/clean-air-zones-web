@@ -1,0 +1,114 @@
+{
+  "1": {
+    "payments": [
+      {
+        "paymentId": "b1f14586-d024-11ea-afe0-47fd231cac0c",
+        "payment_date": "2020-08-1",
+        "entriesCount": 1,
+        "totalPaid": 61,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+      {
+        "paymentId": "099bc2c7-fd7b-484e-86f2-68d2bbbc6f80",
+        "payment_date": "2020-08-2",
+        "entriesCount": 2,
+        "totalPaid": 62,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+            {
+        "paymentId": "28926cce-6cff-49a7-a1cb-4311b746964b",
+        "payment_date": "2020-08-3",
+        "entriesCount": 3,
+        "totalPaid": 63,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+      {
+        "paymentId": "f2be5a77-5a85-4d46-9aff-f1f9501b6c09",
+        "payment_date": "2020-08-4",
+        "entriesCount": 4,
+        "totalPaid": 64,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+            {
+        "paymentId": "ffe73001-25ef-4444-9c20-3fe0a4f161f9",
+        "payment_date": "2020-08-5",
+        "entriesCount": 5,
+        "totalPaid": 65,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+      {
+        "paymentId": "c6c141c2-0778-4e14-9194-b13d0534c154",
+        "payment_date": "2020-08-6",
+        "entriesCount": 6,
+        "totalPaid": 66,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+            {
+        "paymentId": "ce51c071-aa71-4a18-a701-2a32d88c3de1",
+        "payment_date": "2020-08-7",
+        "entriesCount": 7,
+        "totalPaid": 67,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+      {
+        "paymentId": "d44d8e5d-4bcb-4b4a-b3a6-930819275f6a",
+        "payment_date": "2020-08-8",
+        "entriesCount": 8,
+        "totalPaid": 68,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+            {
+        "paymentId": "cf87d9dc-63d0-4db3-8458-1224279d7d3e",
+        "payment_date": "2020-08-9",
+        "entriesCount": 9,
+        "totalPaid": 68,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+      {
+        "paymentId": "7180d976-6ff6-46bc-9fec-483ef376eec7",
+        "payment_date": "2020-08-10",
+        "entriesCount": 10,
+        "totalPaid": 69,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      }
+    ],
+    "perPage": 10,
+    "page": 1,
+    "pageCount": 2,
+    "totalPaymentsCount": 12
+  },
+  "2": {
+    "payments": [
+      {
+        "paymentId": "ef7e04c9-9683-4a60-bf1d-4e07a6e42600",
+        "payment_date": "2020-08-11",
+        "entriesCount": 13,
+        "totalPaid": 73,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      },
+      {
+        "paymentId": "f84ed0b2-2637-4cd3-baf4-ab522ddfe307",
+        "payment_date": "2020-08-12",
+        "entriesCount": 14,
+        "totalPaid": 74,
+        "cazName": "Leeds",
+        "payerName": "Administrator"
+      }
+    ],
+    "perPage": 10,
+    "page": 2,
+    "pageCount": 2,
+    "totalPaymentsCount": 12
+  }
+}

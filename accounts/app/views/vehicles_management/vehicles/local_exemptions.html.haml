@@ -1,0 +1,22 @@
+- title_and_header = 'Local vehicle exemptions'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', details_vehicles_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p
+        Some vehicles which don't meet emissions standards still qualify for a temporary or permanent exemption from the Clean Air Zone charges.
+      %p
+        It is your responsibility to check if your vehicles are eligible for an exemption from the local authority in the Clean Air Zone you are driving in.
+
+      - if @large_fleet
+        = link_to 'Continue', calculating_chargeability_uploads_path, class: 'govuk-button'
+      - elsif @show_continue_link
+        = link_to 'Continue', fleets_path, class: 'govuk-button'
+      - else
+        = form_tag add_to_fleet_vehicles_path, method: :post do
+          = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

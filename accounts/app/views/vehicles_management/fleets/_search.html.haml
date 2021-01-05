@@ -1,0 +1,28 @@
+.govuk-form-group
+  = form_tag fleets_path, method: :post do
+
+    %label.govuk-label{for: 'vrn'}
+      Search for a number plate
+
+    - if alert
+      %span#govuk-error-message.govuk-error-message
+        %span.govuk-visually-hidden Error:
+        = alert
+
+    %input.govuk-input.transform{name: 'vrn',
+                                 id: 'vrn',
+                                 type: 'text',
+                                 maxlength: 15,
+                                 value: params[:vrn],
+                                 class: 'govuk-input govuk-input--width-10'}
+
+    = submit_tag 'Search',
+              class: 'govuk-button govuk-button--secondary',
+              'data-module': 'govuk-button',
+              id: 'search-form-submit'
+    - if @search.present?
+      %p
+        = link_to (@zones ? 'Clear search' : 'Reset search'),
+                fleets_path,
+                id: 'reset-search-link',
+                class: 'govuk-link'

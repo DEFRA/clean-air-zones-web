@@ -1,0 +1,29 @@
+= javascript_pack_tag 'payment_matrix'
+
+= link_to 'Back', payments_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper.govuk-main-wrapper--auto-spacing#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-full
+
+      = render 'shared/error' if alert
+      = render 'payments/payments/matrix/heading'
+      = render 'payments/payments/matrix/details'
+
+      .govuk-form-group
+        %fieldset.govuk-fieldset
+          %legend.govuk-visually-hidden
+            Which vehicles and days are you paying for?
+          = form_for('payment', url: matrix_payments_path, method: :post, html: { id: 'payment-form' }) do |f|
+            = hidden_field_tag('payment[vrn_list]', @charges.vehicle_list.map(&:vrn).join(','))
+            = hidden_field_tag('allSelectedCheckboxesCount', selected_dates_count)
+            .govuk-tabs{'data-module': 'govuk-tabs'}
+              = render 'payments/payments/matrix/tabs'
+              - if @dates[:past].present?
+                = render 'payments/payments/matrix/past_week_tab', form: f
+              = render 'payments/payments/matrix/next_week_tab', form: f
+              = render 'payments/payments/matrix/pagination', form: f
+              = render 'payments/payments/matrix/search'
+            - if @charges.any_results?
+              .govuk-form-group
+                = f.submit 'Continue', class: 'govuk-button', id: 'continue-matrix-button', 'data-module': 'govuk-button'

@@ -1,0 +1,28 @@
+- page = @pagination.page
+- total_pages = @pagination.total_pages
+
+%nav.moj-pagination#pagination-label
+  %p.govuk-visually-hidden{'aria-labelledby': 'pagination-label'}
+    Pagination navigation
+  %ul.moj-pagination__list
+    - unless page == 1
+      = render 'payment_history/payment_history/company/pagination_button', button_text: 'Previous page', page: page - 1, form_class: 'prev'
+
+    - (1..total_pages).each do |i|
+      = render 'payment_history/payment_history/company/pagination_button', button_text: i, page: i, active: page == i
+
+    - unless page == total_pages
+      = render 'payment_history/payment_history/company/pagination_button', button_text: 'Next page', page: page + 1, form_class: 'next'
+
+  - unless page > total_pages
+    %p.moj-pagination__results
+      Showing
+      %b
+        = @pagination.range_start
+      to
+      %b
+        = @pagination.range_end
+      of
+      %b
+        = @pagination.total_payments_count
+      results

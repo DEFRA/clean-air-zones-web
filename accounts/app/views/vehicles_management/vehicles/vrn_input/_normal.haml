@@ -1,0 +1,9 @@
+.govuk-form-group
+  %spab#vrn-hint.govuk-hint
+    For example, CU57ABC
+  %input#vrn.govuk-input.transform{'aria-labelledby': 'vrn-hint',
+                                   name: 'vrn',
+                                   type: 'text',
+                                   maxlength: 10,
+                                   value: session[:vrn],
+                                   class: 'govuk-!-width-one-quarter'}

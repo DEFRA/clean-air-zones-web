@@ -1,0 +1,17 @@
+- title_and_header = 'You will be signed out in 1 minute'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+
+      %p
+        As your account has become inactive we need to sign you out to keep your account secure. 
+        If you would like to stay signed in, continue.
+
+      = link_to 'Continue', @back_button_url, class: 'govuk-button'
+
+      #timeout_logout_data{timedout_user_path: timedout_user_path}
+      = javascript_pack_tag 'timeout_logout'

@@ -1,0 +1,19 @@
+{
+  "mandates": [
+    {
+      "id": "294a5714-bf0f-4972-84cf-6ff6c967d22a",
+      "status": "cancelled",
+      "created": "2020-04-30T08:08:31"
+    },
+    {
+      "id": "4d8e677d-6ea7-4a0b-97ad-5bb0f8604367",
+      "status": "failed",
+      "created": "2020-04-30T08:08:31"
+    },
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "status": "error",
+      "created": "2020-04-30T08:08:31"
+    }
+  ]
+}

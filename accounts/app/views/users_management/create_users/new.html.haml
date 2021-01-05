@@ -1,0 +1,28 @@
+- title_and_header = "Add a user to #{current_user.actual_account_name} account"
+- content_for(:title, title_and_header)
+- errors = flash[:errors]
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = render 'shared/errors_summary', errors: errors if errors.present?
+
+      = form_for('new_user', url: users_path, method: :post) do |f|
+        .govuk-form-group{class: ('govuk-form-group--error' if errors.present?)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+            %p
+              Invite team members to help manage this account.
+            %p
+              Once you have entered their email address, you can choose their permissions.
+
+            - if errors.present?
+              = render 'users_management/create_users/new_user_form_input/errored', f: f, errors: errors
+            - else
+              = render 'users_management/create_users/new_user_form_input/normal', f: f
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

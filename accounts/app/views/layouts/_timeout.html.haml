@@ -1,0 +1,10 @@
+- if current_user && !current_page?(logout_notice_path)
+  - timeout_in_minutes = Rails.configuration.x.session_timeout_in_min
+
+  %span.govuk-visually-hidden
+    You will be logged out automatically after
+    = timeout_in_minutes
+    minutes of inactivity.
+
+  #redirect_to_timeout_notice_data{timeout_time: timeout_in_minutes, logout_notice_path: logout_notice_path}
+  = javascript_pack_tag 'redirect_to_timeout_notice'

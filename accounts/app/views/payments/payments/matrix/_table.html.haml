@@ -1,0 +1,34 @@
+%div.scrollable-table
+  %table.govuk-table{class: "matrix-table-#{direction}"}
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header{scope: 'col'}
+          Number plate
+        - @dates[direction].each do |date|
+          %th.govuk-table__header{scope: 'col'}
+            = date[:name]
+        - if direction.equal?(:past) && @dates[direction].count < 6
+          %th.govuk-table__header{scope: 'col', colspan: 6 - @dates[direction].count}
+    %tbody.govuk-table__body
+      - @charges.vehicle_list.each do |vehicle|
+        %tr.govuk-table__row
+          %td.govuk-table__cell.vrn
+            = vehicle.vrn
+          - @dates[direction].each do |date|
+            - id ="#{vehicle.vrn}_#{date[:value]}"
+            %td.govuk-table__cell
+              - if paid?(vehicle, date[:value])
+                Paid
+              - else
+                .govuk-checkboxes__item
+                  %input.govuk-checkboxes__input{name: "payment[vehicles][#{vehicle.vrn}][]",
+                                                 value: formatted_date_string(date[:value]),
+                                                 id: id,
+                                                 type: 'checkbox',
+                                                 checked: checked?(vehicle.vrn, formatted_date_string(date[:value]))}
+                  %label.govuk-label.govuk-checkboxes__label{for: id}
+                    %span.govuk-visually-hidden
+                      = date[:value]
+          - if direction.equal?(:past) && @dates[direction].count < 6
+            %td.govuk-table__cell{colspan: 6 - @dates[direction].count}
+

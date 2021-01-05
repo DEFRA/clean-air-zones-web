@@ -1,0 +1,36 @@
+- title_and_header = 'Update name'
+- content_for(:title, title_and_header)
+
+= render 'shared/js_back_link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if @errors.present?
+        = render 'shared/errors_summary', errors: @errors
+
+      = form_for('non_primary_user', url: update_name_non_primary_users_path, method: :get) do |f|
+        .govuk-form-group{class: ('govuk-form-group--error' if @errors.present?)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+
+            - if @errors.present?
+              .govuk-form-group.govuk-form-group--error
+                %span#name-error.govuk-error-message
+                  %span.govuk-visually-hidden Error:
+                  = @errors[:name].first
+
+                = f.label :name, t('add_new_user_form.labels.name'), class: 'govuk-label'
+                = f.text_field :name, name: 'name', class: 'govuk-input govuk-!-width-two-thirds'
+
+            - else
+              .govuk-form-group
+                = f.label :name, t('add_new_user_form.labels.name'), class: 'govuk-label'
+                = f.text_field :name, name: 'name', class: 'govuk-input govuk-!-width-two-thirds', value: @user.name
+
+        = submit_tag 'Save changes', class: 'govuk-button', 'data-module': 'govuk-button', id: 'save-changes'
+
+        %p
+          = link_to 'Exit without saving', non_primary_users_account_details_path, class: 'govuk-link', id: 'exit'

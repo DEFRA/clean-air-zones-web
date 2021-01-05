@@ -1,0 +1,40 @@
+- title_and_header = "Manage #{current_user.actual_account_name} account users"
+- content_for(:title, title_and_header)
+
+= link_to 'Back', dashboard_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      = render 'shared/banners'
+
+      %h1.govuk-heading-l= title_and_header
+      - if @users.present?
+        %table.govuk-table
+          %caption.govuk-table__caption Users
+          %thead.govuk-table__head
+            %tr.govuk-table__row
+              %th.govuk-table__header{scope: 'col'} Name
+              %th.govuk-table__header{scope: 'col'} Email address
+              %th.govuk-table__header{scope: 'col'}
+                .govuk-visually-hidden Actions
+          %tbody.govuk-table__body
+            - @users.each_with_index do |user, index|
+              %tr.govuk-table__row
+                %td.govuk-table__cell{scope: 'row'}= user.name
+                %td.govuk-table__cell{scope: 'row'}= user.email
+                %td.govuk-table__cell{scope: 'row'}
+                  - if not_own_account?(user.user_id)
+                    = link_to edit_user_path(user.user_id), class: 'govuk-link', id: "change-user-#{index}" do
+                      Change
+
+      - if @users.count < 10
+        %p
+          = link_to 'Add another user',
+                    new_user_path,
+                    class: 'govuk-button govuk-button--secondary',
+                    id: 'add-another-user-button',
+                    'data-module': 'govuk-button'
+      - else
+        %p You have added the maximum amount of users to this business account.

@@ -1,0 +1,45 @@
+- title_and_header = 'Select your preferred payment method'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', review_payments_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper.govuk-main-wrapper--auto-spacing#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if @errors
+        = render 'shared/error_summary',
+                  error_msg_div: '#payment_method_error',
+                  error_msg: @errors
+
+      = form_tag select_payment_method_payments_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if @errors)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+
+            - if @errors
+              %span#payment_method_error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = @errors
+
+            .govuk-radios
+              .govuk-radios__item
+                %input.govuk-radios__input{name: 'payment_method',
+                                           type: 'radio',
+                                           value: 'true',
+                                           id: 'direct_debit',
+                                           checked: session[:new_payment]['payment_method'] == 'true'}
+                %label.govuk-label.govuk-radios__label{for: 'direct_debit'}
+                  Direct Debit (one-off payment)
+
+              .govuk-radios__item
+                %input.govuk-radios__input{name: 'payment_method',
+                                           type: 'radio',
+                                           value: 'false',
+                                           id: 'card_payment'}
+                %label.govuk-label.govuk-radios__label{for: 'card_payment'}
+                  Card payment
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

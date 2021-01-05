@@ -1,0 +1,127 @@
+---
+en:
+  add_new_user_form:
+    errors:
+      email_duplicated: Email address already exists
+      email_invalid_format: Enter the user’s email address in a valid format
+      email_missing: Enter the user's email address
+      name_missing: Enter the user's name
+      permissions_missing: Select at least one permission type to continue
+    hints:
+      email: This will be used to send an invite to create a user.
+    labels:
+      email: Enter their email address
+      name: Name
+  company_name:
+    errors:
+      abuse: You have submitted a name containing language we don’t allow. Enter a name that is not offensive.
+      duplicate: The company name already exists. If you have forgotten your sign in details you can reset your password
+      duplicate_alternative: The company name already exists
+      profanity: You have submitted a name containing language we don’t allow. Enter a name that is not offensive.
+  company_name_form:
+    company_name_invalid_format: Enter company name in a valid format
+    company_name_invalid_length: Enter a company name that is 180 characters or less
+    company_name_missing: Enter the company name
+  confirmation_form:
+    answer_missing: You must choose an answer
+  csv:
+    errors:
+      base: The selected file could not be uploaded – try again
+      file_size_too_big: The CSV must be smaller than %{file_size}MB
+      fleet_size_too_big: The file you are uploading contains more than 200k vehicles, the maximum number allowed
+      invalid_ext: The selected file must be in a .CSV format
+      no_file: Select a CSV file to upload
+  edit_user_email_form:
+    errors:
+      email_duplicated: Email address already exists
+      email_invalid_format: Enter email in a valid format
+      email_missing: Enter an email address
+      email_too_long: Enter an email address that is less than 129 characters
+      emails_not_equal: Email address and email confirmation must be the same
+    labels:
+      email: Email address
+      email_confirmation: Confirm email address
+  edit_user_name_form:
+    errors:
+      name_missing: Enter your name
+  email:
+    errors:
+      email_equality: Email address and email address confirmation must be the same
+      exists: Email already exists
+  email_and_password_form:
+    email_confirmation_missing: Confirm your email address
+    email_missing: Enter your email address
+    password_confirmation_missing: Confirm your password
+    password_missing: Enter your password
+  external_link: opens in a new window
+  fleet_check_form:
+    errors:
+      confirm_fleet_check: You must choose an answer
+  inactivity_logout: We have signed you out of the business account to keep it secure after it became inactive.
+  input_form:
+    errors:
+      invalid_format: "%{attribute} is in an invalid format"
+      maximum_length: "%{attribute} is too long (maximum is 45 characters)"
+      password_complexity: Enter a password at least 12 characters long including at least 1 upper case letter, 1 number and a special character
+    hints:
+      password: Must be at least 12 characters long, include at least 1 upper case letter, a number and a special character
+    labels:
+      email: Enter your email address
+      email_confirmation: Confirm your email address
+      password: Create a password
+      password_confirmation: Confirm password
+  la_form:
+    la_missing: You must choose one Clean Air Zone
+  login_form:
+    email_missing: Enter your email address
+    email_pending_change: You need to verify the link in the email we sent before trying to sign in
+    email_unconfirmed: Your email address is not confirmed
+    incorrect: The email or password you entered is incorrect
+    invalid_email: Enter your email address in a valid format
+    password_missing: Enter your password
+  new_password_form:
+    errors:
+      password_confirmation_missing: Confirm your new password
+      password_missing: Enter your new password
+      password_not_equal: Enter a password and password confirmation that are the same
+  password:
+    errors:
+      password_equality: Password and password confirmation must be the same
+  payment_review:
+    errors:
+      confirmation_alert: Confirm you have checked if you are eligible for an exemption
+  relevant_portal_form:
+    errors:
+      missing_answer: You must choose an answer
+  remove_user:
+    choose_answer: Select yes to remove the user
+    removed: You have successfully removed %{full_user_name} from your account.
+  reset_password_form:
+    email_invalid_format: Enter your email address in a valid format
+    email_missing: Enter your email address
+  submission_method_form:
+    errors:
+      submission_method_missing: Choose how to add vehicles to your account
+  token_form:
+    token_invalid: Authorisation token is invalid or has expired
+    token_missing: Authorisation token is missing
+  update_password_form:
+    errors:
+      old_password_invalid: The password you entered is incorrect
+      old_password_missing: Enter your old password
+      password_reused: You have already used that password, choose a new one
+      token_expired: The link has expired. Sign in and go to Account details to change your email address
+  vehicle_not_found:
+    errors:
+      confirmation_alert: Confirm the number plate is correct
+  vrn_form:
+    errors:
+      vrn_invalid: Enter the number plate of the vehicle in a valid format
+      vrn_missing: Enter the number plate of the vehicle
+      vrn_too_long: The number plate of the vehicle is too long
+      vrn_too_short: The number plate of the vehicle is too short
+    messages:
+      multiple_vrns_added: You have successfully uploaded %{vrns_count} vehicles to your vehicle list.
+      single_vrn_added: You have successfully added %{vrn} to your vehicle list.
+      single_vrn_removed: You have successfully removed %{vrn} from your vehicle list.
+      vrn_already_exists: "%{vrn} already exists in your vehicle list."

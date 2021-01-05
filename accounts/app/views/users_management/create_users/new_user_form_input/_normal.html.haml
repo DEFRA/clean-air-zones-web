@@ -1,0 +1,12 @@
+.govuk-form-group
+  = f.label :name, t('add_new_user_form.labels.name'), class: 'govuk-label'
+  = f.text_field :name,
+                 class: 'govuk-input govuk-!-width-two-thirds',
+                 value: session.dig('new_user', 'name')
+.govuk-form-group
+  = f.label :email, t('add_new_user_form.labels.email'), class: 'govuk-label'
+  %span.govuk-hint#email-hint
+    = t('add_new_user_form.hints.email')
+  = f.text_field :email,
+                 class: 'govuk-input govuk-!-width-two-thirds',
+                 value: session.dig('new_user', 'email')

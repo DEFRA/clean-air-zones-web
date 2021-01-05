@@ -1,0 +1,23 @@
+- title_and_header = 'Incorrect vehicle details'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', details_vehicles_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p
+        If the vehicle details are incorrect, you can update them with the
+        = succeed '.' do
+          = external_link_to('DVLA', 
+                             'https://www.gov.uk/change-vehicle-details-registration-certificate',
+                             id: 'dvla-link')
+      %p
+        The charge still needs to be paid if you have driven, or are planning to drive, in the zone.
+      %p
+        If the vehicle does meet emission standards, a refund can be claimed when the registration details are updated.
+      %p
+        Continue to add the vehicle to this account.
+      = link_to 'Continue', local_exemptions_vehicles_path, class: 'govuk-button'

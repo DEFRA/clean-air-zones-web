@@ -1,0 +1,17 @@
+- if errors.any?
+  .govuk-error-summary{'aria-labelledby': 'error-summary-title',
+                       'data-module': 'govuk-error-summary',
+                       role: 'alert',
+                       tabindex: '-1'}
+    %h2#error-summary-title.govuk-error-summary__title
+      There is a problem
+    .govuk-error-summary__body
+      %ul.govuk-list.govuk-error-summary__list
+        - if errors[:base].present?
+          %li
+            = link_to(errors[:base].first, '#error-summary-title', id: 'base-error-message')
+        - else
+          - %i[email password].each do |field|
+            - if errors[field].present?
+              %li
+                = link_to(errors[field].first, "##{field}-error", id: "#{field}-error-message")
