@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe UploadMailer, type: :mailer do
-  let(:user) { new_user(email: email) }
+describe UploadMailer do
+  let(:user) { create_user(email: email) }
   let(:email) { 'test@example.com' }
 
   describe '.success_upload' do

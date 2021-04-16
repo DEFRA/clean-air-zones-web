@@ -2,12 +2,13 @@
 
 require 'rails_helper'
 
-describe 'DirectDebits::DebitsController - POST #initiate' do
+describe 'DirectDebits::DebitsController - POST #initiate', type: :request do
   subject { post initiate_debits_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
-      add_to_session(new_payment: { caz_id: @uuid, payment_id: @uuid, details: details })
+      add_to_session(new_payment: { caz_id: SecureRandom.uuid, payment_id: SecureRandom.uuid,
+                                    details: details })
       sign_in make_payments_user
     end
 
@@ -42,8 +43,8 @@ describe 'DirectDebits::DebitsController - POST #initiate' do
         subject
       end
 
-      it 'redirects to the failure dd payment page' do
-        expect(response).to redirect_to(failure_debits_path)
+      it 'redirects to the unsuccessful dd payment page' do
+        expect(response).to redirect_to(unsuccessful_debits_path)
       end
     end
 
@@ -54,8 +55,8 @@ describe 'DirectDebits::DebitsController - POST #initiate' do
         subject
       end
 
-      it 'redirects to the failure dd payment page' do
-        expect(response).to redirect_to(failure_debits_path)
+      it 'redirects to the unsuccessful dd payment page' do
+        expect(response).to redirect_to(unsuccessful_debits_path)
       end
     end
   end

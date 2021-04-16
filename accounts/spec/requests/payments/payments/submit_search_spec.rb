@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-describe 'PaymentsController - POST #submit_search' do
+describe 'PaymentsController - POST #submit_search', type: :request do
   subject { post vrn_not_found_payments_path, params: { payment: { vrn_search: vrn } } }
 
   let(:vrn) { 'ABC123' }
-  let(:caz_id) { @uuid }
+  let(:caz_id) { mocked_uuid }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before { sign_in create_user }
 
     context 'with la in the session' do
       before do
         mock_clean_air_zones
-        mock_fleet(create_chargeable_vehicles)
+        mock_chargeable_vehicles
         add_to_session(new_payment: { caz_id: caz_id }, payment_query: { search: vrn })
         subject
       end
@@ -34,7 +34,7 @@ describe 'PaymentsController - POST #submit_search' do
       end
 
       context 'with an invalid params' do
-        let(:vrn) { 'test' }
+        let(:vrn) { 'ABCDE$%' }
 
         it 'returns a 200 OK status' do
           expect(response).to have_http_status(:ok)

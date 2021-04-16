@@ -15,15 +15,15 @@
           %legend.govuk-visually-hidden
             Which vehicles and days are you paying for?
           = form_for('payment', url: matrix_payments_path, method: :post, html: { id: 'payment-form' }) do |f|
-            = hidden_field_tag('payment[vrn_list]', @charges.vehicle_list.map(&:vrn).join(','))
+            = hidden_field_tag('payment[vrn_list]', @pagination.vehicle_list.map(&:vrn).join(','))
             = hidden_field_tag('allSelectedCheckboxesCount', selected_dates_count)
             .govuk-tabs{'data-module': 'govuk-tabs'}
               = render 'payments/payments/matrix/tabs'
               - if @dates[:past].present?
                 = render 'payments/payments/matrix/past_week_tab', form: f
               = render 'payments/payments/matrix/next_week_tab', form: f
-              = render 'payments/payments/matrix/pagination', form: f
+              = render 'payments/payments/matrix/pagination'
               = render 'payments/payments/matrix/search'
-            - if @charges.any_results?
+            - if @pagination.total_vehicles_count.positive?
               .govuk-form-group
-                = f.submit 'Continue', class: 'govuk-button', id: 'continue-matrix-button', 'data-module': 'govuk-button'
+                = f.submit 'Review payment', class: 'govuk-button', id: 'continue-matrix-button', 'data-module': 'govuk-button'

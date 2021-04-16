@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe 'PasswordsController - GET #reset' do
-  subject { get reset_passwords_path, headers: { 'HTTP_REFERER': last_visited_path } }
+describe 'PasswordsController - GET #reset', type: :request do
+  subject { get reset_passwords_path, headers: { HTTP_REFERER: last_visited_path } }
 
   let(:last_visited_path) { nil }
 

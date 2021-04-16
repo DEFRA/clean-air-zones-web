@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-describe 'Payments::CreditCardsController - POST #initiate' do
+describe 'Payments::CreditCardsController - POST #initiate', type: :request do
   subject do
     get initiate_payments_path
   end
 
   before do
-    add_to_session(new_payment: { caz_id: @uuid })
-    response = { 'paymentId' => @uuid, 'nextUrl' => '/payments/result' }
+    add_to_session(new_payment: { caz_id: SecureRandom.uuid })
+    response = { 'paymentId' => SecureRandom.uuid, 'nextUrl' => '/payments/result' }
     allow(Payments::MakeCardPayment).to receive(:call).and_return(response)
     sign_in create_user
     subject

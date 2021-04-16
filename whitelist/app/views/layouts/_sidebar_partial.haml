@@ -1,0 +1,18 @@
+.govuk-grid-column-one-third
+  %nav.moj-side-navigation{'aria-label': 'Side navigation'}
+    %ul.moj-side-navigation__list
+      %li.moj-side-navigation__item{class: upload_flow_active?}
+        %a.govuk-header__link{href: authenticated_root_path, id: 'upload-link', 'aria-current': 'location'}
+          Upload
+      %li.moj-side-navigation__item{class: search_flow_active?}
+        %a.govuk-header__link{href: search_vehicles_path, id: 'search-link'}
+          Search for a vehicle
+      %li.moj-side-navigation__item{class: current_active_path?(add_vehicles_path)}
+        %a.govuk-header__link{href: add_vehicles_path, id: 'add-link'}
+          Add a vehicle
+      %li.moj-side-navigation__item{class: remove_vehicle_flow_active?}
+        %a.govuk-header__link{href: remove_vehicles_path, id: 'remove-link'}
+          Remove a vehicle
+      %li.moj-side-navigation__item{class: current_active_path?(export_vehicles_path)}
+        %a.govuk-header__link{href: export_vehicles_path, id: 'export-link'}
+          Export to CSV

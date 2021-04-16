@@ -27,14 +27,9 @@ module FleetFactory
   end
 
   def paginated_fleet(vehicles, total_vehicles_count)
-    instance_double(
-      VehiclesManagement::PaginatedFleet,
-      vehicle_list: vehicles,
-      page: 1,
-      total_pages: 5,
-      range_start: 1,
-      range_end: 5,
-      total_vehicles_count: total_vehicles_count
-    )
+    instance_double(VehiclesManagement::PaginatedFleet,
+                    vehicle_list: vehicles, page: 1, per_page: 10, total_pages: 5, range_start: 1,
+                    range_end: 5, total_vehicles_count: total_vehicles_count,
+                    results_per_page: [10, 20, 30, 40, 50])
   end
 end

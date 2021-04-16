@@ -1,0 +1,17 @@
+.govuk-form-group
+  %h2.govuk-heading-m
+    = I18n.t('search_vrn_form.header')
+
+  = form.label :vrn,
+               I18n.t('labels.vrn'),
+               class: 'govuk-label',
+               id: 'vrn-label',
+               for: 'vrn'
+
+  = form.text_field :vrn,
+                    class: 'govuk-input vrn-input',
+                    id: 'vrn',
+                    'aria-labelledby': 'vrn-label',
+                    'aria-describedby': 'vrn',
+                    type: 'text',
+                    maxlength: 14

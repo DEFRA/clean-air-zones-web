@@ -1,0 +1,29 @@
+- title_and_header = "You can not use this service to pay the #{@clean_air_zone_name} Clean Air Zone"
+- content_for(:title, title_and_header)
+
+= link_to 'Back', payments_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+
+      %p Your vehicle list contains number plates that are undetermined.
+      %p Charges may still need to be paid for these vehicles.
+      %p
+        Use
+        = external_link_to('Pay for a single vehicle', Rails.configuration.x.payments_ui_url)
+        to pay for each vehicle individually.
+
+      %h2.govuk-heading-m What does undetermined mean?
+      %p
+        We could not calculate a charge based on the number plate. Check the information is entered correctly.
+        If the result is still undetermined contact
+        = external_link_to('DVLA', 'https://www.gov.uk/change-vehicle-details-registration-certificate/how-to-tell-dvla')
+        to ensure your vehicle information is up to date.
+      %p
+        If your vehicle does meet emission standards, you can claim a refund after your vehicle details are updated with DVLA.
+      %p Your vehicles may be charged in other Clean Air Zones.
+
+      %p= link_to 'Pay for another Clean Air Zone', payments_path

@@ -24,13 +24,13 @@ describe Organisations::CreateAccount do
     end
 
     it 'calls Organisations::CompanyNameForm with proper params' do
-      expect(Organisations::CompanyNameForm).to receive(:new).with(company_name: company_name)
       subject
+      expect(Organisations::CompanyNameForm).to have_received(:new).with(company_name: company_name)
     end
 
     it 'calls AccountsApi::Accounts.create_account with proper params' do
-      expect(AccountsApi::Accounts).to receive(:create_account).with(company_name: company_name)
       subject
+      expect(AccountsApi::Accounts).to have_received(:create_account).with(company_name: company_name)
     end
   end
 
@@ -65,8 +65,8 @@ describe Organisations::CreateAccount do
       stub_request(:post, /accounts/).to_return(
         status: 422,
         body: {
-          "message": 'Submitted parameters are invalid',
-          "errorCode": error_code
+          message: 'Submitted parameters are invalid',
+          errorCode: error_code
         }.to_json
       )
     end

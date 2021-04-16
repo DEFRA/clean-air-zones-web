@@ -9,45 +9,20 @@ module PaymentHistory
   class PaymentHistoryController < ApplicationController
     include CheckPermissions
 
-    before_action -> { check_permissions(allow_view_payment_history?) }, only: :company_payment_history
-    before_action -> { check_permissions(allow_make_payments?) }, only: :user_payment_history
     before_action -> { check_permissions(allow_view_details_history?) }, only: :payment_history_details
 
     ##
-    # Renders the company payment history page
+    # Renders the payment history page
     #
     # ==== Path
     #
-    #    :GET /company_payment_history
+    #    :GET /payment_history
     #
-    def company_payment_history
-      assign_paginated_history
-      @back_button_url = determinate_back_link_url(
-        :company_back_link_history,
-        dashboard_url,
-        company_payment_history_url
-      )
+    def payment_history
+      check_history_permissions
+      @back_button_url = determinate_back_link_url
     rescue BaseApi::Error400Exception
-      return redirect_to company_payment_history_path unless page_number == 1
-    end
-
-    ##
-    # Renders the user payment history page
-    #
-    # ==== Path
-    #
-    #    :GET /user_payment_history
-    #
-    def user_payment_history
-      session[:company_payment_history] = nil
-      assign_paginated_history(user_payments: true)
-      @back_button_url = determinate_back_link_url(
-        :user_back_link_history,
-        dashboard_url,
-        user_payment_history_url
-      )
-    rescue BaseApi::Error400Exception
-      return redirect_to user_payment_history_path unless page_number == 1
+      return redirect_to payment_history_path unless page_number == 1
     end
 
     ##
@@ -60,23 +35,39 @@ module PaymentHistory
     def payment_history_details
       @details =  PaymentHistory::Details.new(payment_id)
       @payments = @details.payments
+      @payment_modifications = @details.payment_modifications
       @back_button_url = determinate_back_link
     end
 
     private
 
+    # Checks permissions and assigns paginated payment history
+    def check_history_permissions
+      if allow_view_payment_history?
+        assign_paginated_history
+      elsif allow_make_payments?
+        assign_paginated_history(user_payments: true)
+      else
+        Rails.logger.warn('Access Denied. Redirects to :not_found page')
+        redirect_to not_found_path
+      end
+    end
+
     # Assign paginated history to variable
     def assign_paginated_history(user_payments: false)
       @pagination = PaymentHistory::History.new(
-        current_user.account_id,
-        current_user.user_id,
-        user_payments
-      ).pagination(page: page_number)
+        current_user.account_id, current_user.user_id, user_payments
+      ).pagination(page: page_number, per_page: per_page)
     end
 
     # page number from params
     def page_number
       (params[:page] || 1).to_i
+    end
+
+    # per page size from params
+    def per_page
+      (params[:per_page] || 10).to_i
     end
 
     # payment_id from params
@@ -85,28 +76,21 @@ module PaymentHistory
     end
 
     # Returns back link url, e.g '.../company_payment_history?page=3?back=true'
-    def determinate_back_link_url(session_key, default_url, url)
+    def determinate_back_link_url
       PaymentHistory::BackLinkHistory.call(
         session: session,
-        session_key: session_key,
         back_button: request.query_parameters['page']&.include?('back'),
         page: page_number,
-        default_url: default_url,
-        url: url
+        default_url: dashboard_url,
+        url: payment_history_url
       )
     end
 
     # Returns back link url on the payment history details page
-    # Assign +payment_details_back_link+ and +company_payment_history+ to the session
-    def determinate_back_link # rubocop:disable Metrics/AbcSize
-      if request.referer&.include?(company_payment_history_path)
-        session[:company_payment_history] = true
-        session[:payment_details_back_link] = request.referer
-      elsif request.referer&.include?(user_payment_history_path)
-        session[:payment_details_back_link] = request.referer
-      else
-        session[:payment_details_back_link] ||= user_payment_history_path
-      end
+    # Assign +company_payment_history+ and +payment_details_back_link+ to the session
+    def determinate_back_link
+      session[:company_payment_history] = true if request.referer&.include?(payment_history_path)
+      session[:payment_details_back_link] = request.referer || payment_history_path
     end
   end
 end

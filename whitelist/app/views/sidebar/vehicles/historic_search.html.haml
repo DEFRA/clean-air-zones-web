@@ -1,0 +1,39 @@
+- title_and_header = "Search results for '#{@vrn}'"
+- content_for(:title, title_and_header)
+
+.govuk-grid-column-two-thirds
+  = render 'common/header_and_body'
+
+.govuk-grid-column-full
+  %h2.govuk-heading-m
+    = title_and_header
+
+  - unless @vrn_details.changes_empty?
+    %div.scrollable-table
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %th.govuk-table__header{scope: 'col'} Data Upload Date
+            %th.govuk-table__header{scope: 'col'} Action
+            %th.govuk-table__header{scope: 'col'} Category
+            %th.govuk-table__header{scope: 'col'} Reason
+            %th.govuk-table__header{scope: 'col'} Manufacturer
+            %th.govuk-table__header{scope: 'col'} Uploader
+        %tbody.govuk-table__body
+          - @pagination.vrn_changes_list.each do |change|
+            %tr.govuk-table__row
+              %td.govuk-table__cell{scope: 'row'}
+                = change.data_upload_date
+              %td.govuk-table__cell{scope: 'row'}
+                = change.action
+              %td.govuk-table__cell{scope: 'row'}
+                = change.category
+              %td.govuk-table__cell{scope: 'row'}
+                = change.reason_updated
+              %td.govuk-table__cell{scope: 'row'}
+                = change.manufacturer
+              %td.govuk-table__cell{scope: 'row'}
+                = change.uploader_email
+    = render 'sidebar/vehicles/historical_search/pagination'
+
+  %p= link_to 'Search for another vehicle', search_vehicles_path, id: 'search-another-vehicle'

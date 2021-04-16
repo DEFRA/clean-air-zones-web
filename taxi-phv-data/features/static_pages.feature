@@ -3,11 +3,11 @@ Feature: Static Pages
   As a Licensing Authority
   I want to see the static pages
 
-#  Scenario: User sees accessibility page
-#    Given I am on the Sign in page
-#    When I press Accessibility link
-#    Then I should see "Accessibility"
-#    And I should see "Text Sizes"
+  Scenario: User sees accessibility statement page
+    Given I am on the Sign in page
+    When I press Accessibility link
+    Then I should see "Accessibility statement for Centralised Taxi and Private Hire Vehicle Database"
+    And I should see "Reporting accessibility problems with this website"
 
   Scenario: User sees cookies page
     Given I am on the Sign in page
@@ -15,7 +15,7 @@ Feature: Static Pages
     Then I should see "Cookies"
       And I should see "A cookie is a small piece of data"
 
-  Scenario: User sees privacy policy page
+  Scenario: User sees privacy notice page
     Given I am on the Sign in page
     When I press Privacy link
     Then I should see "Privacy Notice"

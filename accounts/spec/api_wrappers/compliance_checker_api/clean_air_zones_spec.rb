@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'ComplianceCheckerApi.clean_air_zones' do
   subject { ComplianceCheckerApi.clean_air_zones }
+
   let(:url) { %r{v1/payments/clean-air-zones} }
 
   context 'when subject returns 200' do
@@ -22,7 +23,7 @@ describe 'ComplianceCheckerApi.clean_air_zones' do
 
     it 'returns a proper fields' do
       expect(subject.first.keys).to(
-        contain_exactly('cleanAirZoneId', 'name', 'boundaryUrl', 'activeChargeStartDate')
+        contain_exactly('cleanAirZoneId', 'name', 'operatorName', 'boundaryUrl', 'activeChargeStartDate')
       )
     end
 

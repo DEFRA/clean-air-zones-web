@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::VehicleController - POST #confirm_details' do
+describe 'VehiclesManagement::VehicleController - POST #confirm_details', type: :request do
   subject { post confirm_details_vehicles_path, params: { 'confirm-vehicle' => confirmation } }
 
   let(:confirmation) { 'yes' }
 
-  context 'correct permissions' do
-    let(:account_id) { @uuid }
+  context 'when correct permissions' do
+    let(:account_id) { SecureRandom.uuid }
+    let(:vrn) { 'ABC123' }
 
     it 'redirects to the login page' do
       subject
@@ -28,7 +29,7 @@ describe 'VehiclesManagement::VehicleController - POST #confirm_details' do
       context 'with VRN in the session' do
         before do
           allow(FleetsApi).to receive(:add_vehicle_to_fleet).and_return(true)
-          add_to_session(vrn: @vrn)
+          add_to_session(vrn: vrn)
         end
 
         context 'when user confirms details' do

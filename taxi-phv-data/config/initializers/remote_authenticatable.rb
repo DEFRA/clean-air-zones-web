@@ -2,6 +2,7 @@
 
 module Devise
   module Models
+    # custom module to allow use remote authentication with `devise` gem
     module RemoteAuthenticatable
       extend ActiveSupport::Concern
       # Here you do the request to the external webservice
@@ -13,10 +14,12 @@ module Devise
       def authentication(params)
         Cognito::AuthUser.call(
           username: params[:username],
-          password: params[:password]
+          password: params[:password],
+          login_ip: params[:login_ip]
         )
       end
 
+      # Devise module Devise::Models:ClassMethods
       module ClassMethods
         # Overridden methods from Devise::Models::Authenticatable
         #
@@ -29,7 +32,7 @@ module Devise
         # Recreates a resource from session data
         def serialize_from_session(data, _salt)
           resource = new
-          resource.serializable_hash.keys.each do |key|
+          resource.serializable_hash.each_key do |key|
             resource.public_send("#{key}=", data[key.to_s])
           end
           resource

@@ -1,0 +1,19 @@
+require: rubocop-rails
+inherit_from: ./lib/rubocop/blacklist.yml
+
+AllCops:
+  TargetRubyVersion: 2.7.2
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 110
+  IgnoredPatterns: ['(\A|\s)#']
+
+Metrics/BlockLength:
+  IgnoredMethods: ['describe', 'context']
+  Exclude:
+    - 'config/routes.rb'
+    - 'config/environments/*.rb'
+
+Lint/MissingSuper:
+   Enabled: false

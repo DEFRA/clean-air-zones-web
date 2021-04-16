@@ -6,29 +6,27 @@ describe AccountDetails::UpdateCompanyName do
   subject { described_class.call(account_id: account_id, company_name: company_name) }
 
   let(:company_name) { 'Company Name' }
-  let(:account_id) { @uuid }
+  let(:account_id) { SecureRandom.uuid }
   let(:valid) { true }
   let(:errors) { [] }
   let(:url) { "/accounts/#{account_id}" }
 
   context 'when api returns correct response' do
     before do
-      allow(Organisations::CompanyNameForm)
-        .to receive(:new)
+      allow(Organisations::CompanyNameForm).to receive(:new)
         .and_return(instance_double(Organisations::CompanyNameForm, valid?: valid))
       allow(AccountsApi::Accounts).to receive(:update_company_name).and_return(true)
     end
 
     it 'calls Organisations::CompanyNameForm with proper params' do
-      expect(Organisations::CompanyNameForm).to receive(:new).with(company_name: company_name)
       subject
+      expect(Organisations::CompanyNameForm).to have_received(:new).with(company_name: company_name)
     end
 
     it 'calls AccountsApi::Accounts.create_account with proper params' do
-      expect(AccountsApi::Accounts)
-        .to receive(:update_company_name)
-        .with(account_id: account_id, company_name: company_name)
       subject
+      expect(AccountsApi::Accounts).to have_received(:update_company_name)
+        .with(account_id: account_id, company_name: company_name)
     end
   end
 
@@ -60,8 +58,8 @@ describe AccountDetails::UpdateCompanyName do
       stub_request(:patch, /#{url}/).to_return(
         status: 422,
         body: {
-          "message": 'Submitted parameters are invalid',
-          "errorCode": error_code
+          message: 'Submitted parameters are invalid',
+          errorCode: error_code
         }.to_json
       )
     end

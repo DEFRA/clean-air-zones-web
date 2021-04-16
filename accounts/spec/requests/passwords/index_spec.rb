@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'PasswordsController - GET #index' do
+describe 'PasswordsController - GET #index', type: :request do
   subject { get passwords_path(token: token) }
 
-  let(:token) { @uuid }
+  let(:token) { SecureRandom.uuid }
 
   before do
     allow(AccountsApi::Auth).to receive(:validate_password_reset).and_return(true)
@@ -27,8 +27,8 @@ describe 'PasswordsController - GET #index' do
   end
 
   it 'calls AccountsApi::Auth.validate_password_reset' do
-    expect(AccountsApi::Auth).to receive(:validate_password_reset).with(token: token)
     subject
+    expect(AccountsApi::Auth).to have_received(:validate_password_reset).with(token: token)
   end
 
   context 'without the token' do

@@ -21,7 +21,7 @@ class ComplianceDetails
     @zone_id = vehicle_details['la_id']
     @non_dvla = vehicle_details['country'] != 'UK' || vehicle_details['unrecognised'] ||
                 vehicle_details['undetermined']
-    @leeds_taxi = vehicle_details['leeds_taxi'] || false
+    @weekly_taxi = vehicle_details['weekly_taxi'] || false
   end
 
   # Returns a string, eg. 'Birmingham'.
@@ -67,20 +67,34 @@ class ComplianceDetails
     url(:public_transport_options)
   end
 
-  # Returns "get support" link based on conditions
+  # Returns compliance url based or additional_compliance_url or compliance_url
   def dynamic_compliance_url
+    additional_compliance_url || compliance_url
+  end
+
+  # Returns compliance url from additional_url.yml
+  def additional_compliance_url
     zone_links = additional_urls_file[zone_name.downcase]
-    if (leeds_taxi && zone_name == 'Leeds') || (car? && zone_name == 'Birmingham')
+    return if zone_links.blank?
+
+    if (weekly_taxi && zone_name == 'Taxidiscountcaz') || (car? && zone_name == 'Birmingham')
       return zone_links['non_fleet']
     end
 
     zone_links['fleet']
   end
 
+  # Returns information if pghvDiscount is Available for DVLA vehicle.
+  def phgv_discount_available?
+    return false if non_dvla
+
+    dvla_compliance_data['phgvDiscountAvailable']
+  end
+
   private
 
   # Attributes used to perform the backend call
-  attr_reader :vrn, :zone_id, :non_dvla, :type, :leeds_taxi
+  attr_reader :vrn, :zone_id, :non_dvla, :type, :weekly_taxi
 
   # Helper method used to take given url from URLs hash
   #
@@ -97,13 +111,18 @@ class ComplianceDetails
       if non_dvla
         non_dvla_compliance_data
       else
-        dvla_compliance_data
+        dvla_compliance_data_outcome
       end.first.deep_transform_keys { |key| key.underscore.to_sym }
   end
 
   # Get compliance data for DVLA registered vehicle
   def dvla_compliance_data
-    ComplianceCheckerApi.vehicle_compliance(vrn, [zone_id])['complianceOutcomes']
+    @dvla_compliance_data ||= ComplianceCheckerApi.vehicle_compliance(vrn, [zone_id])
+  end
+
+  # Get compliance data for DVLA registered vehicle
+  def dvla_compliance_data_outcome
+    dvla_compliance_data['complianceOutcomes']
   end
 
   # Get compliance data for non-DVLA registered vehicle

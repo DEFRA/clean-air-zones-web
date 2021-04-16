@@ -1,4 +1,4 @@
-- title_and_header = 'Local vehicle exemptions'
+- title_and_header = 'Local exemptions'
 - content_for(:title, title_and_header)
 
 = link_to 'Back', details_vehicles_path, class: 'govuk-back-link'
@@ -9,9 +9,9 @@
       %h1.govuk-heading-l
         = title_and_header
       %p
-        Some vehicles which don't meet emissions standards still qualify for a temporary or permanent exemption from the Clean Air Zone charges.
+        Certain vehicles still qualify for an exemption despite not meeting emission standards. This could be because the owner is resident or works in the zone.
       %p
-        It is your responsibility to check if your vehicles are eligible for an exemption from the local authority in the Clean Air Zone you are driving in.
+        It is your responsibility to check if you qualify for one with the local authority of the Clean Air Zone you are driving.
 
       - if @large_fleet
         = link_to 'Continue', calculating_chargeability_uploads_path, class: 'govuk-button'

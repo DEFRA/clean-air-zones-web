@@ -175,7 +175,7 @@ module AccountsApi
       #
       #    AccountsApi::Accounts.update_company_name(
       #       account_id: '27978cac-44fa-4d2e-bc9b-54fd12e37c69',
-      #       company_name: 'Royal Mail'
+      #       company_name: "Royal Mail's"
       #    )
       #
       # ==== Result
@@ -220,6 +220,33 @@ module AccountsApi
       def csv_exports(account_id:)
         log_action('Downloading a csv file')
         request(:post, "/accounts/#{account_id}/vehicles/csv-exports")['fileUrl']
+      end
+
+      ##
+      # Calls +/v1/accounts/:account_id/cancellation endpoint with +POST+ method
+      # to close the account.
+      #
+      # ==== Attributes
+      #
+      # * +account_id+ - uuid, ID of the account on the backend
+      #
+      # ==== Example
+      #
+      #   AccountsApi.close_account(
+      #     account_id: '27978cac-44fa-4d2e-bc9b-54fd12e37c69',
+      #     reason: 'VEHICLES_COMPLIANT'
+      #   )
+      #
+      # ==== Exceptions
+      #
+      # * {400 Exception}[rdoc-ref:BaseApi::Error400Exception] - bad request
+      # * {404 Exception}[rdoc-ref:BaseApi::Error400Exception] - account does not exist
+      # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
+      #
+      def close_account(account_id:, reason:)
+        log_action('Closing account')
+        body = { reason: reason }.to_json
+        request(:post, "/accounts/#{account_id}/cancellation", body: body)
       end
     end
   end

@@ -13,13 +13,13 @@ When('I upload a valid csv file') do
   allow(SecureRandom).to receive(:uuid).and_return(correlation_id)
   allow(CsvUploadService).to receive(:call).and_return(true)
   allow(RegisterCheckerApi).to receive(:register_job)
-    .with('CAZ-2020-01-08-5.csv', correlation_id)
+    .with('CAZ-2020-01-08.csv', correlation_id)
     .and_return(job_name)
 
   allow(RegisterCheckerApi).to receive(:job_status)
     .with(job_name, correlation_id).and_return('RUNNING')
 
-  attach_file(:file, csv_file('CAZ-2020-01-08-5.csv'))
+  attach_file(:file, csv_file('CAZ-2020-01-08.csv'))
   click_button 'Upload'
 end
 
@@ -27,7 +27,7 @@ When('I press refresh page link') do
   allow(RegisterCheckerApi).to receive(:job_status)
     .with(job_name, correlation_id).and_return('SUCCESS')
 
-  click_link 'click here.'
+  click_link 'click here'
 end
 
 Then('I am redirected to the Success page') do
@@ -39,19 +39,27 @@ When('I press refresh page link when api response not running or finished') do
   allow(RegisterCheckerApi).to receive(:job_status)
     .with(job_name, correlation_id).and_return('FAILURE')
   allow(RegisterCheckerApi).to receive(:job_errors)
-    .with(job_name, correlation_id).and_return(['error'])
-  click_link 'click here.'
+    .with(job_name, correlation_id).and_return(%w[error])
+  click_link 'click here'
 end
 
 #  Scenario: Upload a csv file whose name is not compliant with the naming rules
 When('I upload a csv file whose name format is invalid') do
-  attach_file(:file, empty_csv_file('CAZ-2020-01-08.csv'))
+  attach_file(:file, empty_csv_file('CAZ-2020-01.csv'))
   click_button 'Upload'
 end
 
 # Scenario: Upload a csv file format that is not .csv or .CSV
 When('I upload a csv file whose format that is not .csv or .CSV') do
-  attach_file(:file, empty_csv_file('CAZ-2020-01-08-4321.xlsx'))
+  attach_file(:file, empty_csv_file('CAZ-2020-01-08.xlsx'))
+  click_button 'Upload'
+end
+
+# Scenario: Upload a csv file whose size is too big
+When('I upload a csv file whose size is too big') do
+  attach_file(:file, csv_file('CAZ-2020-01-08.csv'))
+  allow_any_instance_of(ActionDispatch::Http::UploadedFile).to receive(:size)
+    .and_return(52_428_801)
   click_button 'Upload'
 end
 
@@ -59,7 +67,7 @@ end
 When('I upload a csv file during error on S3') do
   allow_any_instance_of(Aws::S3::Object).to receive(:upload_file).and_return(false)
 
-  attach_file(:file, csv_file('CAZ-2020-01-08-5.csv'))
+  attach_file(:file, csv_file('CAZ-2020-01-08.csv'))
   click_button 'Upload'
 end
 
@@ -74,6 +82,12 @@ end
 
 Then('I should not receive a success upload email again') do
   expect(ActionMailer::Base.deliveries.size).to eq(1)
+end
+
+Then('I change my IP') do
+  allow_any_instance_of(ActionDispatch::Request)
+    .to receive(:remote_ip)
+    .and_return('4.3.2.1')
 end
 
 def empty_csv_file(filename)

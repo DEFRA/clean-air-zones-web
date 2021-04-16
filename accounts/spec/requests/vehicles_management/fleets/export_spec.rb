@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'FleetsController - GET #export' do
+describe 'FleetsController - GET #export', type: :request do
   subject { get export_fleets_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     let(:file_url) { 'https://example.com/bucket-name/file.csv' }
 
     before do

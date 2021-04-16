@@ -9,10 +9,8 @@ class Compliance
   # ==== Attributes
   #
   # * +vrn+ - string, eg. 'CU57ABC'
-  # * +zones+ - array, eg. '["39e54ed8-3ed2-441d-be3f-38fc9b70c8d3"]'
-  def initialize(vrn, zones)
+  def initialize(vrn)
     @vrn = vrn
-    @zones = zones
   end
 
   # Creates an array of 'ComplianceDetails' objects.
@@ -24,19 +22,28 @@ class Compliance
   # * +name+ - string, eg. 'Birmingham'
   # * +charge+ - number, determines how much owner of the vehicle will have to pay in this CAZ
   # * +information_urls+ - object containing CAZ dedicated info links
-  #   * +emissions_standards+
   #   * +main_info+
-  #   * +hours_of_operation+
-  #   * +pricing+
+  #   * +public_transport_options+
   #   * +exemption_or_discount+
-  #   * +pay_caz+
   #   * +become_compliant+
-  #   * +financial_assistance+
   #   * +boundary+
   def compliance_outcomes
     @compliance_outcomes ||= compliance_api['complianceOutcomes'].map do |v|
-      ComplianceDetails.new(v)
+      ComplianceDetails.new(v, compliance_api['isRetrofitted'])
     end
+    @compliance_outcomes.sort_by(&:zone_name)
+  end
+
+  # Method iterates over compliance outcomes and verifies if there's at least one
+  # Clean Air Zone in which the vehicle should be charged.
+  # Returns a boolean.
+  def any_caz_chargeable?
+    compliance_outcomes.any?(&:charged?)
+  end
+
+  # Checks if PHGV discount is available
+  def phgv_discount_available?
+    compliance_api['phgvDiscountAvailable']
   end
 
   private
@@ -52,23 +59,19 @@ class Compliance
   #
   # Returned compliance details will have following fields:
   # * +registrationNumber+ - string, eg. 'CAS310'
-  # * +retrofitted+ - boolean
+  # * +isRetrofitted+ - boolean
   # * +exempt+ - boolean, determines if the vehicle is exempt from charges
   # * +complianceOutcomes+ - array of objects
   #   * +cleanAirZoneId+ - UUID, this represents CAZ ID in the DB
   #   * +name+ - string, eg. 'Birmingham'
   #   * +charge+ - number, determines how much owner of the vehicle will have to pay in this CAZ
   #   * +informationUrls+ - object containing CAZ dedicated info links
-  #     * +emissionsStandards+
   #     * +mainInfo+
-  #     * +hoursOfOperation+
-  #     * +pricing+
+  #     * +publicTransportOptions+
   #     * +exemptionOrDiscount+
-  #     * +payCaz+
   #     * +becomeCompliant+
-  #     * +financialAssistance+
   #     * +boundary+
   def compliance_api
-    @compliance_api ||= ComplianceCheckerApi.vehicle_compliance(vrn, @zones)
+    @compliance_api ||= ComplianceCheckerApi.vehicle_compliance(vrn)
   end
 end

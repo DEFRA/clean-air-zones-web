@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::CreateUsersController - POST #create' do
+describe 'UsersManagement::CreateUsersController - POST #create', type: :request do
   subject { post users_path, params: params }
 
-  let(:params) { { new_user: { 'name': name, 'email': email } } }
+  let(:params) { { new_user: { name: name, email: email } } }
   let(:name) { 'New User' }
   let(:email) { 'new_user@example.com' }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       mock_actual_account_name
       mock_users

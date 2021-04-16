@@ -12,16 +12,20 @@ describe PaymentHistory::Payment, type: :model do
       payerName: payer_name,
       cazName: caz_name,
       entriesCount: entries_count,
-      totalPaid: total_paid
+      totalPaid: total_paid,
+      isRefunded: refunded,
+      isChargedback: charged_back
     }.stringify_keys
   end
 
-  let(:payment_id) { @uuid }
+  let(:payment_id) { SecureRandom.uuid }
   let(:date) { '2020-08-1' }
   let(:payer_name) { 'Administrator' }
-  let(:caz_name) { 'Leeds' }
+  let(:caz_name) { 'Bath' }
   let(:entries_count) { 1 }
   let(:total_paid) { 61 }
+  let(:refunded) { true }
+  let(:charged_back) { true }
 
   describe '.payment_id' do
     it 'returns a proper value' do
@@ -50,6 +54,18 @@ describe PaymentHistory::Payment, type: :model do
   describe '.total_paid' do
     it 'returns a proper value' do
       expect(subject.total_paid).to eq(total_paid)
+    end
+  end
+
+  describe '.refunded?' do
+    it 'returns a proper value' do
+      expect(subject.refunded?).to eq(refunded)
+    end
+  end
+
+  describe '.charged_back?' do
+    it 'returns a proper value' do
+      expect(subject.charged_back?).to eq(charged_back)
     end
   end
 end

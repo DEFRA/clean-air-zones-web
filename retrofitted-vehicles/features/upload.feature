@@ -6,7 +6,7 @@ Feature: Upload
   Scenario: Upload without file
     Given I am on the Upload page
     When I press "Upload" button
-    Then I should see "Select a CSV"
+    Then I should see "Select a CSV file to upload"
 
   Scenario: Upload a csv file and redirect to processing page
     Given I am on the Upload page
@@ -17,7 +17,7 @@ Feature: Upload
     Then I am redirected to the Success page
       And I should see "Upload successful"
       And I should see "Retrofitted vehicles database has been successfully updated"
-      And I should see "We have saved your data to the Retrofitted vehicles database."
+      And I should see "You can update your data whenever you need to by uploading a new file."
       And I should receive a success upload email
     When I refresh the page
     Then I should not receive a success upload email again
@@ -42,6 +42,11 @@ Feature: Upload
     When I upload a csv file whose format that is not .csv or .CSV
     Then I should see "The selected file must be a CSV"
 
+  Scenario: Upload a csv file whose size is too big
+    Given I am on the Upload page
+    When I upload a csv file whose size is too big
+    Then I should see "The CSV must be smaller than 50MB"
+
   Scenario: Upload a valid csv file during error is encountered writing to S3
     Given I am on the Upload page
     When I upload a csv file during error on S3
@@ -51,3 +56,9 @@ Feature: Upload
     Given I am on the Upload page
     When I want go to processing page
     Then I am redirected to the root page
+
+  Scenario: User wants to upload CSV using different IP address
+    Given I am on the Upload page
+    Then I change my IP
+    And I upload a valid csv file
+    Then I should be on the login page

@@ -26,8 +26,12 @@ Then('I should be on the payment matrix page') do
   expect_path(matrix_payments_path)
 end
 
-Then('I should be on the no chargeable vehicles page') do
+Then('I should be on the No chargeable vehicles page') do
   expect_path(no_chargeable_vehicles_payments_path)
+end
+
+Then('I should be on the Undetermined vehicles page') do
+  expect_path(undetermined_vehicles_payments_path)
 end
 
 When('I select any date for vrn on the payment matrix') do
@@ -101,11 +105,11 @@ Then('Second user can now pay for Birmingham') do
   end
 end
 
-Then('After 16 minutes second user can pay for Leeds too') do
+Then('After 16 minutes second user can pay for Bath too') do
   travel(16.minutes) do
     sign_in_second_user
     visit payments_path
-    choose('Leeds')
+    choose('Bath')
     click_on('Continue')
     expect_path(matrix_payments_path)
   end

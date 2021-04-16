@@ -30,12 +30,12 @@ module UsersFactory
       email: options[:email] || 'test@example.com',
       owner: options[:owner] || false,
       **account_data(options),
-      login_ip: options[:login_ip] || @remote_ip
+      login_ip: options[:login_ip] || '127.0.0.1'
     )
   end
 
   def mock_actual_account_name
-    allow_any_instance_of(User).to receive(:actual_account_name).and_return('Royal Mail')
+    allow(AccountsApi::Users).to receive(:account_details).and_return({ accountName: "Royal Mail's" })
   end
 
   private
@@ -44,9 +44,10 @@ module UsersFactory
     {
       user_id: options[:user_id] || SecureRandom.uuid,
       account_id: options[:account_id] || SecureRandom.uuid,
-      account_name: options[:account_name] || 'Royal Mail',
+      account_name: options[:account_name] || "Royal Mail's",
       permissions: options[:permissions] || account_permissions,
-      days_to_password_expiry: options[:days_to_password_expiry] || 90
+      days_to_password_expiry: options[:days_to_password_expiry] || 90,
+      beta_tester: options[:beta_tester] || false
     }
   end
 

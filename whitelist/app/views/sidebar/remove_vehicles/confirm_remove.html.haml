@@ -1,0 +1,49 @@
+- title_and_header = "Do you want to remove '#{session[:remove_vrn]}' from the whitelist?"
+- content_for(:title, title_and_header)
+
+.govuk-grid-column-two-thirds
+
+  - if @errors
+    = render 'common/error_summary',
+      error_msg_div: '#confirm_remove-error',
+      error_msg: @errors
+
+  %h1.govuk-heading-l
+    = title_and_header
+
+  = form_for('confirm_remove_form', url: confirm_remove_vehicles_path, method: :post) do |form|
+    %fieldset.govuk-fieldset
+      %legend.govuk-visually-hidden
+      .govuk-form-group{class: ('govuk-form-group--error' if @errors)}
+        - if @errors
+          %span#confirm_remove-error.govuk-error-message
+            %span.govuk-visually-hidden Error:
+            = @errors
+
+        .govuk-radios.govuk-radios#confirm_remove_radios
+          .govuk-radios__item
+            = form.radio_button :confirmation,
+                                'yes',
+                                class: 'govuk-radios__input',
+                                id: 'confirmation-1',
+                                checked: params.dig(:confirm_remove_form, :confirmation) == 'yes'
+            = form.label :confirmation,
+                         'Yes',
+                         class: 'govuk-label govuk-radios__label',
+                         for: 'confirmation-1'
+
+          .govuk-radios__item
+            = form.radio_button :confirmation,
+                                'no',
+                                class: 'govuk-radios__input',
+                                id: 'confirmation-2',
+                                checked: params.dig(:confirm_remove_form, :confirmation) == 'no'
+            = form.label :confirmation,
+                         'No',
+                         class: 'govuk-label govuk-radios__label',
+                         for: 'confirmation-2'
+
+    = submit_tag 'Continue',
+                  class: 'govuk-button',
+                  'data-module': 'govuk-button',
+                  id: 'continue-button'

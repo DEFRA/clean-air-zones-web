@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountsDetails::EmailsController - GET #validate_confirm_email' do
+describe 'AccountsDetails::EmailsController - GET #validate_confirm_email', type: :request do
   subject do
     get validate_confirm_email_primary_users_path(
       token: 'token',
@@ -28,19 +28,19 @@ describe 'AccountsDetails::EmailsController - GET #validate_confirm_email' do
   let(:email) { 'john.doe@example.com' }
 
   context 'when user is logged in' do
-    context 'and is an owner' do
+    context 'with is an owner' do
       before do
         sign_in create_owner
         subject
       end
 
-      context 'and params are valid' do
+      context 'with params are valid' do
         it 'redirects to the dashboard page' do
           expect(response).to redirect_to(dashboard_path)
         end
       end
 
-      context 'and params are not valid' do
+      context 'with params are not valid' do
         let(:valid?) { false }
 
         it 'returns a 200 OK status' do
@@ -59,9 +59,9 @@ describe 'AccountsDetails::EmailsController - GET #validate_confirm_email' do
       allow(AccountsApi::Auth).to receive(:confirm_email).and_return(email)
       allow(AccountsApi::Auth).to receive(:sign_in).and_return(
         'email' => email,
-        'accountUserId' => @uuid,
-        'accountId' => @uuid,
-        'accountName' => 'Royal Mail',
+        'accountUserId' => SecureRandom.uuid,
+        'accountId' => SecureRandom.uuid,
+        'accountName' => "Royal Mail's",
         'owner' => true
       )
       subject

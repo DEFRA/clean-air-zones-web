@@ -48,6 +48,20 @@ module PaymentHistory
       max > total_payments_count ? total_payments_count : max
     end
 
+    # Determinate how many per page options should show
+    def results_per_page
+      case total_payments_count
+      when 11..20
+        [10, 20]
+      when 21..30
+        [10, 20, 30]
+      when 31..40
+        [10, 20, 30, 40]
+      else
+        [10, 20, 30, 40, 50]
+      end
+    end
+
     private
 
     # Attributes reader

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'AccountsApi::Auth.validate_password_reset - PUT' do
   subject { AccountsApi::Auth.set_password(token: token, password: password) }
 
-  let(:token) { @uuid }
+  let(:token) { SecureRandom.uuid }
   let(:password) { 'password' }
   let(:url) { %r{auth/password/set} }
 

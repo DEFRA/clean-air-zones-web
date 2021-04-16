@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::CreateUsersController - POST #add_permissions' do
+describe 'UsersManagement::CreateUsersController - POST #add_permissions', type: :request do
   subject { post add_permissions_users_path, params: params.stringify_keys }
 
-  let(:params) { { new_user: { 'permissions': permissions } } }
+  let(:params) { { new_user: { permissions: permissions } } }
   let(:permissions) { %w[MANAGE_USERS] }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       allow(AccountsApi::Accounts).to receive(:user_validations).and_return(true)
       allow(AccountsApi::Accounts).to receive(:user_invitations).and_return(true)

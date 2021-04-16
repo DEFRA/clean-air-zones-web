@@ -4,18 +4,20 @@
 # Controller class for the static pages
 #
 class StaticPagesController < ApplicationController
+  # assign back button path
+  before_action :assign_back_button_url, only: %i[accessibility_statement cookies privacy_notice]
   ##
-  # Renders the static accessibility page
+  # Renders the accessibility statement page
   #
   # ==== Path
-  #    GET /accessibility
+  #    GET /accessibility_statement
   #
-  def accessibility
+  def accessibility_statement
     # renders static page
   end
 
   ##
-  # Renders the static cookies page
+  # Renders the cookies page
   #
   # ==== Path
   #    GET /cookies
@@ -25,12 +27,12 @@ class StaticPagesController < ApplicationController
   end
 
   ##
-  # Renders the static privacy policy page
+  # Renders the privacy notice page
   #
   # ==== Path
-  #    GET /privacy_policy
+  #    GET /privacy_notice
   #
-  def privacy_policy
+  def privacy_notice
     # renders static page
   end
 end

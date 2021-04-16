@@ -1,48 +1,48 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
 inherit_from: ./lib/rubocop/blacklist.yml
 
-inherit_gem:
-  rubocop-govuk:
-    - config/default.yml
-    - config/rails.yml
-
 AllCops:
-  TargetRubyVersion: 2.6.5
+  TargetRubyVersion: 3.0.0
+  NewCops: enable
 
-Style/Documentation:
-  Enabled: false
-
-Style/GuardClause:
-  Enabled: false
-
-Style/IfUnlessModifier:
-  Enabled: false
-
-Metrics/LineLength:
-  Max: 99
+Layout/LineLength:
+  Max: 110
   IgnoredPatterns: ['(\A|\s)#']
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context']
+  IgnoredMethods: ['describe', 'context', 'skip']
   Exclude:
     - 'config/routes.rb'
     - 'config/environments/*.rb'
 
-Style/MixinUsage:
+Lint/MissingSuper:
+   Enabled: false
+
+# rubocop-rspec gem excludes
+RSpec/NamedSubject:
+   Enabled: false
+
+RSpec/ContextWording:
+   Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 9
+
+RSpec/DescribeClass:
   Exclude:
-    - 'features/step_definitions/*.rb'
+    - 'spec/api_wrappers/**/*.rb'
 
-# `rubocop-govuk` excludes
-Style/StringLiterals:
+RSpec/FilePath:
   Enabled: false
 
-Style/TrailingCommaInArguments:
-  Enabled: false
+RSpec/ExampleLength:
+  Max: 6
 
-Style/TrailingCommaInArrayLiteral:
-  Enabled: false
-
-Style/TrailingCommaInHashLiteral:
-  Enabled: false
-
-Layout/AccessModifierIndentation:
+RSpec/AnyInstance:
   Enabled: false

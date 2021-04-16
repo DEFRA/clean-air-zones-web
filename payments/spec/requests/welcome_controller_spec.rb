@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe WelcomeController, type: :request do
+describe WelcomeController, type: :request do
   describe 'GET #index' do
     subject { get root_path }
 
@@ -10,7 +10,7 @@ RSpec.describe WelcomeController, type: :request do
     let(:vrn) { 'CU57ABC' }
 
     before do
-      add_to_session(payment_id: payment_id, vrn: vrn)
+      add_vehicle_details_to_session(payment_id: payment_id, vrn: vrn)
       subject
     end
 

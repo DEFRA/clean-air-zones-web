@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Organisations::OrganisationsController - GET #email_sent' do
+describe 'Organisations::OrganisationsController - GET #email_sent', type: :request do
   subject { get email_sent_organisations_path }
 
   let(:session_data) { { new_account: create_user.serializable_hash.merge(company_name: 'Company name') } }
@@ -17,7 +17,7 @@ describe 'Organisations::OrganisationsController - GET #email_sent' do
   end
 
   context 'without new_account data in the session' do
-    let(:session_data) { { new_account: { 'account_id': @uuid } } }
+    let(:session_data) { { new_account: { account_id: SecureRandom.uuid } } }
 
     it 'returns a redirect' do
       expect(response).to redirect_to(root_path)

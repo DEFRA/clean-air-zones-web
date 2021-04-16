@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'sessions' }
 
   authenticated(:user) { root 'upload#index', as: :authenticated_root }
   devise_scope(:user) { root to: 'devise/sessions#new' }
+
+  resources :vehicles, only: %i[index] do
+    collection do
+      get :search
+      post :search, to: 'vehicles#submit_search'
+      get :historic_search
+      get :not_found
+    end
+  end
 
   resources :upload, only: %i[] do
     collection do
@@ -26,15 +35,23 @@ Rails.application.routes.draw do
     end
   end
 
-  get :accessibility, to: 'static_pages#accessibility'
-  get :cookies, to: 'static_pages#cookies'
-  get :privacy_policy, to: 'static_pages#privacy_policy'
+  scope controller: 'static_pages' do
+    get :accessibility_statement
+    get :cookies
+    get :privacy_notice
+  end
 
-  get :health, to: 'application#health'
-  get :build_id, to: 'application#build_id'
+  scope controller: 'application' do
+    get :build_id
+    get :health
+  end
+
+  scope controller: 'errors' do
+    get :service_unavailable
+  end
 
   match '/404', to: 'errors#not_found', via: :all
-  # There is no 422 error page in design systems
   match '/422', to: 'errors#internal_server_error', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
+  match '/503', to: 'errors#service_unavailable', via: :all
 end

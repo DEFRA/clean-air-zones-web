@@ -1,0 +1,12 @@
+- title_and_header = 'Page not found'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-xl
+        = title_and_header
+      %p.govuk-body
+        If you typed the web address, check it is correct.
+      %p.govuk-body
+        If you pasted the web address, check you copied the entire address.

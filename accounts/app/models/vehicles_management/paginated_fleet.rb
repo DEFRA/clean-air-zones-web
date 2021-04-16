@@ -14,7 +14,7 @@ module VehiclesManagement
     def initialize(data, page, per_page)
       @data = data
       @page = page
-      @per_page = per_page
+      @per_page = per_page || 10
     end
 
     # Returns an array of VehiclesManagement::Vehicle model instances
@@ -41,6 +41,20 @@ module VehiclesManagement
     def range_end
       max = page * per_page
       max > total_vehicles_count ? total_vehicles_count : max
+    end
+
+    # Determinate how many per page options should show
+    def results_per_page
+      case total_vehicles_count
+      when 11..20
+        [10, 20]
+      when 21..30
+        [10, 20, 30]
+      when 31..40
+        [10, 20, 30, 40]
+      else
+        [10, 20, 30, 40, 50]
+      end
     end
 
     private

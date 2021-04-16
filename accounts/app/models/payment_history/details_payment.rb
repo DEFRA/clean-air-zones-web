@@ -27,11 +27,10 @@ module PaymentHistory
       @items = items
     end
 
-    # Parsed array of dates, e.g. ['Sunday 26th July 2020', 'Wednesday 29th July 2020']
+    # Parsed array of dates, e.g. ['Sunday 26 July 2020', 'Wednesday 29 July 2020']
     def dates
-      items.map { |key| key['travelDate'] }.map do |date|
-        parsed_date = Date.parse(date)
-        parsed_date.strftime("%A #{parsed_date.day.ordinalize} %B %Y")
+      items.map { |key| Date.parse(key['travelDate']) }.sort.map do |date|
+        date.strftime('%A %d %B %Y')
       end
     end
 

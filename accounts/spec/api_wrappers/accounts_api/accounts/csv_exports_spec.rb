@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'AccountsApi::Accounts.csv_exports - POST' do
   subject { AccountsApi::Accounts.csv_exports(account_id: account_id) }
 
-  let(:account_id) { @uuid }
+  let(:account_id) { SecureRandom.uuid }
   let(:url) { "/accounts/#{account_id}/vehicles/csv-exports" }
 
   context 'when call returns 201' do

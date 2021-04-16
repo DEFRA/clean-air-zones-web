@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe Ses::SendSuccessEmail do
+describe Ses::SendSuccessEmail do
   subject(:service_call) { described_class.call(user: user, job_data: job_data) }
 
   let(:user) { new_user(email: email) }
   let(:email) { 'user@example.com' }
   let(:job_data) { { filename: filename, submission_time: time } }
-  let(:filename) { 'CAZ-2020-01-08-AuthorityID-1.csv' }
+  let(:filename) { 'CAZ-2020-01-08-AuthorityID.csv' }
   let(:time) { Time.current.strftime(Rails.configuration.x.time_format) }
 
   context 'with valid params' do

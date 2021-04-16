@@ -38,6 +38,22 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # Adds checking IP to default Devise :authenticate_user!
+  def authenticate_user!
+    super
+    check_ip!
+  end
+
+  # Checks if request's remote IP matches the one set for the user during login
+  # If not, it logs out user and redirects to the login page
+  def check_ip!
+    return if current_user.login_ip == request.remote_ip
+
+    Rails.logger.warn "Request's remote IP not matches the one set for the user during login"
+    sign_out current_user
+    redirect_to new_user_session_path
+  end
+
   # Redirects to root path and shows an error message if `CsvUploadFailureException` raised
   def handle_exception(exception)
     redirect_to(root_path, alert: exception.message)
@@ -46,5 +62,10 @@ class ApplicationController < ActionController::Base
   # Overwriting the sign_out redirect path method
   def after_sign_out_path_for(_resource_or_scope)
     user_session_path
+  end
+
+  # Assign back button url
+  def assign_back_button_url
+    @back_button_url = request.referer || root_path
   end
 end

@@ -1,0 +1,31 @@
+- title_and_header = raw("Do you want to remove the number plate #{@vehicle_registration} from #{current_user.actual_account_name} account?")
+- content_for(:title, title_and_header)
+
+= link_to 'Back', fleets_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = render 'shared/error_summary', error_msg_div: '#confirm-delete-error', error_msg: alert if alert
+
+      = form_tag remove_fleets_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading=title_and_header
+            - if alert
+              %span#confirm-delete-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = alert
+
+            .govuk-radios
+              .govuk-radios__item
+                %input#confirm-delete-1.govuk-radios__input{name: 'confirm-delete', type: 'radio', value: 'yes'}
+                %label.govuk-label.govuk-radios__label{for: 'confirm-delete-1'}
+                  Yes
+              .govuk-radios__item
+                %input#confirm-delete-2.govuk-radios__input{name: 'confirm-delete', type: 'radio', value: 'no'}
+                %label.govuk-label.govuk-radios__label{for: 'confirm-delete-2'}
+                  No
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'
+

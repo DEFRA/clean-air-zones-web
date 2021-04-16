@@ -12,7 +12,7 @@ describe 'FleetsApi.vehicles' do
     )
   end
 
-  let(:id) { @uuid }
+  let(:id) { SecureRandom.uuid }
   let(:page) { 5 }
   let(:per_page) { 10 }
   let(:only_chargeable) { 'true' }

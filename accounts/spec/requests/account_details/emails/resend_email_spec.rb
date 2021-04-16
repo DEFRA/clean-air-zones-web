@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::EmailsController - GET #resend_email' do
+describe 'AccountDetails::EmailsController - GET #resend_email', type: :request do
   subject { get resend_email_primary_users_path }
 
   let(:owner_email) { 'new@email.com' }

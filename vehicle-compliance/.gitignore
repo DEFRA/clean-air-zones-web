@@ -48,7 +48,15 @@ config/ssl/
 
 # Ignore envs
 .env
-.vagrant
-/sonar-scanner*
 
-/doc
+# Vagrant files
+.vagrant/
+
+# RDoc HTML files
+/doc/app
+
+# YARD files
+.yardoc
+
+# jard debugger files
+jard_errors.txt

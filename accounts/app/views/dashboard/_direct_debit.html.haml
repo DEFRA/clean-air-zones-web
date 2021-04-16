@@ -2,11 +2,11 @@
   - if @mandates_present
     %p.govuk-body{class: 'govuk-!-font-size-16 govuk-!-margin-top-9'}
       %strong
-        = link_to('Direct Debits', debits_path, id: 'direct-debit')
-    %p.govuk-body View the Direct Debits you’ve created with each zone.
+        = link_to('Pay by bank account', debits_path, id: 'direct-debit')
+    %p.govuk-body View the agreements you’ve previously set up.
   - else
     %p.govuk-body{class: 'govuk-!-font-size-16 govuk-!-margin-top-9'}
       %strong
-        = link_to('Set up a Direct Debit', debits_path, id: 'direct-debit')
+        = link_to('Pay by bank account', debits_path, id: 'direct-debit')
     %p.govuk-body
-      Instruct your bank to take one-off payments by Direct Debit.
+      Use your bank details to pay a charge as an alternative to paying by card.

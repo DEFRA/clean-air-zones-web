@@ -51,9 +51,9 @@
                                                  checked: checked_permission?('MANAGE_MANDATES'),
                                                  'aria-describedby': 'manage-mandates-permission-hint'}
                   %label.govuk-label.govuk-checkboxes__label{for: 'manage-mandates-permission'}
-                    %b Set up Direct Debits
+                    %b Set up bank payments
                   %span#manage-mandates-permission-hint.govuk-hint.govuk-checkboxes__hint
-                    Create Direct Debit mandates
+                    To pay from your bank account
 
               .govuk-checkboxes__item
                 %input.govuk-checkboxes__input{name: 'new_user[permissions][]',
@@ -69,7 +69,7 @@
                 %span#make-payments-permission-hint.govuk-hint.govuk-checkboxes__hint
                   By credit/debit card
                   - if direct_debits_enabled?
-                    and Direct Debit
+                    and bank account
 
               .govuk-checkboxes__item
                 %input.govuk-checkboxes__input{name: 'new_user[permissions][]',

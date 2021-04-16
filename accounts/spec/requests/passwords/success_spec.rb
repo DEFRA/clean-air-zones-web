@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'PasswordsController - GET #success' do
+describe 'PasswordsController - GET #success', type: :request do
   subject { get success_passwords_path }
 
   it 'returns a 200 OK status' do

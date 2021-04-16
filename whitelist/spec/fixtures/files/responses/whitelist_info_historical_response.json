@@ -1,0 +1,114 @@
+{
+  "1": {
+    "perPage": 10,
+    "page": 0,
+    "pageCount": 2,
+    "totalChangesCount": 12,
+    "changes": [
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Created",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "It is compliant",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 2",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 3",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 4",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 5",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 6",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 7",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 8",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 9",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 10",
+        "uploaderEmail": "user@example.com"
+      }
+    ]
+  },
+  "2": {
+    "perPage": 10,
+    "page": 1,
+    "pageCount": 2,
+    "totalChangesCount": 12,
+    "changes": [
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 11",
+        "uploaderEmail": "user@example.com"
+      },
+      {
+        "modifyDate": "2020-03-01",
+        "action": "Updated",
+        "category": "Early Adopter",
+        "manufacturer": "Mercedes",
+        "reasonUpdated": "Reason 12",
+        "uploaderEmail": "user@example.com"
+      }
+    ]
+  }
+}

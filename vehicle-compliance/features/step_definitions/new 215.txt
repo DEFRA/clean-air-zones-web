@@ -1,0 +1,42 @@
+# These require setting manually
+export account_id="018330602464"
+export environment="dev"
+export reporting_user_username="reporting_user"
+export reporting_user_password="H4bupzmPYKytEm77"
+export deploy_user="James.Cruddas"
+
+# Create aggregate VPC connection ARN
+export vpc_connection_arn="arn:aws:quicksight:eu-west-2:${account_id}:vpcConnection/vccs-${environment}"
+
+export data_source_name="vccs-${environment}-data-source"
+
+
+# Create data source for VCCS RDS instance
+
+export data_source_response=$(./aws quicksight create-data-source \
+	--aws-account-id=$account_id \
+	--data-source-id=$(uuidgen) \
+	--name="${data_source_name}" \
+	--type="POSTGRESQL" \
+	--data-source-parameters="{\"RdsParameters\": {\"InstanceId\": \"vehicle-compliance-database-${environment}\", \"Database\": \"vehicle_compliance\"}}" \
+	--credentials="{\"CredentialPair\":{\"Username\": \"${reporting_user_username}\", \"Password\": \"${reporting_user_password}\"}}" \
+	--vpc-connection-properties="{\"VpcConnectionArn\": \"${vpc_connection_arn}\"}" \
+	--ssl-properties="{\"DisableSsl\": false}" \
+	--permissions='[{"Principal":"arn:aws:quicksight:eu-west-2:018330602464:user/default/'$deploy_user'","Actions":["quicksight:UpdateDataSourcePermissions","quicksight:DescribeDataSource","quicksight:DescribeDataSourcePermissions","quicksight:PassDataSource","quicksight:UpdateDataSource","quicksight:DeleteDataSource"]}]')
+
+export data_source_arn=$(echo $data_source_response | jq -r '.Arn')
+
+
+
+# Create data sets for each report
+
+# KPI 1
+export data_set_name=vccs-${environment}-rds-vta-chargeable-per-day-data-set
+
+./aws quicksight create-data-set \
+	--aws-account-id=$account_id \
+	--data-set-id=$(uuidgen) \
+	--name="$data_set_name" \
+	--import-mode=DIRECT_QUERY \
+	--physical-table-map='{"'$(uuidgen)'":{"CustomSql":{"DataSourceArn":"'$data_source_arn'","Name":"'$data_set_name'","SqlQuery":"SELECT * FROM caz_reporting.test","Columns":[{"Name":"hour","Type":"DATETIME"},{"Name":"clean_air_zone","Type":"STRING"},{"Name":"type_approval","Type":"STRING"},{"Name":"fuel_type","Type":"STRING"},{"Name":"count","Type":"INTEGER"}]}}}' \
+	--permissions='[{"Principal":"arn:aws:quicksight:eu-west-2:018330602464:user/default/'$deploy_user'","Actions":["quicksight:UpdateDataSetPermissions","quicksight:DescribeDataSet","quicksight:DescribeDataSetPermissions","quicksight:PassDataSet","quicksight:DescribeIngestion","quicksight:ListIngestions","quicksight:UpdateDataSet","quicksight:DeleteDataSet","quicksight:CreateIngestion","quicksight:CancelIngestion"]}]'

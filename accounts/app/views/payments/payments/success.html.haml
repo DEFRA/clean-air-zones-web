@@ -28,7 +28,7 @@
         .govuk-summary-list__row
           %dt.govuk-summary-list__key Clean Air Zone
           %dd.govuk-summary-list__value
-            = @payment_details.caz_name
+            = @payment_details.clean_air_zone.name
           %dd.govuk-summary-list__actions
         .govuk-summary-list__row
           %dt.govuk-summary-list__key Entries paid for
@@ -42,23 +42,24 @@
           %dd.govuk-summary-list__actions
             = link_to 'View details', post_payment_details_payments_path
 
+      %p
+        You may be able to claim a
+        = external_link_to('refund',
+                           'https://www.gov.uk/guidance/driving-in-a-clean-air-zone',
+                           id: 'refund')
+        in certain circumstances.
+        Contact the local authority in the area you're driving in to find out more.
+
       %h2.govuk-heading-m Alternatives to paying the charge
       %p
         If you own, lease or operate vehicles that do not meet the emissions standards,
         you may qualify for financial help to modify, retrofit or replace your vehicles.
 
-      %ul.govuk-list.govuk-list--bullet
-        - if @payment_details.caz_name == 'Leeds'
-          %li
-            Find out about upgrades and retrofits for buses, coaches and HGVs by visiting
-            = charge_alternative_url_for(@payment_details.caz_name, 'fleet')
-          %li
-            Find out about upgrades and retrofits for taxis and Private Hire Vehicles by visiting
-            = charge_alternative_url_for(@payment_details.caz_name, 'non_fleet')
-        - else
-          %li
-            Find out about upgrades and retrofits for your vehicles by visiting
-            = charge_alternative_url_for(@payment_details.caz_name, 'fleet')
+      %p
+        Find out about upgrades and retrofits for your vehicles by visiting
+        = external_link_to("#{@payment_details.clean_air_zone.operator_name} website",
+                           external_urls[@payment_details.clean_air_zone.name.downcase]['fleet'],
+                           id: 'council-website')
 
       = render 'shared/print_link'
 
@@ -66,6 +67,6 @@
       %h2.govuk-heading-m Other tasks
       %ul.govuk-list.govuk-list--bullet
         %li
-          = link_to 'Pay for another Clean Air Zone', payments_path
+          = link_to 'Pay for another Clean Air Zone', payments_path, id: 'pay-another-caz'
         %li
-          = link_to 'Back to Your account', root_path
+          = link_to 'Back to Account home', root_path, id: 'back-to-account'

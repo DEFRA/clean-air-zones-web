@@ -8,7 +8,6 @@ module CazLock
   def determinate_lock_caz(caz_id)
     release_lock_on_caz if caz_id_in_session
     SessionManipulation::AddCazId.call(session: session, caz_id: caz_id)
-
     if caz_locked?
       redirect_to in_progress_payments_path
     else

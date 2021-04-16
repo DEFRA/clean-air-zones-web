@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Organisations::OrganisationsController - GET #email_verification' do
+describe 'Organisations::OrganisationsController - GET #email_verification', type: :request do
   subject { get email_verification_organisations_path(token: token) }
 
   let(:token) { 'token' }
@@ -15,8 +15,8 @@ describe 'Organisations::OrganisationsController - GET #email_verification' do
   end
 
   it 'calls Organisations::VerifyAccount with proper params' do
-    expect(Organisations::VerifyAccount).to receive(:call).with(token: token)
     subject
+    expect(Organisations::VerifyAccount).to have_received(:call).with(token: token)
   end
 
   context 'when verification is invalid' do
@@ -38,10 +38,17 @@ describe 'Organisations::OrganisationsController - GET #email_verification' do
   end
 
   context 'when verification is raised `UserAlreadyConfirmedException` exception' do
-    before { allow(Organisations::VerifyAccount).to receive(:call).and_raise(UserAlreadyConfirmedException) }
+    before do
+      allow(Organisations::VerifyAccount).to receive(:call).and_raise(UserAlreadyConfirmedException)
+      subject
+    end
 
     it 'renders the view' do
-      expect(subject).to render_template('devise/sessions/new')
+      expect(response).to render_template('devise/sessions/new')
+    end
+
+    it 'sets correct error to flash[:errors]' do
+      expect(flash[:errors]).to eq({ base: ['User already confirmed'] })
     end
   end
 end

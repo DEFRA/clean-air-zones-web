@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::CreateUsersController - GET #add_permissions' do
+describe 'UsersManagement::CreateUsersController - GET #add_permissions', type: :request do
   subject { get add_permissions_users_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       sign_in manage_users_user
       add_to_session({ new_user: { email: 'new_user@example.com', name: 'New User' } })

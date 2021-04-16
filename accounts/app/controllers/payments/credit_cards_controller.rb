@@ -13,7 +13,7 @@ module Payments
     # Makes a request to initiate card payment and redirects to the response url
     #
     # ==== Path
-    #     GET /payments/initiate
+    #     :GET /payments/initiate
     #
     def initiate
       service_response = Payments::MakeCardPayment.call(payment_data: payment_data,
@@ -25,13 +25,11 @@ module Payments
 
     ##
     # The page used as a landing point after the GOV.UK payment process.
-    #
     # Calls +/payments/:id+ backed endpoint to get payment status
-    #
-    # Redirects to either success or failure payments path
+    # Redirects to either success or unsuccessful payments path
     #
     # ==== Path
-    #     GET /payments/result
+    #     :GET /payments/result
     #
     # ==== Params
     # * +payment_id+ - id of the created payment, required in the session
@@ -40,7 +38,7 @@ module Payments
       payment_data = helpers.initiated_payment_data
       payment = Payments::Status.new(payment_data[:payment_id], payment_data[:caz_id])
       save_payment_details(payment)
-      payment.success? ? redirect_to(success_payments_path) : redirect_to(failure_payments_path)
+      payment.success? ? redirect_to(success_payments_path) : redirect_to(unsuccessful_payments_path)
     end
 
     private

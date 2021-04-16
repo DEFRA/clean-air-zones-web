@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::FleetsController - POST #submit_method' do
-  subject { post submission_method_fleets_path, params: params }
+describe 'VehiclesManagement::FleetsController - POST #submit_method', type: :request do
+  subject { post choose_method_fleets_path, params: params }
 
-  let(:params) { { 'submission-method': submission_method } }
-  let(:submission_method) { 'upload' }
+  let(:params) { { 'submission-method': choose_method } }
+  let(:choose_method) { 'upload' }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       mock_actual_account_name
       sign_in manage_vehicles_user
@@ -22,15 +22,15 @@ describe 'VehiclesManagement::FleetsController - POST #submit_method' do
     end
 
     context 'without submission method' do
-      let(:submission_method) { nil }
+      let(:choose_method) { nil }
 
-      it 'renders the submission_method view' do
-        expect(response).to render_template(:submission_method)
+      it 'renders the view' do
+        expect(response).to render_template(:choose_method)
       end
     end
 
     context 'with manual as method' do
-      let(:submission_method) { 'manual' }
+      let(:choose_method) { 'manual' }
 
       it 'redirects to enter details page' do
         expect(response).to redirect_to(enter_details_vehicles_path)

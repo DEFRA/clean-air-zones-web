@@ -1,4 +1,8 @@
+- title_and_header = 'Vehicle details could not be found'
+- content_for(:title, title_and_header)
+
 = link_to 'Back', enter_details_vehicles_path, class: 'govuk-back-link', id: 'back-link'
+
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
@@ -7,7 +11,7 @@
                   error_msg_div: '#unrecognised-vehicle-error',
                   error_msg: I18n.t('vehicle_not_found.errors.confirmation_alert')
 
-      %h1.govuk-heading-xl Vehicle details could not be found
+      %h1.govuk-heading-xl=title_and_header
       %p
         Try
         = link_to 'entering the details', enter_details_vehicles_path, class: 'govuk-link'
@@ -30,6 +34,12 @@
                            id: 'dvla-link')
         the DVLA holds for the vehicle.
 
+      %p
+        If your vehicle does meet emission standards, you can claim a
+        = external_link_to('refund',
+                           'https://www.gov.uk/guidance/driving-in-a-clean-air-zone',
+                           id: 'refund-link')
+        from the local authority after your registration details have been updated.
       %p
         Confirm the number plate
         %b

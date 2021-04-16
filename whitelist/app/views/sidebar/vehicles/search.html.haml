@@ -1,0 +1,28 @@
+- title_and_header = 'Search the register for a whitelisted vehicle'
+- content_for(:title, title_and_header)
+
+.govuk-grid-column-two-thirds
+
+  - if @errors.present?
+    .govuk-error-summary{'aria-labelledby': 'error-summary-title',
+                         'data-module': 'govuk-error-summary',
+                         role: 'alert',
+                         tabindex: '-1'}
+      %h2#error-summary-title.govuk-error-summary__title
+        There is a problem
+      .govuk-error-summary__body
+        %ul.govuk-list.govuk-error-summary__list
+          %li
+            - remove_duplicated_messages(@errors.slice(:vrn, :historic, :start_date, :end_date)).each_with_index do |error, index|
+              %li.custom-csv-error
+                = link_to(error.first, "##{error.second}_error", id: "#{error.second}-#{index}")
+
+  = render 'common/header_and_body'
+
+  = form_for('search', url: search_vehicles_path, method: :post) do |form|
+    = render 'sidebar/vehicles/vrn_input', form: form
+    = render 'sidebar/vehicles/historical_search/date_range', form: form
+    %p= submit_tag 'Search',
+                    class: 'govuk-button',
+                    'data-module': 'govuk-button',
+                    id: 'search-button'

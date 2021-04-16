@@ -4,60 +4,48 @@ Feature: Air Zone
   I want to be able to choose a clean air zone (CAZ)
     And see details of a CAZ
 
-  Scenario: User with correct vehicle’s registration selects CAZs
+  Scenario: User with correct vehicle’s registration
     Given I am on the enter details page
     Then I enter a vehicle's registration
       And I press the Continue
-    Then I choose that the details are correct
+      And I choose 'Yes' when confirms vehicle details
       And I press the Confirm
-    Then I should see the CAZ selection page
-      And I choose Birmingham and Leeds
-      And I press the Continue
     Then I should see the Compliance page
-      And I should see "Clean Air Zone charge"
+      And I should see 'Clean Air Zone charge'
+      And I should see 'Bath' pay link
+      And I should not see 'Birmingham' pay link
+      And I should see 'Make a payment'
+      And I should see 'Now'
 
-  Scenario: User with correct vehicle’s registration does not select any CAZ
+  Scenario: The one where I have a non-compliant vehicle and payments are live
     Given I am on the enter details page
     Then I enter a vehicle's registration
       And I press the Continue
-    Then I choose that the details are correct
-      And I press the Confirm
-    Then I should see the CAZ selection page
-      And I press the Continue
-    Then I should see the CAZ selection page
-      And I should see "You must select at least one Clean Air Zone"
+      And I choose 'Yes' when confirms vehicle details
+      And I press Confirm when Bath and Birmingham payments are live
+    Then I should see the Compliance page
+      And I should see 'Bath' pay link
+      And I should see 'Birmingham' pay link
+      And I should see 'Make a payment'
+      And I should see 'Now' 2 times
 
-  Scenario: User with correct vehicle’s registration selects only one CAZ
+  Scenario: The one where I have a non-compliant vehicle and when only Bath payments are live
     Given I am on the enter details page
     Then I enter a vehicle's registration
       And I press the Continue
-    Then I choose that the details are correct
-      And I press the Confirm
-    Then I should see the CAZ selection page
-      And I choose Leeds
-      And I press the Continue
+      And I choose 'Yes' when confirms vehicle details
+      And I press Confirm when only Bath payments are live
     Then I should see the Compliance page
-      And I press the Check another Clean Air Zone link
-      And I press the Continue
-    Then I should see the Compliance page
-      And I press Check another vehicle
-    Then I enter a vehicle's registration
-      And I press the Continue
-    Then I choose that the details are correct
-      And I press the Confirm
-    Then I should see the CAZ selection page
-      And I press the Continue
-    And I should see "You must select at least one Clean Air Zone"
+      And I should see 'Bath' pay link
+      And I should not see 'Birmingham' pay link
+      And I should see 'Make a payment'
+      And I should see 'Now' 1 times
 
   Scenario: When server returns 422 status
     Given I am on the enter details page
     Then I enter a vehicle's registration
       And I press the Continue
-    Then I choose that the details are correct
-      And I press the Confirm
-    Then I should see the CAZ selection page
-      And I choose Birmingham and Leeds
-      And I press the Continue when server returns 422 status
+      And I choose 'Yes' when confirms vehicle details
+      And I press the Confirm when server returns 422 status
     Then I should see the Cannot determine compliance page
-      And I should see "Unable to determine compliance"
-
+      And I should see 'Vehicle details are incomplete'

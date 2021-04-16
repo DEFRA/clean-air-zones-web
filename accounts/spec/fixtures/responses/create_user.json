@@ -1,7 +1,7 @@
 {
   "accountUserId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "accountId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "accountName": "Royal Mail",
+  "accountName": "Royal Mail's",
   "email": "user@example.com",
   "owner": true,
   "permissions": ["MAKE_PAYMENTS", "MANAGE_MANDATES", "MANAGE_VEHICLES", "MANAGE_USERS", "VIEW_PAYMENTS"]

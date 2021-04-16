@@ -1,7 +1,7 @@
 .govuk-form-group{class: 'govuk-form-group--error'}
   %label#vrn-label.govuk-label{for: 'vrn'}
-    = I18n.t('labels.vrn')
-    %p= I18n.t('labels.vrn_example')
+    %p
+      %span.govuk-hint= I18n.t('labels.vrn_example')
   %span#vrn-error.govuk-error-message
     %span.govuk-visually-hidden Error:
     = message

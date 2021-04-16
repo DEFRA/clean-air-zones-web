@@ -2,13 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe 'VehiclesController - GET #details', type: :request do
+describe 'VehiclesController - GET #details', type: :request do
   subject { get details_vehicles_path }
+
+  let(:transaction_id) { SecureRandom.uuid }
 
   context 'with VRN in session' do
     before do
+      add_transaction_id_to_session(transaction_id)
       add_vrn_to_session
       mock_vehicle_details
+      mock_vehicle_compliance
+      mock_chargeable_zones
     end
 
     it 'returns http success' do
@@ -29,18 +34,35 @@ RSpec.describe 'VehiclesController - GET #details', type: :request do
 
       it 'redirects to exempt path' do
         subject
-        expect(response).to redirect_to(exempt_vehicles_path)
+        expect(response).to redirect_to(exempt_vehicles_path(id: transaction_id))
       end
     end
 
     context 'when vehicle is a taxi' do
       before do
         mock_vehicle_details_taxi
+        mock_vehicle_compliance
         subject
       end
 
       it 'sets taxi in the session' do
-        expect(session[:vehicle_details]['leeds_taxi']).to be_truthy
+        expect(session[:vehicle_details]['weekly_taxi']).to be_truthy
+      end
+
+      it 'does not set undetermined vehicle' do
+        expect(session[:vehicle_details]['undetermined_taxi']).to be_falsey
+      end
+    end
+
+    context 'when vehicle is undetermined_taxi' do
+      before do
+        mock_unrecognised_taxi_vehicle_details
+        mock_undetermined_vehicle_compliance
+        subject
+      end
+
+      it 'sets undetermined_taxi = true in session' do
+        expect(session[:vehicle_details]['undetermined_taxi']).to be_truthy
       end
     end
   end
@@ -65,6 +87,7 @@ RSpec.describe 'VehiclesController - GET #details', type: :request do
 
   context 'when vehicle is not found' do
     before do
+      add_transaction_id_to_session(transaction_id)
       add_vrn_to_session
       allow(ComplianceCheckerApi).to receive(:vehicle_details).and_raise(
         BaseApi::Error404Exception.new(404, 'not found', message: 'Boom')
@@ -73,7 +96,7 @@ RSpec.describe 'VehiclesController - GET #details', type: :request do
 
     it 'redirects to :unrecognized' do
       subject
-      expect(response).to redirect_to(unrecognised_vehicles_path)
+      expect(response).to redirect_to(unrecognised_vehicles_path(id: transaction_id))
     end
   end
 end

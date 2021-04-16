@@ -1,7 +1,6 @@
-- title_and_header = "#{current_user.actual_account_name} account home"
+- title_and_header = raw("#{current_user.actual_account_name} account home")
 - content_for(:title, title_and_header)
 - disable_payment_features = !@payment_features_enabled && (allow_make_payments? || allow_view_payment_history?)
-
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
@@ -27,10 +26,16 @@
 
   .govuk-grid-row
     = render 'manage_vehicles' if allow_manage_vehicles?
-    = render 'direct_debit' if direct_debits_enabled? && allow_manage_mandates?
+    = render 'direct_debit' if direct_debits_enabled? && allow_manage_mandates? && @any_dd_cazes_enabled
     = render 'manage_users' if allow_manage_users?
     - if !disable_payment_features
       = render 'make_payment' if allow_make_payments? && @vehicles_count >= 2
-      = render 'user_payment_history' if allow_make_payments?
-      = render 'company_payment_history' if allow_view_payment_history? && @multi_payer_account
+      - if allow_make_payments? && allow_view_payment_history?
+        - link_description = 'View payments made by you and your team members.'
+      - elsif allow_make_payments?
+        - link_description = 'View payments made by you.'
+      - elsif allow_view_payment_history?
+        - link_description = 'View payments made by your team members.'
+      = render 'payment_history', link_description: link_description if link_description && @payments_present
+
     = render 'help'

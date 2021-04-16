@@ -6,7 +6,7 @@ RSpec.shared_examples 'an invalid login param' do
   end
 
   it 'does not call AccountApi.sign_in' do
-    expect(AccountsApi::Auth).not_to receive(:sign_in)
     subject
+    expect(AccountsApi::Auth).not_to have_received(:sign_in)
   end
 end

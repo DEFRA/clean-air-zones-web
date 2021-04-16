@@ -2,28 +2,28 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::PrimaryUsersController - GET #update_name' do
+describe 'AccountDetails::PrimaryUsersController - GET #update_name', type: :request do
   subject { get update_name_primary_users_path(params: { company_name: company_name }) }
 
   let(:company_name) { 'Company Name' }
-  let(:account_id) { @uuid }
+  let(:account_id) { SecureRandom.uuid }
 
   context 'when user is an owner' do
     before { sign_in create_owner(account_id: account_id) }
 
     context 'when valid parameter is provided' do
-      before { allow(AccountsApi::Accounts).to receive(:update_company_name).and_return(true) }
-
-      it 'calls AccountsApi::Accounts.update_company_name with correct params' do
-        expect(AccountsApi::Accounts)
-          .to receive(:update_company_name)
-          .with(account_id: account_id, company_name: company_name)
-          .and_return(true)
+      before do
+        allow(AccountsApi::Accounts).to receive(:update_company_name).and_return(true)
         subject
       end
 
+      it 'makes an api call' do
+        expect(AccountsApi::Accounts).to have_received(:update_company_name)
+          .with(account_id: account_id, company_name: company_name)
+      end
+
       it 'redirects to primary user account maintenance page' do
-        expect(subject).to redirect_to(primary_users_account_details_path)
+        expect(response).to redirect_to(primary_users_account_details_path)
       end
     end
 
@@ -55,10 +55,6 @@ describe 'AccountDetails::PrimaryUsersController - GET #update_name' do
 
       it 'renders the view' do
         expect(response).to render_template(:edit_name)
-      end
-
-      it 'does not make an api call' do
-        expect(AccountsApi::Accounts).not_to receive(:update_company_name)
       end
     end
   end

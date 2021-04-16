@@ -1,0 +1,46 @@
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:vrn].present?)}
+  = form.label :vrn, I18n.t('labels.vrn'), class: 'govuk-label', id: 'vrn_label', for: 'vrn'
+  %span#vrn-error.govuk-error-message
+    - if errors[:vrn].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:vrn]
+  = form.text_field :vrn,
+                    class: "govuk-input #{'govuk-input--error' if errors[:vrn].present?} vrn-input",
+                    id: 'vrn',
+                    value: params.dig(:new_vrn_form, :vrn),
+                    'aria-labelledby': 'vrn_label',
+                    'aria-describedby': 'vrn',
+                    type: 'text',
+                    maxlength: 14
+
+= render 'sidebar/vehicles/add_vrn_input/category_radios', form: form, errors: @errors[:category]
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:manufacturer].present?)}
+  = form.label :manufacturer, 'Manufacturer', class: 'govuk-label', id: 'manufacturer_label', for: 'manufacturer'
+  %span#manufacturer-error.govuk-error-message
+    - if errors[:manufacturer].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:manufacturer]
+  = form.text_field :manufacturer,
+                    class: "govuk-input #{'govuk-input--error' if errors[:manufacturer].present?}",
+                    id: 'manufacturer',
+                    value: params.dig(:new_vrn_form, :manufacturer),
+                    'aria-labelledby': 'manufacturer_label',
+                    'aria-describedby': 'manufacturer',
+                    type: 'text',
+                    maxlength: 50
+
+.govuk-form-group{class: ('govuk-form-group--error' if errors[:reason].present?)}
+  = form.label :reason, 'Reason', class: 'govuk-label', id: 'reason_label', for: 'reason'
+  %span#reason-error.govuk-error-message
+    - if errors[:reason].present?
+      %span.govuk-visually-hidden Error:
+      = errors[:reason]
+  = form.text_field :reason,
+                    class: "govuk-input #{'govuk-input--error' if errors[:reason].present?}",
+                    id: 'reason',
+                    value: params.dig(:new_vrn_form, :reason),
+                    'aria-labelledby': 'reason_label',
+                    'aria-describedby': 'reason',
+                    type: 'text',
+                    maxlength: 50

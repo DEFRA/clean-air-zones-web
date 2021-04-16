@@ -89,4 +89,44 @@ describe PaymentHistory::PaginatedPayment, type: :model do
       end
     end
   end
+
+  describe '.results_per_page' do
+    context 'when vehicles size is 11' do
+      let(:size) { 11 }
+
+      it 'returns per_page value' do
+        expect(subject.results_per_page).to eq([10, 20])
+      end
+    end
+
+    context 'when vehicles size is 21' do
+      let(:size) { 21 }
+
+      it 'returns per_page value' do
+        expect(subject.results_per_page).to eq([10, 20, 30])
+      end
+    end
+
+    context 'when vehicles size is 31' do
+      let(:size) { 31 }
+
+      it 'returns per_page value' do
+        expect(subject.results_per_page).to eq([10, 20, 30, 40])
+      end
+    end
+
+    context 'when vehicles size is 41' do
+      let(:size) { 41 }
+
+      it 'returns per_page value' do
+        expect(subject.results_per_page).to eq([10, 20, 30, 40, 50])
+      end
+    end
+
+    context 'when vehicles size more than 40' do
+      it 'returns per_page value' do
+        expect(subject.results_per_page).to eq([10, 20, 30, 40, 50])
+      end
+    end
+  end
 end

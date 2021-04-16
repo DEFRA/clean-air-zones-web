@@ -19,5 +19,5 @@
     - else
       %li.govuk-header__navigation-item{class: current_path?(new_user_session_path)}
         = link_to('Sign In', new_user_session_path, class: 'govuk-header__link', id: 'sign-in')
-      %li.govuk-header__navigation-item{class: current_path?(organisations_path) || current_path?(new_credentials_organisations_path)}
-        = link_to('Create an account', organisations_path, class: 'govuk-header__link', id: 'new-account')
+      %li.govuk-header__navigation-item{class: current_path?(create_account_path) || current_path?(sign_in_details_organisations_path)}
+        = link_to('Create an account', create_account_path, class: 'govuk-header__link', id: 'new-account')

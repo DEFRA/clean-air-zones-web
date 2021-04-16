@@ -8,15 +8,17 @@ describe 'PaymentHistoryApi.payments' do
       account_id: account_id,
       user_id: user_id,
       user_payments: user_payments,
-      page: page
+      page: page,
+      per_page: per_page
     )
   end
 
-  let(:account_id) { @uuid }
-  let(:user_id) { @uuid }
+  let(:account_id) { SecureRandom.uuid }
+  let(:user_id) { SecureRandom.uuid }
   let(:user_payments) { true }
   let(:page) { 5 }
-  let(:url) { %r{accounts/#{account_id}/payments\?accountUserId=#{@uuid}&pageNumber=#{page - 1}} }
+  let(:per_page) { 10 }
+  let(:url) { %r{accounts/#{account_id}/payments\?accountUserId=#{user_id}&pageNumber=#{page - 1}} }
 
   context 'when the response status is 200' do
     before do

@@ -2,8 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe 'DatesController - GET #select_daily_date', type: :request do
+describe 'DatesController - GET #select_daily_date', type: :request do
   subject { get select_daily_date_dates_path }
+
+  let(:transaction_id) { SecureRandom.uuid }
 
   context 'with VRN in the session' do
     before do
@@ -32,7 +34,10 @@ RSpec.describe 'DatesController - GET #select_daily_date', type: :request do
   end
 
   context 'without LA in the session' do
-    before { add_vrn_to_session }
+    before do
+      add_transaction_id_to_session(transaction_id)
+      add_vrn_to_session
+    end
 
     it_behaves_like 'la is missing'
   end

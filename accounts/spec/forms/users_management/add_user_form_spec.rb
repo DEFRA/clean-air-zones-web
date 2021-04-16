@@ -13,7 +13,7 @@ describe UsersManagement::AddUserForm, type: :model do
   describe 'valid?' do
     before { allow(AccountsApi::Accounts).to receive(:user_validations).and_return(true) }
 
-    context 'valid email format' do
+    context 'when valid email format' do
       it { is_expected.to be_valid }
 
       context 'when all uppercase letters' do
@@ -40,7 +40,7 @@ describe UsersManagement::AddUserForm, type: :model do
       end
     end
 
-    context 'invalid email format' do
+    context 'when invalid email format' do
       before { subject.valid? }
 
       context 'when email is empty' do

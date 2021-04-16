@@ -8,15 +8,29 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 # load support folder
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # stub connect to the AWS metadata server to get the AWS credentials.
 Aws.config.update(stub_responses: true)
 
 RSpec.configure do |config|
-  config.include RequestSpecHelper, type: :request
-  config.include InjectSession, type: :request
-  config.include MockUser
+  # load request helpers
+  [RequestSpecHelper, InjectSession, AddToSession].each do |h|
+    config.include h, type: :request
+  end
+
+  # load helpers
+  [
+    UserFactory,
+    MockHelper,
+    UploadHelper
+  ].each do |h|
+    config.include h
+  end
+
+  config.before do
+    allow_any_instance_of(ActionDispatch::Request).to receive(:remote_ip).and_return('1.2.3.4')
+  end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -33,7 +47,7 @@ RSpec.configure do |config|
   # You can disable this behaviour by removing the line below, and instead
   # explicitly tag your specs with their type, e.g.:
   #
-  #     RSpec.describe UsersController, :type => :controller do
+  #     describe UsersController, type: :controller do
   #       # ...
   #     end
   #

@@ -1,6 +1,20 @@
 const { environment } = require('@rails/webpacker');
 const { source_path: sourcePath } = require('@rails/webpacker/package/config');
 const { join } = require('path');
+
+// adding jquery with `expose-loader`
+environment.loaders.append('jquery', {
+  test: require.resolve('jquery'),
+  rules: [
+    {
+      loader: 'expose-loader',
+      options: {
+        exposes: ['$', 'jQuery'],
+      }
+    }
+  ]
+});
+
 const erbLoader = {
   test: /\.erb$/,
   enforce: 'pre',

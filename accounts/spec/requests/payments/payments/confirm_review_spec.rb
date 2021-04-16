@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe 'PaymentsController - POST #confirm_review' do
+describe 'PaymentsController - POST #confirm_review', type: :request do
   subject { post confirm_review_payments_path, params: { confirm_not_exemption: confirm_not_exemption } }
 
   let(:confirm_not_exemption) { 'yes' }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     let(:payment_details) do
       { caz_id: '131af03c-f7f4-4aef-81ee-aae4f56dbeb5',
         details: { 'PAY001' =>
@@ -30,7 +30,7 @@ describe 'PaymentsController - POST #confirm_review' do
       expect(response).to redirect_to(select_payment_method_payments_path)
     end
 
-    context 'invalid form' do
+    context 'with invalid form' do
       let(:confirm_not_exemption) { 'no' }
 
       before { subject }

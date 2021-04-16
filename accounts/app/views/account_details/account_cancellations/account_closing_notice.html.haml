@@ -1,0 +1,67 @@
+- title_and_header = 'Closing an account'
+- content_for(:title, title_and_header)
+
+= render 'shared/js_back_link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if alert
+        = render 'shared/error_summary',
+                  error_msg_div: '#confirm-close-account-error',
+                  error_msg: "#{alert}"
+
+      %h1.govuk-heading-l= title_and_header
+      %p
+        You should only close the account if you are sure the company will no longer need it.
+        You and any team members who help manage the account will no longer be able to sign in.
+
+      .govuk-inset-text
+        If you are closing the account because none of the vehicles received a charge,
+        be aware they could be charged in upcoming zones.
+
+      %p
+        Before you go remember to:
+
+      %p
+        %ul.govuk-list.govuk-list--bullet
+          %li
+            cancel any payment agreements with your bank that have been set up for Clean Air Zone charges
+          %li
+            read our
+            = link_to 'Privacy Notice', privacy_notice_path
+            to see what we do with your data
+
+      %br
+      = form_tag account_closing_notice_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--m
+              %h1.govuk-fieldset__heading
+                = 'Do you want to close the account?'
+
+            - if alert
+              %span#confirm-close-account-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = alert
+
+            .govuk-radios.govuk-radios--inline
+              .govuk-radios__item
+                %input#confirm-close-account-1.govuk-radios__input{name: 'confirm-close-account',
+                                                                   type: 'radio',
+                                                                   value: 'yes'}
+                %label.govuk-label.govuk-radios__label{for: 'confirm-close-account-1'}
+                  Yes
+
+              .govuk-radios__item
+                %input#confirm-close-account-2.govuk-radios__input{name: 'confirm-close-account',
+                                                                   type: 'radio',
+                                                                   value: 'no'}
+                %label.govuk-label.govuk-radios__label{for: 'confirm-close-account-2'}
+                  No
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'
+
+      %p
+        = link_to 'Exit without closing', primary_users_account_details_path, class: 'govuk-link', id: 'exit'

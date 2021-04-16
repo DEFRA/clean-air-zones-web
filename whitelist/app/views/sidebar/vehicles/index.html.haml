@@ -1,0 +1,34 @@
+- title_and_header = "Search results for '#{@vrn_details.registration_number}'"
+- content_for(:title, title_and_header)
+  
+.govuk-grid-column-two-thirds
+  = render 'common/header_and_body'
+  %h2.govuk-heading-m
+    = title_and_header
+
+  %p
+    The following details were found relating to your search
+
+  %table.govuk-table
+    %tbody.govuk-table__body
+      %tr.govuk-table__row
+        %td.govuk-table__cell{scope: 'row'} Date last updated
+        %th.govuk-table__cell{id: 'date_updated'}= @vrn_details.formatted_timestamp
+      %tr.govuk-table__row
+        %td.govuk-table__cell{scope: 'row'} Category
+        %th.govuk-table__cell{id: 'category'}= @vrn_details.category
+      %tr.govuk-table__row
+        %td.govuk-table__cell{scope: 'row'} Manufacturer
+        %th.govuk-table__cell{id: 'manufacturer'}
+          - if @vrn_details.manufacturer
+            = @vrn_details.manufacturer
+          -else
+            %span.govuk-visually-hidden Manufacturer value
+      %tr.govuk-table__row
+        %td.govuk-table__cell{scope: 'row'} Reason updated
+        %th.govuk-table__cell{id: 'reason'}= @vrn_details.reason_updated
+      %tr.govuk-table__row
+        %td.govuk-table__cell{scope: 'row'} Added by
+        %th.govuk-table__cell{id: 'added_by'}= @vrn_details.email
+
+  %p= link_to 'Search for another vehicle', search_vehicles_path, id: 'search-another-vehicle'

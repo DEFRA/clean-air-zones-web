@@ -26,10 +26,10 @@ describe UsersManagement::SetUpAccountForm, type: :model do
     it { is_expected.to be_valid }
 
     it 'makes an api call on submit' do
-      expect(AccountsApi::Auth)
-        .to receive(:set_password)
-        .with(token: '27978cac-44fa-4d2e-bc9b-54fd12e37c69', password: 'Pa$$w0rd12345')
       subject.submit
+      expect(AccountsApi::Auth)
+        .to have_received(:set_password)
+        .with(token: '27978cac-44fa-4d2e-bc9b-54fd12e37c69', password: 'Pa$$w0rd12345')
     end
   end
 
@@ -37,27 +37,25 @@ describe UsersManagement::SetUpAccountForm, type: :model do
     let(:token) { '' }
 
     before do
-      allow(AccountsApi::Auth)
-        .to receive(:set_password)
-        .and_raise(BaseApi::Error400Exception.new(400, '', {}))
-    end
-
-    it 'makes an api call on submit that raises an exception' do
-      expect(AccountsApi::Auth)
-        .to receive(:set_password)
-        .with(token: '', password: 'Pa$$w0rd12345')
+      allow(AccountsApi::Auth).to receive(:set_password)
         .and_raise(BaseApi::Error400Exception.new(400, '', {}))
       subject.submit
+    end
+
+    it 'makes an api call' do
+      expect(AccountsApi::Auth).to have_received(:set_password).with(token: '', password: 'Pa$$w0rd12345')
     end
 
     it 'has correct token error message' do
-      subject.submit
       error_message = I18n.t('token_form.token_invalid')
       expect(subject.errors.messages[:token]).to include(error_message)
     end
 
-    it 'has no password fields errors' do
+    it 'has no password error messages' do
       expect(subject.errors.messages[:password]).to eq([])
+    end
+
+    it 'has no password confirmation error messages' do
       expect(subject.errors.messages[:password_confirmation]).to eq([])
     end
 
@@ -70,26 +68,28 @@ describe UsersManagement::SetUpAccountForm, type: :model do
     let(:token) { '27978cac-44fa-4d2e-bc9b-54fd12e37c69' }
     let(:password) { 'pass' }
     let(:confirmation) { 'pass' }
+    let(:error_message) do
+      'Enter a password at least 12 characters long including at least 1 upper case letter, '\
+      '1 number and a special character'
+    end
 
     before do
-      allow(AccountsApi::Auth)
-        .to receive(:set_password)
-        .and_raise(BaseApi::Error422Exception.new(422, '', {}))
-    end
-
-    it 'makes an api call on submit that raises an exception' do
-      expect(AccountsApi::Auth)
-        .to receive(:set_password)
-        .with(token: '27978cac-44fa-4d2e-bc9b-54fd12e37c69', password: 'pass')
+      allow(AccountsApi::Auth).to receive(:set_password)
         .and_raise(BaseApi::Error422Exception.new(422, '', {}))
       subject.submit
     end
 
-    it 'has correct password fields message' do
-      subject.submit
-      error_message = 'Enter a password at least 12 characters long including at least 1 upper case letter, '\
-                      '1 number and a special character'
+    it 'makes an api call' do
+      expect(AccountsApi::Auth).to have_received(:set_password).with(
+        token: '27978cac-44fa-4d2e-bc9b-54fd12e37c69', password: 'pass'
+      )
+    end
+
+    it 'has correct password error message' do
       expect(subject.errors.messages[:password]).to include(error_message)
+    end
+
+    it 'has correct password confirmation error message' do
       expect(subject.errors.messages[:password_confirmation]).to include(error_message)
     end
 

@@ -5,22 +5,24 @@ require 'rails_helper'
 describe VehiclesManagement::UploadFile do
   subject { described_class.call(file: file, user: create_user(user_id: id)) }
 
-  let(:file) { fixture_file_upload(file_path) }
+  let(:file) { Rack::Test::UploadedFile.new(file_path) }
   let(:file_path) { File.join('spec', 'fixtures', 'uploads', 'fleet.csv') }
-  let(:id) { @uuid }
+  let(:id) { SecureRandom.uuid }
+  let(:upload_file) { true }
 
-  before { allow_any_instance_of(Aws::S3::Object).to receive(:upload_file).and_return(true) }
+  before do
+    mock = instance_double(Aws::S3::Object, upload_file: upload_file)
+    allow(Aws::S3::Object).to receive(:new).and_return(mock)
+  end
 
   describe '#call' do
     context 'with valid params' do
       it 'returns the proper file name' do
-        freeze_time do
-          expect(subject.filename).to eq("fleet_#{id}_#{Time.current.to_i}")
-        end
+        freeze_time { expect(subject.filename).to eq("fleet_#{id}_#{Time.current.to_i}") }
       end
 
       it 'returns a proper value' do
-        expect(subject.large_fleet?).to be_falsey
+        expect(subject).not_to be_large_fleet
       end
     end
 
@@ -61,7 +63,7 @@ describe VehiclesManagement::UploadFile do
       end
 
       context 'when `S3UploadService` returns error' do
-        before { allow_any_instance_of(Aws::S3::Object).to receive(:upload_file).and_return(false) }
+        let(:upload_file) { false }
 
         it 'raises a proper exception' do
           expect { subject }.to raise_exception(CsvUploadException, I18n.t('csv.errors.base'))
@@ -70,9 +72,7 @@ describe VehiclesManagement::UploadFile do
 
       context 'when S3 raises an exception' do
         before do
-          allow_any_instance_of(Aws::S3::Object)
-            .to receive(:upload_file)
-            .and_raise(Aws::S3::Errors::MultipartUploadError.new('', ''))
+          allow(Aws::S3::Object).to receive(:new).and_raise(Aws::S3::Errors::MultipartUploadError.new('', ''))
         end
 
         it 'raises a proper exception' do
@@ -86,13 +86,13 @@ describe VehiclesManagement::UploadFile do
     before { allow(VehiclesManagement::CountVehicles).to receive(:call).and_return(5) }
 
     context 'when uploaded file is less than threshold' do
-      it { expect(subject.large_fleet?).to be_falsey }
+      it { expect(subject).not_to be_large_fleet }
     end
 
     context 'when uploaded file is not less than threshold' do
       before { Rails.configuration.x.large_fleet_threshold = 5 }
 
-      it { expect(subject.large_fleet?).to be_truthy }
+      it { expect(subject).to be_large_fleet }
     end
   end
 end

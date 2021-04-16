@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::EditUsersController - GET #edit' do
-  subject { get edit_user_path(@uuid) }
+describe 'UsersManagement::EditUsersController - GET #edit', type: :request do
+  subject { get edit_user_path(SecureRandom.uuid) }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       mock_clean_air_zones
       sign_in manage_users_user

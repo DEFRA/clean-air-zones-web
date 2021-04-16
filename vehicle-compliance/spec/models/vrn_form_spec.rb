@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe VrnForm, type: :model do
-  subject(:form) { described_class.new(vrn, country) }
+describe VrnForm, type: :model do
+  subject { described_class.new(vrn, country) }
 
   let(:vrn) { 'CU57ABC' }
   let(:country) { 'UK' }
@@ -12,12 +12,12 @@ RSpec.describe VrnForm, type: :model do
     it { is_expected.to be_valid }
 
     it 'has an empty hash as error_object' do
-      expect(form.error_object).to eq({})
+      expect(subject.error_object).to eq({})
     end
   end
 
   describe 'both fields validation' do
-    before { form.valid? }
+    before { subject.valid? }
 
     context 'when country and vrn are nil' do
       let(:country) { nil }
@@ -30,8 +30,8 @@ RSpec.describe VrnForm, type: :model do
     end
   end
 
-  context 'country validation' do
-    before { form.valid? }
+  context 'when country validation' do
+    before { subject.valid? }
 
     context 'when country is nil' do
       let(:country) { nil }
@@ -50,8 +50,8 @@ RSpec.describe VrnForm, type: :model do
     end
   end
 
-  context 'VRN validation' do
-    before { form.valid? }
+  context 'when VRN validation' do
+    before { subject.valid? }
 
     context 'when VRN is empty' do
       let(:vrn) { '' }
@@ -93,6 +93,14 @@ RSpec.describe VrnForm, type: :model do
       it_behaves_like 'an invalid vrn input', I18n.t('vrn_form.vrn_invalid')
     end
 
+    context 'when VRN starts with 0' do
+      let(:vrn) { '00SGL' }
+
+      it { is_expected.not_to be_valid }
+
+      it_behaves_like 'an invalid vrn input', I18n.t('vrn_form.vrn_invalid')
+    end
+
     context 'when country in Non-UK' do
       let(:country) { 'Non-UK' }
 
@@ -127,25 +135,19 @@ RSpec.describe VrnForm, type: :model do
 
         it { is_expected.to be_valid }
       end
+
+      context 'when vrn starts with 0' do
+        let(:vrn) { '00SGL6' }
+
+        it { is_expected.to be_valid }
+      end
     end
   end
 
   describe 'VRN formats' do
     describe 'invalid formats' do
-      context 'when VRN is in format AA' do
-        let(:vrn) { 'AB' }
-
-        it { is_expected.not_to be_valid }
-      end
-
       context 'when VRN is in format 99' do
         let(:vrn) { '45' }
-
-        it { is_expected.not_to be_valid }
-      end
-
-      context 'when VRN is in format AAA' do
-        let(:vrn) { 'ABG' }
 
         it { is_expected.not_to be_valid }
       end
@@ -397,6 +399,47 @@ RSpec.describe VrnForm, type: :model do
       let(:vrn) { '8839GF' }
 
       it { is_expected.to be_valid }
+    end
+  end
+
+  describe '.possible_fraud?' do
+    context 'when country is UK' do
+      it 'returns false' do
+        expect(subject.possible_fraud?).to eq(false)
+      end
+    end
+
+    context 'when country is Non-UK' do
+      let(:country) { 'Non-UK' }
+
+      context 'with vehicle is within the DVLA database and number plate in Non-UK format' do
+        let(:vrn) { 'XYZ J234' }
+
+        before { allow(ComplianceCheckerApi).to receive(:vehicle_details).and_return(true) }
+
+        it 'returns false' do
+          expect(subject.possible_fraud?).to eq(false)
+        end
+      end
+
+      context 'with vehicle is within the DVLA database and number plate in UK format' do
+        before { allow(ComplianceCheckerApi).to receive(:vehicle_details).and_return(true) }
+
+        it 'returns true' do
+          expect(subject.possible_fraud?).to eq(true)
+        end
+      end
+
+      context 'with vehicle is not within the DVLA database and number plate in UK format' do
+        before do
+          allow(ComplianceCheckerApi).to receive(:vehicle_details)
+            .and_raise(BaseApi::Error404Exception.new(404, '', {}))
+        end
+
+        it 'returns false' do
+          expect(subject.possible_fraud?).to be(false)
+        end
+      end
     end
   end
 end

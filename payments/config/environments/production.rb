@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/integer/time'
+require 'custom_logger'
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -66,7 +69,7 @@ Rails.application.configure do
     # custom
     'Strict-Transport-Security' => 'max-age=31536000',
     'Pragma' => 'no-cache',
-    'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
+    'Cache-Control' => 'no-store',
     'Expires' => 1.year.from_now.to_formatted_s(:rfc822).to_s,
     'Feature-Policy' => features.map { |f| "#{f} 'none'" }.join('; ')
   }
@@ -83,7 +86,7 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_cache_store, { cluster: [ENV['REDIS_URL']] } if ENV['REDIS_URL']
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
@@ -107,7 +110,7 @@ Rails.application.configure do
 
   # Use custom logging formatter so that IP any other PII can be removed.
   config.log_formatter = CustomLogger.new
-  logger               = ActiveSupport::Logger.new(STDOUT)
+  logger               = ActiveSupport::Logger.new($stdout)
   logger.formatter     = config.log_formatter
   config.logger        = ActiveSupport::TaggedLogging.new(logger)
 

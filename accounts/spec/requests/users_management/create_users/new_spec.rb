@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::CreateUsersController - GET #new' do
+describe 'UsersManagement::CreateUsersController - GET #new', type: :request do
   subject { get new_user_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       mock_actual_account_name
       sign_in manage_users_user

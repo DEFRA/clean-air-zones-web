@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'NonDvlaVehiclesController - GET #choose_type', type: :request do
+describe 'NonDvlaVehiclesController - GET #choose_type', type: :request do
   subject { get choose_type_non_dvla_vehicles_path }
 
   context 'with VRN in the session' do
@@ -23,12 +23,23 @@ RSpec.describe 'NonDvlaVehiclesController - GET #choose_type', type: :request do
 
     context 'when vehicle is unrecognized' do
       before do
-        add_to_session(vrn: 'CU57ABC', country: 'UK', unrecognised: true)
+        add_vehicle_details_to_session(vrn: 'CU57ABC', country: 'UK', unrecognised: true)
         subject
       end
 
       it 'assigns VehicleController#unrecognized as return path' do
         expect(assigns(:return_path)).to eq(unrecognised_vehicles_path)
+      end
+    end
+
+    context 'when vehicle is possible_fraud' do
+      before do
+        add_vehicle_details_to_session(vrn: 'CU57ABC', country: 'UK', possible_fraud: true)
+        subject
+      end
+
+      it 'assigns VehicleController#uk_registered_details as return path' do
+        expect(assigns(:return_path)).to eq(uk_registered_details_vehicles_path)
       end
     end
   end

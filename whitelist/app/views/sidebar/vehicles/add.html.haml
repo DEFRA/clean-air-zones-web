@@ -1,0 +1,30 @@
+.govuk-grid-column-two-thirds
+
+  - if @errors.present?
+    = render 'common/errors_summary', errors: @errors
+
+  - if @errors && @errors[:vrn_exists]
+    .govuk-warning-text
+      %span.govuk-warning-text__icon{'aria-hidden': 'true'} !
+      %strong.govuk-warning-text__text
+        %span.govuk-warning-text__assistive Warning
+        You can edit
+        = "'#{@vrn}'"
+        = succeed '.' do
+          = link_to 'here', '#'
+  = render 'common/header_and_body'
+  %h2.govuk-heading-m Add a VRN
+  %p
+    Fill in all the fields before adding a new vehicle to the whitelisted vehicle register.
+
+  = form_for(NewVrnForm.new, url: add_vehicles_path, method: :post) do |f|
+    %fieldset.govuk-fieldset
+      %legend.govuk-visually-hidden
+        Add a VRN Form
+
+      - if @errors.present?
+        = render 'sidebar/vehicles/add_vrn_input/errored', form: f, errors: @errors
+      - else
+        = render 'sidebar/vehicles/add_vrn_input/normal', form: f
+
+      = f.submit 'Add vehicle', class: 'govuk-button', 'data-module': 'govuk-button'

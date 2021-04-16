@@ -8,12 +8,12 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module CitizensChargePayment
+  # The class is responsible for building the middleware stack
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
-
+    config.load_defaults 6.1
     # Load lib folder files
-    config.eager_load_paths << Rails.root.join('lib')
+    config.autoload_paths << "#{config.root}/lib"
 
     default_url = 'https://www.example.com'
     config.x.feedback_url = ENV.fetch('FEEDBACK_URL', 'https://defragroup.eu.qualtrics.com/jfe/form/SV_3ymAC1qqYAEVJgF')
@@ -29,5 +29,7 @@ module CitizensChargePayment
     config.exceptions_app = routes
 
     config.time_zone = 'London'
+
+    config.x.max_history_size = ENV.fetch('MAX_HISTORY_SIZE', 100)
   end
 end

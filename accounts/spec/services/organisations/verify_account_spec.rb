@@ -12,8 +12,8 @@ describe Organisations::VerifyAccount do
   it { is_expected.to eq :success }
 
   it 'calls AccountsApi::Accounts.verify_user with proper params' do
-    expect(AccountsApi::Accounts).to receive(:verify_user).with(token: token)
     subject
+    expect(AccountsApi::Accounts).to have_received(:verify_user).with(token: token)
   end
 
   context 'when API responds with an error' do

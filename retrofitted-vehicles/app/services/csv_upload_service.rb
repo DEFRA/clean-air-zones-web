@@ -5,7 +5,7 @@
 #
 class CsvUploadService < BaseService
   # regular expression for validating filename.
-  NAME_FORMAT = /^CAZ-([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))-\d+$/.freeze
+  NAME_FORMAT = /^CAZ-([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))+$/
   ##
   # Initializer method.
   #
@@ -36,9 +36,9 @@ class CsvUploadService < BaseService
   #
   # Returns a boolean.
   def validate
-    if no_file_selected? || invalid_extname? || invalid_filename?
-      raise CsvUploadFailureException, error
-    end
+    return unless no_file_selected? || invalid_extname? || invalid_filename? || filesize_too_big?
+
+    raise CsvUploadFailureException, error
   end
 
   # Checks if file is present.
@@ -47,9 +47,7 @@ class CsvUploadService < BaseService
   # Returns a boolean if file is present.
   # Returns a string if not.
   def no_file_selected?
-    if file.nil?
-      @error = I18n.t('csv.errors.no_file')
-    end
+    @error = I18n.t('csv.errors.no_file') if file.nil?
   end
 
   # Checks if filename extension equals `csv`.
@@ -58,9 +56,7 @@ class CsvUploadService < BaseService
   # Returns a boolean if filename extension equals `csv`.
   # Returns a string if not.
   def invalid_extname?
-    unless File.extname(file.original_filename).downcase == '.csv'
-      @error = I18n.t('csv.errors.invalid_ext')
-    end
+    @error = I18n.t('csv.errors.invalid_ext') unless File.extname(file.original_filename).downcase == '.csv'
   end
 
   # Checks if filename is compliant with the naming rules.
@@ -69,9 +65,17 @@ class CsvUploadService < BaseService
   # Returns a boolean if filename is compliant with the naming rules
   # Returns a string if not.
   def invalid_filename?
-    if File.basename(file.original_filename, '.*').match(NAME_FORMAT).nil?
-      @error = I18n.t('csv.errors.invalid_name')
-    end
+    return unless File.basename(file.original_filename, '.*').match(NAME_FORMAT).nil?
+
+    @error = I18n.t('csv.errors.invalid_name')
+  end
+
+  # Checks if file size not bigger than `Rails.configuration.x.csv_file_size_limit`
+  # Returns a boolean if filename is compliant with the naming rules
+  # Returns a string if not.
+  def filesize_too_big?
+    csv_file_size_limit = Rails.configuration.x.csv_file_size_limit
+    @error = "The CSV must be smaller than #{csv_file_size_limit}MB" if file.size > csv_file_size_limit.megabytes
   end
 
   # Uploading file to AWS S3.
@@ -80,7 +84,7 @@ class CsvUploadService < BaseService
   #
   # Returns a boolean.
   def upload_to_s3
-    log_action "Uploading file to s3 by a user: #{user.username}"
+    log_action 'Uploading file to S3'
     return true if aws_call
 
     raise CsvUploadFailureException, I18n.t('csv.errors.base')
@@ -99,14 +103,14 @@ class CsvUploadService < BaseService
 
   # Returns a hash.
   def file_metadata
-    { 'uploader-id': user.sub, 'csv-content-type': 'RETROFIT_LIST' }
+    { 'uploader-id': user.preferred_username, 'csv-content-type': 'RETROFIT_LIST' }
   end
 
   # AWS S3 Bucket Name.
   #
   # Returns a string.
   def bucket_name
-    ENV['S3_AWS_BUCKET']
+    ENV.fetch('S3_AWS_BUCKET', 'S3_AWS_BUCKET')
   end
 
   # Attributes used internally to save values.

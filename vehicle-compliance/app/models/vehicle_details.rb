@@ -14,7 +14,7 @@ class VehicleDetails
     @vrn = vrn
   end
 
-  # Returns a string, eg. 'CU57ABC'.
+  # Returns an uppercased string, eg. 'CU57ABC'.
   def registration_number
     @vrn
   end
@@ -63,11 +63,6 @@ class VehicleDetails
     (compliance_api['type']&.downcase == 'null').to_s
   end
 
-  # Returns a string, eg. 'M1'.
-  def type_approval
-    string_field('typeApproval')
-  end
-
   # Returns a string, eg. 'i20'.
   def model
     string_field('model')
@@ -103,21 +98,16 @@ class VehicleDetails
   #
   # Returned compliance details will have following fields:
   # * +registrationNumber+ - string, eg. 'CAS310'
-  # * +retrofitted+ - boolean
+  # * +isRetrofitted+ - boolean
   # * +exempt+ - boolean, determines if the vehicle is exempt from charges
   # * +complianceOutcomes+ - array of objects
   #   * +cleanAirZoneId+ - UUID, this represents CAZ ID in the DB
   #   * +name+ - string, eg. 'Birmingham'
   #   * +charge+ - number, determines how much owner of the vehicle will have to pay in this CAZ
   #   * +informationUrls+ - object containing CAZ dedicated info links
-  #     * +emissionsStandards+
   #     * +mainInfo+
-  #     * +hoursOfOperation+
-  #     * +pricing+
   #     * +exemptionOrDiscount+
-  #     * +payCaz+
   #     * +becomeCompliant+
-  #     * +financialAssistance+
   #     * +boundary+
   def compliance_api
     @compliance_api ||= ComplianceCheckerApi.vehicle_details(vrn)

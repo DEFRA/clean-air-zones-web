@@ -4,20 +4,18 @@
 # This is an abstract class used as a base for all API wrapper classes.
 #
 # It includes {HTTParty gem}[https://github.com/jnunemaker/httparty]
-
 class BaseApi
   include HTTParty
 
-  ##
   # Class representing 500 HTTP response code (Internal Server Error) returned by API
   class Error500Exception < ApiException; end
-  ##
+
   # Class representing 422 HTTP response code (Unprocessable Entity) returned by API
   class Error422Exception < ApiException; end
-  ##
+
   # Class representing 404 HTTP response code (Not Found) returned by API
   class Error404Exception < ApiException; end
-  ##
+
   # Class representing 400 HTTP response code (Bad Request) returned by API
   class Error400Exception < ApiException; end
 
@@ -36,15 +34,13 @@ class BaseApi
     # Exception are raised based on HTTP status of the response.
     # Other HTTP statuses than 400, 404, 422 and errors during response parsing are treated as 500.
     #
-    # * {400 Exception}[rdoc-ref:BaseApi::Error400Exception]
-    # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception]
-    # * {422 Exception}[rdoc-ref:BaseApi::Error422Exception]
-    # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception]
+    # * {400 Exception}[rdoc-ref:Error400Exception]
+    # * {404 Exception}[rdoc-ref:Error404Exception]
+    # * {422 Exception}[rdoc-ref:Error422Exception]
+    # * {500 Exception}[rdoc-ref:Error500Exception]
     def request(method, path, options = {})
       response_object = public_send(method, path, options).response
-      parsed_body = validate_response(response_object.response)
-      log_action 'The call was successful'
-      parsed_body
+      validate_response(response_object.response)
     end
 
     private
@@ -103,13 +99,8 @@ class BaseApi
     # Matches error status with a proper exception class.
     # Returns an error class.
     def error_klass(status)
-      case status
-      when 400
-        Error400Exception
-      when 404
-        Error404Exception
-      when 422
-        Error422Exception
+      if status.in?([400, 404, 422])
+        "BaseApi::Error#{status}Exception".constantize
       else
         Error500Exception
       end

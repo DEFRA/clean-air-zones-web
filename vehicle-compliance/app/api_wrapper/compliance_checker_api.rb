@@ -7,14 +7,9 @@
 # All calls will automatically have the correlation ID and JSON content type added to the header.
 #
 # All methods are on the class level, so there is no initializer method.
-
 class ComplianceCheckerApi < BaseApi
-  base_uri ENV['COMPLIANCE_CHECKER_API_URL'] + '/v1/compliance-checker'
-
-  headers(
-    'Content-Type' => 'application/json',
-    'X-Correlation-ID' => -> { SecureRandom.uuid }
-  )
+  base_uri "#{ENV.fetch('COMPLIANCE_CHECKER_API_URL', 'localhost:3001')}/v1/compliance-checker"
+  headers('Content-Type' => 'application/json', 'X-Correlation-ID' => -> { SecureRandom.uuid })
 
   class << self
     ##
@@ -50,44 +45,39 @@ class ComplianceCheckerApi < BaseApi
     # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception] - vehicle not found in the DVLA db
     # * {422 Exception}[rdoc-ref:BaseApi::Error422Exception] - invalid VRN
     # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
-
+    #
     def vehicle_details(vrn)
-      log_action "Getting vehicle details, vrn: #{vrn}"
+      log_action 'Making request for vehicle details with VRN'
       request(:get, "/vehicles/#{vrn}/details")
     end
 
     ##
     # Calls +/v1/compliance-checker/vehicles/:vrn/compliance+ endpoint with +GET+ method
-    # and returns compliance details of the requested vehicle for requested zones.
+    # and returns compliance details of the requested vehicle for all zones.
     #
     # ==== Attributes
     #
     # * +vrn+ - Vehicle registration number parsed using {Parser}[rdoc-ref:VrnParser]
-    # * +zones+ - Array of zones IDs which vehicle compliance is check against
     #
     # ==== Example
     #
-    #    ComplianceCheckerApi.vehicle_compliance('0009-AA', ['3c3e1631-c478-42db-8422-63f608f71efd'])
+    #    ComplianceCheckerApi.vehicle_compliance('0009-AA')
     #
     # ==== Result
     #
     # Returned compliance details will have following fields:
     # * +registrationNumber+
-    # * +retrofitted+ - boolean
+    # * +isRetrofitted+ - boolean
     # * +exempt+ - boolean, determines if the vehicle is exempt from charges
     # * +complianceOutcomes+ - array of objects
     #   * +cleanAirZoneId+ - UUID, this represents CAZ ID in the DB
     #   * +name+ - string, eg. "Birmingham"
     #   * +charge+ - number, determines how much owner of the vehicle will have to pay in this CAZ
+    #   * +phgvDiscountAvailable+ - True if the vehicle's tax class is equal to PRIVATE HGV and body type is equal to either MOTOR HOME/CARAVAN or LIVESTOCK CARRIER
     #   * +informationUrls+ - object containing CAZ dedicated info links
-    #     * +emissionsStandards+
     #     * +mainInfo+
-    #     * +hoursOfOperation+
-    #     * +pricing+
     #     * +exemptionOrDiscount+
-    #     * +payCaz+
     #     * +becomeCompliant+
-    #     * +financialAssistance+
     #     * +boundary+
     #
     # ==== Serialization
@@ -102,15 +92,51 @@ class ComplianceCheckerApi < BaseApi
     # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception] - vehicle not found in the DVLA db
     # * {422 Exception}[rdoc-ref:BaseApi::Error422Exception] - invalid VRN
     # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
-
-    def vehicle_compliance(vrn, zones)
-      zones = zones.join(',')
-      log_action "Getting vehicle compliance, vrn: #{vrn}, zones: #{zones}"
-      request(:get, "/vehicles/#{vrn}/compliance", query: { zones: zones })
+    #
+    def vehicle_compliance(vrn)
+      log_action 'Making request for vehicle compliance in all zones'
+      request(:get, "/vehicles/#{vrn}/compliance")
     end
 
     ##
-    # Calls +/v1/compliance-checker/clean-air-zones+ endpoint with +GET+ method
+    # Calls +/v1/compliance-checker/vehicles/:vrn/register-details endpoint with +GET+ method
+    # and returns information about vehicle existence on specific registers.
+    #
+    # ==== Attributes
+    #
+    # * +vrn+ - Vehicle registration number parsed using {Parser}[rdoc-ref:VrnParser]
+    #
+    # ==== Example
+    #
+    #    ComplianceCheckerApi.register_details('0009-AA')
+    #
+    # ==== Result
+    #
+    # Returned response will have the following attributes:
+    # * +registerCompliant+ - boolean, states if vehicle features in Retrofit or is compliant in GPW
+    # * +registerExempt+ - boolean, states if vehicle features in MOD or is exempt in GPW
+    # * +registeredMOD+ - boolean, states if vehicle features in MOD
+    # * +registeredGPW+ - boolean, states if vehicle features in GPW
+    # * +registeredNTR+ - boolean, states if vehicle features in NTR
+    # * +registeredRetrofit+ - boolean, states if vehicle features in Retrofit
+    #
+    # ==== Serialization
+    #
+    # {Register details model}[rdoc-ref:RegisterDetails]
+    # can be used to create an instance referring to the returned data
+    #
+    # ==== Exceptions
+    # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception] - vehicle not found
+    # * {422 Exception}[rdoc-ref:BaseApi::Error422Exception] - invalid VRN
+    # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
+    #
+    def register_details(vrn)
+      log_action 'Making request for vehicle presence on specific registers'
+      request(:get, "/vehicles/#{vrn}/register-details")
+    end
+
+    ##
+    # Calls +/v1/payments/clean-air-zones+ endpoint with +GET+ method
     # and returns the list of available Clean Air Zones.
     #
     # ==== Example
@@ -123,6 +149,8 @@ class ComplianceCheckerApi < BaseApi
     # * +name+ - string, eg. "Birmingham"
     # * +cleanAirZoneId+ - UUID, this represents CAZ ID in the DB
     # * +boundaryUrl+ - URL, this represents a link to eg. a map with CAZ boundaries
+    # * +mainInfoUrl+ - URL, this represents a link to general info about CAZ
+    # * +exemptionUrl+ - URL, this represents a link to information about exemptions
     #
     # ==== Serialization
     #
@@ -131,7 +159,7 @@ class ComplianceCheckerApi < BaseApi
     # ==== Exceptions
     #
     # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
-
+    #
     def clean_air_zones
       log_action 'Getting clean air zones'
       request(:get, '/clean-air-zones')['cleanAirZones']

@@ -6,8 +6,7 @@
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h1.govuk-heading-xl
-        = title_and_header
+      %h1.govuk-heading-xl= title_and_header
 
       %p Where the Clean Air Zones are and when you need to pay a charge.
 
@@ -29,6 +28,18 @@
       %h2.govuk-heading-m Exemptions
       %p There are some national and local exemptions from the charge.
 
+      %h3.govuk-heading-s Local
+      %p
+        Local exemptions are specific to the local authority of each CAZ and are managed by them. You usually
+        have to apply for local exemptions.
+      %p
+        You can find out more about local exemptions for driving in:
+      - @zones.each do |zone|
+        %ul.govuk-list-govuk-list--bullet
+          %li
+            %p
+              = external_link_to(zone.name, zone.exemption_url, id: "#{zone.name.downcase}-exemption")
+
       %h3.govuk-heading-s National
       %p Vehicles that do not have to pay the charge as they are automatically entitled to a national exemption:
       %ul.govuk-list-govuk-list--bullet
@@ -36,6 +47,8 @@
           %p vehicle that’s ultra low emission
         %li
           %p disabled passenger tax class vehicle
+        %li
+          %p disabled tax class vehicle
         %li
           %p military vehicle
         %li
@@ -48,21 +61,69 @@
                                class: 'govuk-link',
                                id: 'cvras')
             (CVRAS)
+        %li
+          %p certain types of agricultural vehicles
 
-      %h3.govuk-heading-s Local
+      %h2.govuk-heading-m How we calculate your charge
+      %p Factors we take into account:
+      %ul
+        %li
+          %p vehicle type and its emission standards (eg HGV and Euro V)
+        %li
+          %p fuel type (eg diesel or petrol)
+        %li
+          %p class of Clean Air Zone (A, B, C, D)
       %p
-        Local exemptions are specific to the local authority of each CAZ and are managed by them. You usually
-        have to apply for local exemptions.
+        The ULEZ in London uses different factors to calculate it's charge. Which is why the charge you see here may be different from
+        = succeed '.' do
+          = external_link_to('Transport for London',
+                             'https://tfl.gov.uk/modes/driving/ultra-low-emission-zone',
+                             class: 'govuk-link',
+                             id: 'transport-for-london')
+
+      %h2.govuk-heading-m Important information about vehicle data
+      %p The data accuracy of this service is always improving.
+      %p If you think the charge result you have received is incorrect contact us.
       %p
-        You can find out more about local exemptions for driving in:
-      - @zones.each do |zone|
-        %ul.govuk-list-govuk-list--bullet
-          %li
-            %p
-              = link_to(zone.name, zone.exemption_url, id: "#{zone.name.downcase}-exemption")
+        You can find out more about Clean Air Zones on our
+        = succeed '.' do
+          = external_link_to('guidance page',
+                             'https://www.gov.uk/guidance/driving-in-a-clean-air-zone',
+                             class: 'govuk-link',
+                             id: 'guidance')
+
+      %h2.govuk-heading-m How we calculate your charge
+      %p Factors we take into account:
+      %ul
+        %li
+          %p vehicle type and its emission standards (eg HGV and Euro V)
+        %li
+          %p fuel type (eg diesel or petrol)
+        %li
+          %p class of Clean Air Zone (A, B, C, D)
+      %p
+        The ULEZ in London uses different factors to calculate it's charge. Which is why the charge you see here may be different from
+        = succeed '.' do
+          = external_link_to('Transport for London',
+                             'https://tfl.gov.uk/modes/driving/ultra-low-emission-zone',
+                             class: 'govuk-link',
+                             id: 'transport-for-london')
+
+      %h2.govuk-heading-m Important information about vehicle data
+      %p The data accuracy of this service is always improving.
+      %p If you think the charge result you have received is incorrect contact us.
+      %p
+        You can find out more about Clean Air Zones on our
+        = succeed '.' do
+          = external_link_to('guidance page',
+                             'https://www.gov.uk/guidance/driving-in-a-clean-air-zone',
+                             class: 'govuk-link',
+                             id: 'guidance')
 
       %h2.govuk-heading-m Contact Clean Air Zone Support
-      %p You can contact Clean Air Zone Support if you cannot use the online service or you need help.
+      %p
+        You can contact Clean Air Zone Support if you cannot use the online service or have a question about
+        the charge information of any of your vehicles.
 
       .govuk-details
         .govuk-details__text

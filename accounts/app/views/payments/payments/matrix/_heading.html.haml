@@ -3,7 +3,7 @@
 
 %h1.govuk-heading-l= title_and_header
 
-- if @charges.any_results?
+- if @pagination.total_vehicles_count.positive?
   %p
     %strong
       This list only contains vehicles that will be charged in

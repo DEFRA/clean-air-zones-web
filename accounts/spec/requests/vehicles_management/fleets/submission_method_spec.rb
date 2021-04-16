@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::FleetsController - GET #submission_method' do
-  subject { get submission_method_fleets_path }
+describe 'VehiclesManagement::FleetsController - GET #choose_method', type: :request do
+  subject { get choose_method_fleets_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       mock_actual_account_name
       mock_users
@@ -13,7 +13,7 @@ describe 'VehiclesManagement::FleetsController - GET #submission_method' do
     end
 
     it 'renders the view' do
-      expect(subject).to render_template(:submission_method)
+      expect(subject).to render_template(:choose_method)
     end
   end
 

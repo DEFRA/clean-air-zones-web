@@ -2,8 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe 'DatesController - GET #select_second_weekly_date', type: :request do
+describe 'DatesController - GET #select_second_weekly_date', type: :request do
   subject { get select_second_weekly_date_dates_path }
+
+  let(:transaction_id) { SecureRandom.uuid }
 
   context 'with VRN, COUNTRY, LA, LA NAME and CHARGE in the session' do
     before do
@@ -60,12 +62,15 @@ RSpec.describe 'DatesController - GET #select_second_weekly_date', type: :reques
   end
 
   context 'without details in the session' do
-    before { add_vrn_to_session }
+    before do
+      add_transaction_id_to_session(transaction_id)
+      add_vrn_to_session
+    end
 
     it_behaves_like 'la is missing'
   end
 
-  context 'when Leeds weekly discount is NOT possible' do
-    it_behaves_like 'not allowed Leeds discount'
+  context 'when Taxidiscountcaz discount is NOT possible' do
+    it_behaves_like 'not allowed Taxidiscountcaz discount'
   end
 end

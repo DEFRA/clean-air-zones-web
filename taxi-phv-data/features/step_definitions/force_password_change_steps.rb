@@ -10,12 +10,12 @@ And('I am a newly created user') do
   allow(Cognito::AuthUser).to receive(:call).and_return(challenged_cognito_user)
 end
 
-And('I enter valid credentials') do
+And('I enter valid credentials and press the Continue') do
   basic_sign_in
 end
 
-Then('I am transferred to “Force Change password” page') do
-  expect(current_path).to eq(new_password_path)
+Then('I am transferred to the Force Change password page') do
+  expect(page).to have_current_path(new_password_path, ignore_query: true)
 end
 
 Given('I am on a Force Change password page') do
@@ -31,10 +31,6 @@ And('I enter password that does not comply with Cognito setup password policy') 
   fill_new_password_form
 end
 
-Then('I am presented with an error') do
-  expect(page).to have_content('Password must be at least 8 characters long')
-end
-
 And('I can retry') do
   fill_new_password_form
 end
@@ -45,5 +41,5 @@ And('I enter password that is compliant with Cognito setup password policy') do
 end
 
 Then('I am taken to Password set successfully page') do
-  expect(current_path).to eq(success_passwords_path)
+  expect(page).to have_current_path(success_passwords_path, ignore_query: true)
 end

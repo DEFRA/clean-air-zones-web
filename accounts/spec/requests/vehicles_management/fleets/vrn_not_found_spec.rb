@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe 'FleetsController - GET #vrn_not_found' do
+describe 'FleetsController - GET #vrn_not_found', type: :request do
   subject { get vrn_not_found_fleets_path, params: { vrn: vrn } }
 
   let(:vrn) { 'ABC123' }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       sign_in manage_vehicles_user
       subject

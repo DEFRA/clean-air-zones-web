@@ -16,8 +16,9 @@
       %p
         Try again later.
 
-      %p
-        = link_to 'Pay for another Clean Air Zone', payments_path
+      - if @zones.count > 1
+        %p
+          = link_to 'Pay for another Clean Air Zone', payments_path
 
       %p
         = link_to 'Return to Your account', dashboard_path

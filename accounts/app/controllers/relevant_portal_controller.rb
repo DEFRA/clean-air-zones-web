@@ -36,10 +36,13 @@ class RelevantPortalController < ApplicationController
 
   private
 
-  # chooses rlevant portal url based on the provided option choosen by user.
+  # Chooses relevant portal url based on the provided option chosen by user.
   def determine_relevant_portal_path(check_vehicle_option)
-    if check_vehicle_option == 'single'
+    case check_vehicle_option
+    when 'single'
       "#{Rails.configuration.x.check_air_standard_url}/vehicle_checkers/enter_details"
+    when 'pay'
+      "#{Rails.configuration.x.payments_ui_url}/vehicles/enter_details"
     else
       root_path
     end

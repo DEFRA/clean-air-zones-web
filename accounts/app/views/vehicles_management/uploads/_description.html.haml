@@ -3,14 +3,16 @@
   = succeed('.') do
     = link_to('download a template (CSV, 1KB)', download_template_uploads_path)
 %p
-  When filling in the number plates follow these rules so the data uploads correctly:
+  When filling in the number plates follow these rules so the data uploads with no errors:
 %ul.govuk-list.govuk-list--bullet
+  %li in cell A1, enter the words 'number plate'
   %li the number plates can only be between 2 and 7 characters
-  %li only letters and numbers are allowed
-  %li number plates need to be entered in the first column only, leave cell A1 blank
-  %li there should be no empty rows between the number plates
+  %li use only letters and numbers
+  %li enter number plates in the first column only
+  %li no empty rows between the number plates
   %li the maximum amount of vehicles you can upload is 200,000
 
+%br
 %p Once the file is filled in:
 %ol.govuk-list.govuk-list--number
   %li

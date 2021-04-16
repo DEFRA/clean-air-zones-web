@@ -11,6 +11,18 @@
         = render 'shared/error_summary', error_msg_div: '#confirm-remove-user-error', error_msg: alert
 
       %h1.govuk-heading-l= title_and_header
+      - if @is_mandate_creator
+        %p
+          The email address
+          = @user_email
+          is associated with a Direct Debit mandate.
+          By removing this user, future Direct Debit emails will now go to
+          = @owner_email
+          and the person making the payment.
+
+        %p
+          If you want another user to receive these emails, you should contact your bank,
+          cancel the Direct Debit and set up a new one.
 
       = form_tag remove_user_path, method: :post do
         .govuk-form-group{class: ('govuk-form-group--error' if alert)}

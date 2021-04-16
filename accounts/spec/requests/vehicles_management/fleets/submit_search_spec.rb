@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-describe 'FleetsController - POST #submit_details' do
+describe 'FleetsController - POST #submit_details', type: :request do
   subject { post fleets_path, params: { vrn: vrn } }
 
   let(:vrn) { 'ABC123' }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       mock_clean_air_zones
       sign_in manage_vehicles_user
     end
 
     context 'with valid params' do
-      context 'and vrn found' do
+      context 'with vrn found' do
         before do
           mock_fleet
           subject
@@ -29,7 +29,7 @@ describe 'FleetsController - POST #submit_details' do
         end
       end
 
-      context 'and vrn not found' do
+      context 'with vrn not found' do
         before do
           mock_fleet(create_empty_fleet)
           subject
@@ -40,7 +40,7 @@ describe 'FleetsController - POST #submit_details' do
         end
 
         it 'redirects to the vrn not found page' do
-          expect(response).to redirect_to(vrn_not_found_fleets_path(vrn: vrn))
+          expect(response).to redirect_to(vrn_not_found_fleets_path(vrn: vrn, per_page: 10))
         end
       end
     end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Organisations::OrganisationsController - GET #email_verified' do
+describe 'Organisations::OrganisationsController - GET #email_verified', type: :request do
   subject { get email_verified_organisations_path }
 
   it 'returns a 200 OK status' do

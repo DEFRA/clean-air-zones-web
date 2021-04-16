@@ -1,7 +1,7 @@
 - title_and_header = "Pay a daily #{@compliance_details.zone_name} Clean Air Zone charge"
 - page_title(title_and_header)
 
-= link_to 'Back', @return_path, class: 'govuk-back-link', id: 'back-link'
+= render 'common/js_back_link'
 
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
@@ -18,6 +18,16 @@
         The daily charge for your vehicle is:
       %h2.govuk-heading-m
         = parse_charge(@compliance_details.charge)
+
+      - if @undetermined_taxi
+        %p
+          Data used to calculate the compliance of your vehicle is missing from your V5C registration certificate (log book).
+        %p
+          If your vehicle
+          %strong does
+          meet Clean Air standards, you can claim a refund when your vehicle details are updated.
+        %br
+
       %p
         The charge period runs from midnight to midnight.
       .govuk-warning-text
@@ -25,7 +35,7 @@
         %strong.govuk-warning-text__text
           %span.govuk-warning-text__assistive
             Warning
-          You have up to 7 days to pay the charge after driving in the zone, or you may pay a penalty charge notice (PCN).
+          Payment must be made a maximum of 7 days after you have driven in the zone or you may receive a penalty charge notice (PCN).
       = form_tag confirm_daily_charge_dates_path, method: :post do
         .govuk-form-group{class: ('govuk-form-group--error' if alert)}
           %fieldset.govuk-fieldset
@@ -45,13 +55,11 @@
                                                checked: session.dig(:vehicle_details, 'confirm_exempt'),
                                                id: 'confirm-exempt'}
                 %label.govuk-label.govuk-checkboxes__label{for: 'confirm-exempt'}
-                  I confirm I am not exempt from paying the
-                  = @compliance_details.zone_name
-                  Clean Air Zone charge.
+                  I confirm I do not have an exemption from the #{@compliance_details.zone_name} Clean Air Zone charge.
                   %br
                   = precede '(' do
                     = succeed ').' do
-                      = link_to("Find out who is exempt from paying the charge in #{@compliance_details.zone_name}",
+                      = link_to("Find out who can apply for an exemption in #{@compliance_details.zone_name}",
                                 @compliance_details.exemption_or_discount_url,
                                 id: 'exemption-link')
         = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

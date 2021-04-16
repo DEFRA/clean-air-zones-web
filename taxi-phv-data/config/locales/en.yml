@@ -1,56 +1,54 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
+---
 en:
-  email:
-    errors:
-      invalid_format: 'The email is in an invalid format'
-      required: 'Email is required'
-      too_long: 'The email exceeds the limit of 45 characters'
-  password:
-    errors:
-      complexity: 'Password must be at least 8 characters long, include at least one upper case letter and a number'
-      code_mismatch: 'Provided confirmation code does not match or is expired'
-      code_required: 'Confirmation code is required'
-      passwords_required: 'Password and password confirmation are required'
-      confirmation_required: 'Password confirmation is required'
-      password_required: 'Password is required'
-      password_equality: 'Password and password confirmation must be the same'
-      password_unchanged: 'New password must be different than your temporary one'
-  expired_session: 'Your session has expired'
   csv:
     errors:
-      base: 'The selected file could not be uploaded – try again'
-      no_file: 'Select a CSV'
-      invalid_ext: 'The selected file must be a CSV'
-      invalid_name: 'The selected file must be named correctly'
+      base: The selected file could not be uploaded – try again
+      invalid_ext: The selected file must be a CSV
+      invalid_name: The selected file must be named correctly
+      no_file: Select a CSV file to upload
+  email:
+    errors:
+      invalid_format: Enter your email address in a valid format
+      required: Enter your email address
+      too_long: The email exceeds the limit of 45 characters
+  expired_session: Your session has expired
+  external_link: opens in a new window
+  labels:
+    vrn: Enter a number plate
+    vrn_example: For example, CU57ABC
+  password:
+    errors:
+      code_mismatch: The confirmation code does not match or has expired
+      code_required: Enter your confirmation code
+      complexity: Password must be at least 12 characters long, include at least one
+        upper case letter, a number, and a special character
+      confirmation_required: Enter your password confirmation
+      password_equality: Enter a password and password confirmation that are the same
+      password_required: Enter your password
+      password_unchanged: New password must be different than your temporary one
+      required: Enter your password
+  search_vrn_form:
+    errors:
+      dates:
+        invalid:
+          end_date_format: End date must be a real date
+          one_month_between: End date must be within 1 month of the start date
+          start_date: Start date must be earlier than end date
+          start_date_format: Start date must be a real date
+          start_date_in_future: Start date must be before tomorrow
+        missing:
+          all: "%{parameter} must include a day, month and year"
+          day: "%{parameter} must include a day"
+          day_month: "%{parameter} must include a day and month"
+          day_year: "%{parameter} must include a day and year"
+          month: "%{parameter} must include a month"
+          month_year: "%{parameter} must include a month and year"
+          search_type: Choose a search type
+          year: "%{parameter} must include a year"
+    invalid_format: Enter the number plate of the vehicle in a valid format
+    vrn_missing: Enter the number plate of the vehicle
+    vrn_too_long: The number plate of the vehicle is too long
+    vrn_too_short: The number plate of the vehicle is too short
   upload:
-    delivery_error: 'There was an error sending your confirmation email. Your data has still been saved.'
+    delivery_error: There was an error sending your confirmation email. Your data
+      has still been saved.

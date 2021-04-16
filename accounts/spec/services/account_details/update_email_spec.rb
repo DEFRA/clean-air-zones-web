@@ -4,21 +4,17 @@ require 'rails_helper'
 
 describe AccountDetails::UpdateEmail do
   subject do
-    described_class.call(
-      password: password,
-      password_confirmation: password_confirmation,
-      token: token
-    )
+    described_class.call(password: password, password_confirmation: password_confirmation, token: token)
   end
 
   let(:password) { 'password' }
   let(:password_confirmation) { password }
-  let(:token) { @uuid }
+  let(:token) { SecureRandom.uuid }
 
   context 'when params are valid' do
     let(:url) { '/auth/email/change-confirm' }
 
-    context 'and api returns correct response' do
+    context 'with api returns correct response' do
       before do
         allow(NewPasswordForm).to receive(:new).and_return(instance_double(NewPasswordForm, valid?: true))
         allow(AccountsApi::Auth).to receive(:confirm_email).and_return(true)
@@ -27,26 +23,26 @@ describe AccountDetails::UpdateEmail do
       it { is_expected.to be_valid }
 
       it 'calls NewPasswordForm with proper params' do
-        expect(NewPasswordForm).to receive(:new).with(
+        subject.valid?
+        expect(NewPasswordForm).to have_received(:new).with(
           password: password,
           password_confirmation: password_confirmation
         )
-        subject.valid?
       end
 
       it 'calls AccountsApi::Auth.confirm_email with proper params' do
-        expect(AccountsApi::Auth).to receive(:confirm_email).with(token: token, password: password)
         subject.valid?
+        expect(AccountsApi::Auth).to have_received(:confirm_email).with(token: token, password: password)
       end
     end
 
-    context 'and api returns 422 status' do
+    context 'with api returns 422 status' do
       let(:error_code) { 'passwordNotValid' }
 
       before do
         stub_request(:put, /#{url}/).to_return(
           status: 422,
-          body: { 'message': '', 'errorCode': error_code }.to_json
+          body: { message: '', errorCode: error_code }.to_json
         )
         subject.valid?
       end
@@ -55,10 +51,10 @@ describe AccountDetails::UpdateEmail do
         it { is_expected.not_to be_valid }
 
         it 'has a proper error message' do
-          expect(subject.errors[:password].first.include?(
-                   'Enter a password at least 12 characters long including at least 1 upper case letter, '\
-                   '1 number and a special character'
-                 )).to be_truthy
+          expect(subject.errors[:password].first).to include(
+            'Enter a password at least 12 characters long including at least 1 upper case letter, '\
+            '1 number and a special character'
+          )
         end
       end
 
@@ -115,10 +111,6 @@ describe AccountDetails::UpdateEmail do
 
     it 'has a proper error message' do
       expect(subject.errors[:password]).to include(I18n.t('new_password_form.errors.password_missing'))
-    end
-
-    it 'does not call API' do
-      expect(AccountsApi::Auth).to_not receive(:confirm_email)
     end
   end
 end

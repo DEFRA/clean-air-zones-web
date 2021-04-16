@@ -8,77 +8,24 @@ class PaymentsApi < BaseApi
 
   class << self
     ##
-    # Calls +/v1/accounts/:account_id/chargeable-vehicles/:vrn+ endpoint with +GET+ method
-    # and returns fleet vehicle with compliance result for provided vrn.
-    #
-    # ==== Attributes
-    #
-    # * +account_id+ - ID of the account associated with the fleet
-    # * +vrn+ - registration number used to mark page start/end
-    #
-    # ==== Example
-    #
-    #    PaymentsApi.chargeable_vehicle(
-    #       account_id: '1f30838f-69ee-4486-95b4-7dfcd5c6c67c',
-    #       vrn: 'PAY001'
-    #    )
-    #
-    # ==== Result
-    #
-    # Returned vehicle details will have the following fields:
-    # * +chargeableAccountVehicles+ - list of the vehicles
-    # * +firstVrn+ - VRN used to fetch the previous page
-    # * +lastVrn+ - VRN used to fetch the next page
-    #
-    # ==== Serialization
-    #
-    # {VehiclesManagement::ChargeableFleet model}[rdoc-ref:VehiclesManagement::ChargeableFleet]
-    # can be used to create an instance referring to the returned data
-    #
-    # ==== Exceptions
-    #
-    # * {400 Exception}[rdoc-ref:BaseApi::Error400Exception] - invalid parameters
-    # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception] - account not found
-    # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception] - vehicle not found
-    # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
-    #
-    def chargeable_vehicle(account_id:, zone_id:, vrn:)
-      log_action('Getting chargeable vehicle')
-      query = { 'cleanAirZoneId' => zone_id }
-      request(:get, "/accounts/#{account_id}/chargeable-vehicles/#{vrn.upcase}", query: query)
-    end
-
-    ##
-    # Calls +/v1/accounts/:account_id/charges+ endpoint with +GET+ method
+    # Calls +/v1/accounts/:account_id/chargeable-vehicles+ endpoint with +GET+ method
     # and returns paginated list of the fleet vehicles with compliance results.
     #
     # ==== Attributes
     #
     # * +account_id+ - ID of the account associated with the fleet
+    # * +zone_id+ - ID of the CAZ associated with the fleet
     # * +page+ - requested page of the results
     # * +per_page+ - number of vehicles per page, defaults to 10
-    # * +zones+ - array of CleanAirZones IDs, default to empty array
-    # * +vrn+ - registration number used to mark page start/end
-    # * +direction+ - indicates direction of traveling between pages (+next+ or +previous+)
-    #
-    # ==== Example
-    #
-    #    PaymentsApi.chargeable_vehicles(
-    #       account_id: '1f30838f-69ee-4486-95b4-7dfcd5c6c67c',
-    #       zone_id: 'be6010fa-4923-4e52-b2e1-94f27b14d158'
-    #    )
+    # * +vrn+ - vehicle registration number, search parameter
     #
     # ==== Result
     #
     # Returned vehicles details will have the following fields:
     # * +chargeableAccountVehicles+ - list of the vehicles
-    # * +firstVrn+ - VRN used to fetch the previous page
-    # * +lastVrn+ - VRN used to fetch the next page
-    #
-    # ==== Serialization
-    #
-    # {VehiclesManagement::ChargeableFleet model}[rdoc-ref:VehiclesManagement::ChargeableFleet]
-    # can be used to create an instance referring to the returned data
+    # * +pageCount+ - number of available pages
+    # * +totalVehiclesCount+ - total number of vehicles in the fleet
+    # * +anyUndeterminedVehicles+ - indicates if any of the vehicles is undetermined
     #
     # ==== Exceptions
     #
@@ -86,13 +33,8 @@ class PaymentsApi < BaseApi
     # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception] - account not found
     # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
     #
-    def chargeable_vehicles(account_id:, zone_id:, vrn: nil, direction: nil)
-      log_action('Getting the list of chargeable vehicles')
-      query = { 'cleanAirZoneId' => zone_id, 'pageSize' => 10 }
-      if vrn.present? && direction.present?
-        query['vrn'] = vrn
-        query['direction'] = direction
-      end
+    def chargeable_vehicles(account_id:, zone_id:, page:, per_page:, vrn:)
+      query = chargeable_vehicles_body(zone_id, page, per_page, vrn)
       request(:get, "/accounts/#{account_id}/chargeable-vehicles", query: query)
     end
 
@@ -159,7 +101,7 @@ class PaymentsApi < BaseApi
     # ==== Example
     #
     #    PaymentsApi.payment_status(payment_id: '86b64512-154c-4033-a64d-92e8ed19275f',
-    #                               caz_name: 'Leeds')
+    #                               caz_name: 'Birmingham')
     #
     # ==== Result
     #
@@ -181,8 +123,7 @@ class PaymentsApi < BaseApi
     #
     def payment_status(payment_id:, caz_name:)
       log_action("Getting a payment status with id: #{payment_id}")
-      request(:put, "/payments/#{payment_id}",
-              body: payment_status_body(caz_name))
+      request(:put, "/payments/#{payment_id}", body: payment_status_body(caz_name))
     end
 
     private
@@ -200,9 +141,17 @@ class PaymentsApi < BaseApi
 
     # Returns parsed JSON of the payment status reconciliation parameters with proper keys
     def payment_status_body(caz_name)
+      { cleanAirZoneName: caz_name }.to_json
+    end
+
+    # Returns parsed JSON with proper keys
+    def chargeable_vehicles_body(zone_id, page, per_page, vrn)
       {
-        cleanAirZoneName: caz_name
-      }.to_json
+        'cleanAirZoneId' => zone_id,
+        'pageNumber' => calculate_page_number(page),
+        'pageSize' => per_page,
+        'query' => vrn&.upcase
+      }.compact
     end
   end
 end

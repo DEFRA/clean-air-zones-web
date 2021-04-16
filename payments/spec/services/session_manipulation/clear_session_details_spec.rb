@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe SessionManipulation::ClearSessionDetails do
-  subject(:service) { described_class.call(session: session, key: 8) }
+describe SessionManipulation::ClearSessionDetails do
+  subject { described_class.call(session: session, key: 8) }
 
   let(:session) { { vehicle_details: details } }
   let(:details) do
@@ -11,7 +11,7 @@ RSpec.describe SessionManipulation::ClearSessionDetails do
       'vrn' => 'CU123AB',
       'country' => 'UK',
       'confirm_vehicle' => true,
-      'leeds_taxi' => true,
+      'weekly_taxi' => true,
       'unrecognised' => true,
       'confirm_registration' => true,
       'type' => 'car',
@@ -19,7 +19,7 @@ RSpec.describe SessionManipulation::ClearSessionDetails do
       'chargeable_zones' => 2,
       'la_id' => SecureRandom.uuid,
       'daily_charge' => 12.5,
-      'la_name' => 'Leeds',
+      'la_name' => 'Taxidiscountcaz',
       'weekly_possible' => true,
       'tariff_code' => 'test',
       'charge_period' => 'daily-charge',
@@ -34,12 +34,12 @@ RSpec.describe SessionManipulation::ClearSessionDetails do
   end
 
   it 'clears details from steps above vehicle details' do
-    service
+    subject
     expect(session[:vehicle_details].keys).to contain_exactly(
       'vrn',
       'country',
       'confirm_vehicle',
-      'leeds_taxi',
+      'weekly_taxi',
       'unrecognised',
       'confirm_registration',
       'type',

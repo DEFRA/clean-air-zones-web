@@ -6,6 +6,8 @@
 # Also, contains some basic endpoints.
 #
 class ApplicationController < ActionController::Base
+  # protects applications against CSRF
+  protect_from_forgery prepend: true
   # rescues from API errors
   rescue_from Errno::ECONNREFUSED,
               SocketError,
@@ -21,7 +23,6 @@ class ApplicationController < ActionController::Base
                                if: lambda {
                                      Rails.env.production? && ENV['HTTP_BASIC_PASSWORD'].present?
                                    }
-
   ##
   # Health endpoint
   #
@@ -49,11 +50,6 @@ class ApplicationController < ActionController::Base
     render json: ENV.fetch('BUILD_ID', 'undefined'), status: :ok
   end
 
-  # clear checked_zones from session
-  def clear_checked_la
-    session[:checked_zones] = []
-  end
-
   private
 
   # Function used as a rescue from API errors.
@@ -76,10 +72,5 @@ class ApplicationController < ActionController::Base
   # Gets VRN from session. Returns string, eg 'CU1234'
   def vrn
     session[:vrn]
-  end
-
-  # Logs invalid form on +warn+ level
-  def log_invalid_form(msg)
-    Rails.logger.warn "The form is invalid. #{msg}"
   end
 end

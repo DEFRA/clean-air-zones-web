@@ -8,7 +8,7 @@
 #
 # All methods are on the class level, so there is no initializer method.
 class RegisterCheckerApi < BaseApi
-  base_uri ENV['TAXI_PHV_REGISTER_API_URL'] + '/v1/scheme-management/register-csv-from-s3'
+  base_uri "#{API_URL}/v1/scheme-management/register-csv-from-s3"
 
   class << self
     ##
@@ -32,7 +32,7 @@ class RegisterCheckerApi < BaseApi
     # Returns a UUID, eg. '2ad47f86-8365-47ee-863b-dae6dbf69b3e'.
     #
     def register_job(file_name, correlation_id)
-      log_call("Registering job with file name: #{file_name}")
+      log_call('Registering job with file name')
       response = request(:post, '/jobs',
                          body: register_body(file_name),
                          headers: custom_headers(correlation_id))
@@ -60,7 +60,7 @@ class RegisterCheckerApi < BaseApi
     # Returns a job status, eg. 'SUCCESS'.
     #
     def job_status(job_uuid, correlation_id)
-      log_call("Getting job status with job uuid: #{job_uuid}")
+      log_call('Getting job status')
       response = request(:get, "/jobs/#{job_uuid}",
                          headers: custom_headers(correlation_id))
       response['status']
@@ -88,7 +88,7 @@ class RegisterCheckerApi < BaseApi
     # Returns a array if job status is 'FAILURE', eg. '['error message one', error message two]'
     #
     def job_errors(job_uuid, correlation_id)
-      log_call("Getting job errors with job uuid: #{job_uuid}")
+      log_call('Getting job errors')
       response = request(:get, "/jobs/#{job_uuid}",
                          headers: custom_headers(correlation_id))
       return nil unless response['status'] == 'FAILURE'
@@ -112,8 +112,8 @@ class RegisterCheckerApi < BaseApi
     #
     def register_body(file_name)
       {
-        "filename": file_name,
-        "s3Bucket": ENV['S3_AWS_BUCKET']
+        filename: file_name,
+        s3Bucket: ENV.fetch('S3_AWS_BUCKET', 'S3_AWS_BUCKET')
       }.to_json
     end
 
@@ -136,17 +136,6 @@ class RegisterCheckerApi < BaseApi
         'Content-Type' => 'application/json',
         'X-Correlation-ID' => correlation_id
       }
-    end
-
-    ##
-    # Logs given message at +info+ level with a proper tag.
-    #
-    # ==== Attributes
-    #
-    # * +msg+ - string, log message
-    #
-    def log_call(msg)
-      Rails.logger.info "[RegisterCheckerApi] #{msg}"
     end
   end
 end

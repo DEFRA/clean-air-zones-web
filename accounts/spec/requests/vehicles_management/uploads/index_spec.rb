@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::UploadsController - GET #index' do
+describe 'VehiclesManagement::UploadsController - GET #index', type: :request do
   subject { get uploads_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       sign_in manage_vehicles_user
       mock_actual_account_name

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'PaymentsController - GET #index', type: :request do
+describe 'PaymentsController - GET #index', type: :request do
   subject { get payments_path }
 
   let(:payment_id) { 'XYZ123ABC' }
@@ -13,7 +13,7 @@ RSpec.describe 'PaymentsController - GET #index', type: :request do
 
   context 'with payment id' do
     before do
-      add_to_session(payment_id: payment_id)
+      add_vehicle_details_to_session(payment_id: payment_id)
       allow(PaymentStatus).to receive(:new).and_return(
         instance_double('PaymentStatus',
                         success?: success,
@@ -26,7 +26,7 @@ RSpec.describe 'PaymentsController - GET #index', type: :request do
 
     context 'when payment status is SUCCESS' do
       it 'redirects to the success page' do
-        expect(response).to redirect_to(success_payments_path)
+        expect(response).to redirect_to(success_payments_path(id: session[:transaction_id]))
       end
 
       it 'sets user email in the session' do
@@ -46,7 +46,7 @@ RSpec.describe 'PaymentsController - GET #index', type: :request do
       let(:success) { false }
 
       it 'redirects to the failure page' do
-        expect(response).to redirect_to(failure_payments_path)
+        expect(response).to redirect_to(failure_payments_path(id: session[:transaction_id]))
       end
 
       it 'does set user email in the session' do

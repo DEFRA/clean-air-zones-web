@@ -87,8 +87,8 @@ module ApplicationHelper
     date.strftime('%A %d %B %Y')
   end
 
-  # Check if Direct Debit feature is enabled in configuration.
+  # Check if user is in a beta group or Direct Debit feature is enabled in configuration.
   def direct_debits_enabled?
-    Rails.configuration.x.feature_direct_debits.to_s.downcase == 'true'
+    current_user&.beta_tester || Rails.configuration.x.feature_direct_debits.to_s.downcase == 'true'
   end
 end

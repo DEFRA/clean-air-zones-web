@@ -7,7 +7,7 @@ describe 'DebitsApi.complete_mandate_creation - POST' do
 
   let(:flow_id) { 'RE0002VT8ZDTEM1PE4T8W730KBDFH54X' }
   let(:session_id) { 'a724ed38b864e7490c91f9c06142ef9a' }
-  let(:caz_id) { @uuid }
+  let(:caz_id) { SecureRandom.uuid }
   let(:url) { "/payments/direct_debit_redirect_flows/#{flow_id}/complete" }
 
   context 'when the response status is 201' do

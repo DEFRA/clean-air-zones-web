@@ -76,7 +76,6 @@ class ComplianceCheckerApi < BaseApi
     # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
     #
     def clean_air_zones
-      log_action('Getting clean air zones')
       request(:get, '/clean-air-zones')['cleanAirZones']
     end
   end

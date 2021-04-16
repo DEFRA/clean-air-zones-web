@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "ff353915a43497960de52a1184cfe0637901f2889f6af76bc2899d711dde5931",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/services/vehicles_management/count_vehicles.rb",
+      "line": 32,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`wc -l \"#{file.path}\"`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "VehiclesManagement::CountVehicles",
+        "method": "vehicles_count"
+      },
+      "user_input": "file.path",
+      "confidence": "Medium",
+      "note": ""
+    }
+  ],
+  "updated": "2021-02-10 13:11:14 +0100",
+  "brakeman_version": "5.0.0"
+}

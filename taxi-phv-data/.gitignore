@@ -48,6 +48,15 @@ config/ssl/
 
 # Ignore envs
 .env
+
+# Vagrant files
 .vagrant/
 
-/doc
+# RDoc HTML files
+/doc/app
+
+# YARD files
+.yardoc
+
+# jard debugger files
+jard_errors.txt

@@ -19,15 +19,8 @@ describe 'ComplianceCheckerApi.vehicle_details' do
 
     it 'returns a proper fields' do
       expect(subject.keys).to contain_exactly(
-        'registration_number',
-        'typeApproval',
-        'type',
-        'make',
-        'model',
-        'colour',
-        'fuelType',
-        'taxiOrPhv',
-        'licensingAuthoritiesNames'
+        'registration_number', 'typeApproval', 'type', 'make', 'model', 'colour', 'fuelType',
+        'taxiOrPhv', 'licensingAuthoritiesNames'
       )
     end
 

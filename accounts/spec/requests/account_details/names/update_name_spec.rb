@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::NamesController - GET #update_name' do
+describe 'AccountDetails::NamesController - GET #update_name', type: :request do
   subject { get update_name_non_primary_users_path, params: params }
 
   let(:params) { { name: name } }

@@ -12,9 +12,9 @@ describe 'PaymentsApi.create_payment' do
     )
   end
 
-  let(:caz_id) { @uuid }
+  let(:caz_id) { SecureRandom.uuid }
   let(:return_url) { 'http://example.com' }
-  let(:user_id) { @uuid }
+  let(:user_id) { SecureRandom.uuid }
   let(:transactions) do
     [
       {
@@ -36,7 +36,7 @@ describe 'PaymentsApi.create_payment' do
     before do
       stub_request(:post, /#{url}/).to_return(
         status: 201,
-        body: { 'paymentId': @uuid, 'nextUrl': 'http://example.com' }.to_json
+        body: { paymentId: SecureRandom.uuid, nextUrl: 'http://example.com' }.to_json
       )
     end
 
@@ -45,15 +45,13 @@ describe 'PaymentsApi.create_payment' do
     end
 
     it 'calls API with right params' do
-      expect(subject)
-        .to have_requested(:post, /#{url}/)
-        .with(body: {
-                cleanAirZoneId: caz_id,
-                returnUrl: return_url,
-                userId: user_id,
-                transactions: transactions,
-                telephonePayment: false
-              })
+      expect(subject).to have_requested(:post, /#{url}/).with(body: {
+                                                                cleanAirZoneId: caz_id,
+                                                                returnUrl: return_url,
+                                                                userId: user_id,
+                                                                transactions: transactions,
+                                                                telephonePayment: false
+                                                              })
     end
   end
 

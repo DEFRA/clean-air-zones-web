@@ -2,16 +2,15 @@
 
 require 'rails_helper'
 
-describe 'PaymentsController - GET #index' do
-  subject { get payments_path, headers: { 'HTTP_REFERER': referer } }
+describe 'PaymentsController - GET #index', type: :request do
+  subject { get payments_path, headers: { HTTP_REFERER: referer } }
 
   let(:referer) { 'http://www.example.com' }
+  let(:user) { make_payments_user }
 
   before { sign_in user }
 
-  let(:user) { make_payments_user }
-
-  context 'correct permissions' do
+  context 'when correct permissions' do
     context 'with empty fleet' do
       before { mock_fleet(create_empty_fleet) }
 
@@ -41,7 +40,7 @@ describe 'PaymentsController - GET #index' do
         end
 
         context 'when coming from debits payment success page' do
-          let(:referer) { 'http://www.example.com/debits/success' }
+          let(:referer) { 'http://www.example.com/direct_debits/success' }
 
           it 'has a correct value' do
             subject
@@ -59,7 +58,7 @@ describe 'PaymentsController - GET #index' do
         end
       end
 
-      context 'and with upload data in redis' do
+      context 'with with upload data in redis' do
         before do
           add_upload_job_to_redis
           allow(FleetsApi).to receive(:job_status).and_return(status: status, errors: [])
@@ -68,7 +67,7 @@ describe 'PaymentsController - GET #index' do
 
         let(:upload_job_redis_key) { "account_id_#{user.account_id}" }
 
-        context 'and when status is SUCCESS' do
+        context 'with when status is SUCCESS' do
           let(:status) { 'SUCCESS' }
 
           it 'renders the view' do
@@ -76,7 +75,7 @@ describe 'PaymentsController - GET #index' do
           end
         end
 
-        context 'and when status is CHARGEABILITY_CALCULATION_IN_PROGRESS' do
+        context 'with when status is CHARGEABILITY_CALCULATION_IN_PROGRESS' do
           let(:status) { 'CHARGEABILITY_CALCULATION_IN_PROGRESS' }
 
           it 'redirects to the calculating chargeability page' do
@@ -84,7 +83,7 @@ describe 'PaymentsController - GET #index' do
           end
         end
 
-        context 'and when status is RUNNING' do
+        context 'with when status is RUNNING' do
           let(:status) { 'RUNNING' }
 
           it 'redirects to the process uploading page' do
@@ -92,7 +91,7 @@ describe 'PaymentsController - GET #index' do
           end
         end
 
-        context 'and when status is unknown' do
+        context 'with when status is unknown' do
           let(:status) { 'UNKNOWN' }
 
           it 'renders the view' do

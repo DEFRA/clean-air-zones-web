@@ -12,7 +12,10 @@
 
       %h1.govuk-heading-l= title_content
       %p
-        Charge information for vehicles in each Clean Air Zone.
+        The table shows the daily charge you would pay to drive a vehicle in each Clean Air Zone.
+        Find out how we
+        = succeed '.' do
+          = link_to('calculate charges', help_path, class: 'govuk-link', id: 'help')
       .govuk-inset-text
         %b Live
         \- you must pay a charge to drive in the zone
@@ -21,7 +24,7 @@
         \- you do not need to pay until charging starts, you can see the dates on the
         = link_to('help page', help_path, class: 'govuk-link', id: 'help')
 
-      -# = render 'vehicles_management/fleets/search'
+      = render 'vehicles_management/fleets/search'
 
       %table.govuk-table
         %caption.govuk-table__caption
@@ -47,9 +50,9 @@
                 %td.govuk-table__cell{scope: 'row', class: 'vehicle-management-column'}
                   = vehicle.formatted_charge(zone.id)
               %td.govuk-table__cell{scope: 'row'}
-                = link_to('Remove', assign_delete_fleets_path(vrn: vehicle.vrn), id: "remove_#{vehicle.vrn}")
+                = link_to('Remove', assign_remove_fleets_path(vrn: vehicle.vrn), id: "remove_#{vehicle.vrn}")
 
-      = render 'pagination'
+      = render 'pagination' if @pagination.total_vehicles_count > 10
 
       = form_tag(fleets_path, method: :get) do
         .govuk-form-group
@@ -67,15 +70,23 @@
                             'Hide vehicles that are not charged in any Zone',
                             class: 'govuk-label govuk-checkboxes__label')
 
+                - if @pagination.total_vehicles_count > 10
+                  = select_tag('per_page',
+                               options_for_select(@pagination.results_per_page, params[:per_page]),
+                               class: 'govuk-select moj-pagination__results results-per-page-select',
+                               onchange: 'this.form.submit()')
+                  = label_tag('per_page', 'Results per page', class: 'govuk-label moj-pagination__results results-per-page-select')
+
       %p
         = link_to('Download a spreadsheet (CSV) of the charges you would pay to drive in all Clean Air Zones',
                   export_fleets_path,
                   id: 'csv-export',
-                  class: 'govuk-link')
+                  class: 'govuk-link',
+                  download: true)
 
       %p{id: 'csv-export__notice', style: 'display: none;'}
         Your export is downloading...
-      
+
       = javascript_pack_tag 'export_button_notice'
 
       - if @fleet.any_undetermined_vehicles
@@ -101,17 +112,17 @@
         You can add multiple vehicles by overriding this list with a new
         = succeed '.' do
           = link_to('list of vehicles', uploads_path, id: 'reupload', class: 'govuk-link')
-      
+
       %p
         = succeed '.' do
           = link_to('Add individual vehicles one by one',
                     enter_details_vehicles_path,
                     id: 'individual-payment',
                     class: 'govuk-link')
-      
+
       - if allow_make_payments? && @pagination.total_vehicles_count >= 2 && @payment_features_enabled
         %hr.govuk-section-break.govuk-section-break--m
         = link_to('Make a payment', payments_path, id: 'payment-button', class: 'govuk-button', 'data-module': 'govuk-button')
-      
+
       %p
         = link_to('Return to Account home', dashboard_path, id: 'return-to-account', class: 'govuk-link')

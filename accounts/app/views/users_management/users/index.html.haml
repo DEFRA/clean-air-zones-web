@@ -1,4 +1,4 @@
-- title_and_header = "Manage #{current_user.actual_account_name} account users"
+- title_and_header = raw("Manage #{current_user.actual_account_name} account users")
 - content_for(:title, title_and_header)
 
 = link_to 'Back', dashboard_path, class: 'govuk-back-link'

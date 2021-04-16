@@ -1,4 +1,5 @@
-= link_to 'Back', enter_details_vehicle_checkers_path, class: 'govuk-back-link'
+- content_for(:title, 'This vehicle is exempt from charges in all Clean Air Zones')
+= back_link(enter_details_vehicle_checkers_path)
 
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
@@ -8,13 +9,12 @@
           This vehicle is exempt from charges in all Clean Air Zones
       %br
       %p
-        Vehicle registration
+        Vehicle number plate
         = @vehicle_registration
         is exempt from all Clean Air Zone charges and there is no charge to drive it in any of the zones.
         The Ultra Low Emission Zone in London may have different exemption rules that you can check with
         = link_to('Transport for London',
                   'https://tfl.gov.uk/modes/driving/check-your-vehicle-35896',
-                  target: '_blank',
                   class: 'caz-inline-link',
                   id: 'transport-for-london')
         if you need to drive in London.

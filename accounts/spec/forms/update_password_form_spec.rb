@@ -21,7 +21,7 @@ describe UpdatePasswordForm, type: :model do
     expect(subject).to be_valid
   end
 
-  context '.submit valid form' do
+  describe '.submit valid form' do
     before do
       allow(AccountsApi::Auth).to receive(:update_password).and_return(true)
       subject.submit

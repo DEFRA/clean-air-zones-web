@@ -1,0 +1,33 @@
+- title_and_header = 'Setup your new password'
+- content_for(:title, title_and_header)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  %fieldset.govuk-fieldset
+    %legend.govuk-fieldset__legend.govuk-fieldset__legend--xl
+      %h1.govuk-heading-l
+        = title_and_header
+      - if @error.present?
+        .govuk-error-summary{'aria-labelledby': 'error-summary-title',
+                             'data-module': 'govuk-error-summary',
+                             role: '@error',
+                             tabindex: '-1'}
+          %h2#error-summary-title.govuk-error-summary__title
+            There was a problem
+          .govuk-error-summary__body
+            %ul.govuk-list.govuk-error-summary__list
+              %li
+                - transformed_flat_errors(@error).each_with_index do |error, index|
+                  %li.custom-csv-error
+                    = link_to(error.first, "##{error.second}-error", id: "#{error.second}-#{index}")
+
+      %p
+        You are logging in for the first time. For security reasons please update your password.
+      %p
+        Please enter new password below.
+        It should be at least 12 characters long, include at least one upper case letter, a number, and a special character.
+
+      = form_for(current_user, url: passwords_path, method: :post) do |f|
+        - %i[password password_confirmation].each do |field|
+          = render(@error && @error[field] ? 'passwords/errored_field' : 'passwords/input_field', form: f, field: field)
+        .govuk-form-group
+          = f.submit 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

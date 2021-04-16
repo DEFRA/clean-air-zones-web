@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'PaymentsController - GET #review_details' do
+describe 'PaymentsController - GET #review_details', type: :request do
   subject { get review_details_payments_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     let(:payment_details) do
       { 'PAY001' =>
         { vrn: 'PAY001',
@@ -16,7 +16,7 @@ describe 'PaymentsController - GET #review_details' do
 
     before do
       sign_in create_user
-      add_to_session(new_payment: { caz_id: @uuid,
+      add_to_session(new_payment: { caz_id: SecureRandom.uuid,
                                     details: payment_details })
       subject
     end

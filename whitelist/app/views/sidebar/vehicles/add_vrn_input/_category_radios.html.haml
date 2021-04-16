@@ -1,0 +1,64 @@
+.govuk-form-group{class: ('govuk-form-group--error' if errors)}
+  .govuk-label
+    Category
+
+  - if errors
+    %span#category-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = errors
+
+  .govuk-radios
+    .govuk-radios__item
+      = form.radio_button(:category,
+                          'Early Adopter',
+                          class: 'govuk-radios__input',
+                          id: 'early-adopter',
+                          checked: params.dig(:new_vrn_form, :category) == 'Early Adopter')
+      = form.label(:category,
+                   'Early adopter',
+                   class: 'govuk-label govuk-radios__label',
+                   for: 'early-adopter')
+
+    .govuk-radios__item
+      = form.radio_button(:category,
+                          'Non-UK Vehicle',
+                          class: 'govuk-radios__input',
+                          id: 'non-uk',
+                          checked: params.dig(:new_vrn_form, :category) == 'Non-UK Vehicle')
+      = form.label(:category,
+                   'Non-UK Vehicle',
+                   class: 'govuk-label govuk-radios__label',
+                   for: 'non-uk')
+
+    .govuk-radios__item
+      = form.radio_button(:category,
+                          'Problematic VRN',
+                          class: 'govuk-radios__input',
+                          id: 'problematic-vrn',
+                          checked: params.dig(:new_vrn_form, :category) == 'Problematic VRN')
+      = form.label(:category,
+                   'Problematic VRN',
+                   class: 'govuk-label govuk-radios__label',
+                   for: 'problematic-vrn')
+
+    .govuk-radios__item
+      = form.radio_button(:category,
+                          'Exemption',
+                          class: 'govuk-radios__input',
+                          id: 'exemption',
+                          checked: params.dig(:new_vrn_form, :category) == 'Exemption')
+      = form.label(:category,
+                   'Exemption',
+                   class: 'govuk-label govuk-radios__label',
+                   for: 'exemption')
+
+    .govuk-radios__item
+      = form.radio_button(:category,
+                          'Other',
+                          class: 'govuk-radios__input',
+                          id: 'other',
+                          checked: params.dig(:new_vrn_form, :category) == 'Other')
+      = form.label(:category,
+                   'Other',
+                   class: 'govuk-label govuk-radios__label',
+                   for: 'other')

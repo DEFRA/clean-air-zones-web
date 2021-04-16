@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ChargeableZonesService do
+describe ChargeableZonesService do
   subject(:service_call) { described_class.call(vehicle_details: vehicle_details) }
 
   let(:vehicle_details) do
@@ -28,13 +28,13 @@ RSpec.describe ChargeableZonesService do
     end
 
     it 'calls ComplianceCheckerApi.clean_air_zones' do
-      expect(ComplianceCheckerApi).to receive(:clean_air_zones)
       service_call
+      expect(ComplianceCheckerApi).to have_received(:clean_air_zones)
     end
 
     it 'does not call ComplianceCheckerApi.vehicle_compliance' do
-      expect(ComplianceCheckerApi).not_to receive(:vehicle_compliance)
       service_call
+      expect(ComplianceCheckerApi).not_to have_received(:vehicle_compliance)
     end
 
     it 'returns empty CAZes collection' do
@@ -52,8 +52,8 @@ RSpec.describe ChargeableZonesService do
         it_behaves_like 'a chargeable zones service'
 
         it 'calls ComplianceCheckerApi.vehicle_compliance with the right params' do
-          expect(ComplianceCheckerApi).to receive(:vehicle_compliance).with(vrn, mocked_zone_ids)
           service_call
+          expect(ComplianceCheckerApi).to have_received(:vehicle_compliance).with(vrn, mocked_zone_ids)
         end
       end
 
@@ -79,16 +79,14 @@ RSpec.describe ChargeableZonesService do
 
       before do
         mock_chargeable_zones
-        mock_unrecognised_compliance(one_charge)
+        mock_unrecognised_compliance(one_charge: one_charge)
       end
 
       it_behaves_like 'a chargeable zones service'
 
       it 'calls ComplianceCheckerApi.unrecognised_compliance with the right params' do
-        expect(ComplianceCheckerApi)
-          .to receive(:unrecognised_compliance)
-          .with(type, mocked_zone_ids)
         service_call
+        expect(ComplianceCheckerApi).to have_received(:unrecognised_compliance).with(type, mocked_zone_ids)
       end
 
       context 'when charge for one CAZ equals 0' do
@@ -110,10 +108,8 @@ RSpec.describe ChargeableZonesService do
       it_behaves_like 'a chargeable zones service'
 
       it 'calls ComplianceCheckerApi.unrecognised_compliance with the right params' do
-        expect(ComplianceCheckerApi)
-          .to receive(:unrecognised_compliance)
-          .with(type, mocked_zone_ids)
         service_call
+        expect(ComplianceCheckerApi).to have_received(:unrecognised_compliance).with(type, mocked_zone_ids)
       end
     end
   end

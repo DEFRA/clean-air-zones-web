@@ -6,7 +6,6 @@ RSpec.describe PaymentHistory::BackLinkHistory do
   subject do
     described_class.call(
       session: session,
-      session_key: session_key,
       back_button: back_button,
       page: page,
       default_url: default_url,
@@ -15,7 +14,6 @@ RSpec.describe PaymentHistory::BackLinkHistory do
   end
 
   let(:session) { {} }
-  let(:session_key) { :company_back_link_history }
   let(:back_button) { false }
   let(:page) { 1 }
   let(:default_url) { 'http://www.example.com/dashboard' }
@@ -37,12 +35,12 @@ RSpec.describe PaymentHistory::BackLinkHistory do
 
       it 'adding first step to the session' do
         subject
-        expect(session[:company_back_link_history]).to eq({ '1' => 1 })
+        expect(session[:back_link_history]).to eq({ '1' => 1 })
       end
     end
 
     context 'when session is not empty and back button is false' do
-      let(:session) { { company_back_link_history: { '1' => 1 } } }
+      let(:session) { { back_link_history: { '1' => 1 } } }
       let(:page) { 4 }
 
       it 'returns correct page' do
@@ -51,12 +49,12 @@ RSpec.describe PaymentHistory::BackLinkHistory do
 
       it 'adding steps to the session' do
         subject
-        expect(session[:company_back_link_history]).to eq({ '1' => 1, '2' => 4 })
+        expect(session[:back_link_history]).to eq({ '1' => 1, '2' => 4 })
       end
     end
 
     context 'when session is not empty, back button is false and last page the same with new one' do
-      let(:session) { { company_back_link_history: { '1' => 1 } } }
+      let(:session) { { back_link_history: { '1' => 1 } } }
       let(:page) { 1 }
 
       it 'returns correct page' do
@@ -65,12 +63,12 @@ RSpec.describe PaymentHistory::BackLinkHistory do
 
       it 'not adding steps to the session' do
         subject
-        expect(session[:company_back_link_history]).to eq({ '1' => 1 })
+        expect(session[:back_link_history]).to eq({ '1' => 1 })
       end
     end
 
     context 'when session is not empty, back button is true and last page the same with new one' do
-      let(:session) { { company_back_link_history: { '1' => 1, '2' => 4 } } }
+      let(:session) { { back_link_history: { '1' => 1, '2' => 4 } } }
       let(:page) { 4 }
       let(:back_button) { true }
 
@@ -80,12 +78,12 @@ RSpec.describe PaymentHistory::BackLinkHistory do
 
       it 'not adding steps to the session' do
         subject
-        expect(session[:company_back_link_history]).to eq({ '1' => 1, '2' => 4 })
+        expect(session[:back_link_history]).to eq({ '1' => 1, '2' => 4 })
       end
     end
 
     context 'when session is not empty and back button is true' do
-      let(:session) { { company_back_link_history: { '1' => 1, '2' => 4 } } }
+      let(:session) { { back_link_history: { '1' => 1, '2' => 4 } } }
       let(:back_button) { true }
 
       it 'returns correct page' do
@@ -94,14 +92,14 @@ RSpec.describe PaymentHistory::BackLinkHistory do
 
       it 'removes keys from next steps' do
         subject
-        expect(session[:company_back_link_history]).to eq({ '1' => 1 })
+        expect(session[:back_link_history]).to eq({ '1' => 1 })
       end
     end
 
     context 'when in session already 10 steps and back button is false' do
       let(:session) do
         {
-          company_back_link_history:
+          back_link_history:
           {
             '1' => 1,
             '2' => 2,
@@ -117,22 +115,25 @@ RSpec.describe PaymentHistory::BackLinkHistory do
         }
       end
 
+      before { subject }
+
       it 'returns correct page' do
         expect(subject).to include('page=10')
       end
 
-      before { subject }
+      it 'adding the next step' do
+        expect(session[:back_link_history]).to include({ '11' => 1 })
+      end
 
-      it 'removes first step and adding next one' do
-        expect(session[:company_back_link_history]).to include({ '11' => 1 })
-        expect(session[:company_back_link_history]).to_not include({ '1' => 1 })
+      it 'removes first step' do
+        expect(session[:back_link_history]).not_to include({ '1' => 1 })
       end
     end
 
     context 'when in session already 10 steps and back button is true' do
       let(:session) do
         {
-          company_back_link_history:
+          back_link_history:
           {
             '1' => 1,
             '2' => 2,
@@ -149,16 +150,22 @@ RSpec.describe PaymentHistory::BackLinkHistory do
       end
       let(:back_button) { true }
 
+      before { subject }
+
       it 'returns correct page' do
         expect(subject).to include('page=9')
       end
 
-      before { subject }
+      it 'return a proper value for first step' do
+        expect(session[:back_link_history]).to include({ '1' => 1 })
+      end
 
-      it 'not adding the next step' do
-        expect(session[:company_back_link_history]).to include({ '1' => 1 })
-        expect(session[:company_back_link_history]).to include({ '10' => 10 })
-        expect(session[:company_back_link_history]).to_not include({ '11' => 1 })
+      it 'return a proper value for tenth step' do
+        expect(session[:back_link_history]).to include({ '10' => 10 })
+      end
+
+      it 'not adding the eleventh step' do
+        expect(session[:back_link_history]).not_to include({ '11' => 1 })
       end
     end
   end

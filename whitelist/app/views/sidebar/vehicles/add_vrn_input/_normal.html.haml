@@ -1,0 +1,31 @@
+.govuk-form-group
+  = form.label :vrn, I18n.t('labels.vrn'), class: 'govuk-label', id: 'vrn_label', for: 'vrn'
+  = form.text_field :vrn,
+                    class: 'govuk-input vrn-input',
+                    id: 'vrn',
+                    'aria-labelledby': 'vrn_label',
+                    'aria-describedby': 'vrn',
+                    type: 'text',
+                    maxlength: 14
+
+= render 'sidebar/vehicles/add_vrn_input/category_radios', form: form, errors: nil
+
+.govuk-form-group
+  = form.label :manufacturer, 'Manufacturer', class: 'govuk-label', id: 'manufacturer_label', for: 'manufacturer'
+  = form.text_field :manufacturer,
+                    class: 'govuk-input govuk-!-width-three-quarters',
+                    id: 'manufacturer',
+                    'aria-labelledby': 'manufacturer_label',
+                    'aria-describedby': 'manufacturer',
+                    type: 'text',
+                    maxlength: 50
+
+.govuk-form-group
+  = form.label :reason, 'Reason', class: 'govuk-label', id: 'reason_label', for: 'reason'
+  = form.text_field :reason,
+                    class: 'govuk-input govuk-!-width-three-quarters',
+                    id: 'reason',
+                    'aria-labelledby': 'reason_label',
+                    'aria-describedby': 'reason',
+                    type: 'text',
+                    maxlength: 50

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'PaymentsController - POST #create', type: :request do
+describe 'PaymentsController - POST #create', type: :request do
   subject { post payments_path }
 
   let(:vrn) { 'CU57ABC' }
@@ -13,11 +13,11 @@ RSpec.describe 'PaymentsController - POST #create', type: :request do
   let(:redirect_url) { 'https://www.payments.service.gov.uk' }
 
   before do
-    add_to_session(
+    add_vehicle_details_to_session(
       vrn: vrn,
       country: 'UK',
       la_id: zone_id,
-      la_name: 'Leeds',
+      la_name: 'Taxidiscountcaz',
       dates: dates,
       total_charge: charge
     )
@@ -36,7 +36,8 @@ RSpec.describe 'PaymentsController - POST #create', type: :request do
     end
 
     it 'calls Payment model with right params' do
-      expect(Payment).to receive(:new).with(
+      subject
+      expect(Payment).to have_received(:new).with(
         {
           'vrn' => vrn,
           'la_id' => zone_id,
@@ -46,7 +47,6 @@ RSpec.describe 'PaymentsController - POST #create', type: :request do
           'la_name' => anything
         }, payments_url
       )
-      subject
     end
 
     it 'sets payment_id in the session' do
@@ -57,6 +57,7 @@ RSpec.describe 'PaymentsController - POST #create', type: :request do
     context 'when called twice' do
       let(:repeated_request) { post payments_path }
       let(:second_payment_id) { 'LOREM01234IPSUM' }
+
       before do
         subject
         allow(Payment).to receive(:new).and_return(
@@ -65,7 +66,8 @@ RSpec.describe 'PaymentsController - POST #create', type: :request do
       end
 
       it 'calls the Payment model a second time' do
-        expect(Payment).to receive(:new).with(
+        repeated_request
+        expect(Payment).to have_received(:new).with(
           {
             'vrn' => vrn,
             'la_id' => zone_id,
@@ -74,8 +76,7 @@ RSpec.describe 'PaymentsController - POST #create', type: :request do
             'country' => anything,
             'la_name' => anything
           }, payments_url
-        )
-        repeated_request
+        ).twice
       end
 
       it 'sets payment_id in the session' do
