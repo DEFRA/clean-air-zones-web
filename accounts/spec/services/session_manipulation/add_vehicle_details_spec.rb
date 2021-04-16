@@ -3,13 +3,11 @@
 require 'rails_helper'
 
 describe SessionManipulation::AddVehicleDetails do
-  subject do
-    described_class.call(params: params, session: session)
-  end
+  subject { described_class.call(session: session, params: params) }
 
-  let(:params) { VehiclesManagement::ChargeableFleet.new(data).vehicle_list }
-  let(:data) { read_response('chargeable_vehicles.json') }
   let(:session) { {} }
+  let(:params) { Payments::PaginatedVehicles.new(data, 1, 10).vehicle_list }
+  let(:data) { read_response('payments/chargeable_vehicles.json')['1'] }
   let(:first_vehicle) { params.first }
   let(:last_vehicle) { params.last }
 
@@ -20,8 +18,7 @@ describe SessionManipulation::AddVehicleDetails do
   end
 
   it 'saves vehicle details' do
-    expect(session[:new_payment][:details][first_vehicle.vrn])
-      .to eq(first_vehicle.serialize)
+    expect(session[:new_payment][:details][first_vehicle.vrn]).to eq(first_vehicle.serialize)
   end
 
   context 'when there is data in the session' do
@@ -33,8 +30,7 @@ describe SessionManipulation::AddVehicleDetails do
     end
 
     it 'saves new vehicle details' do
-      expect(session[:new_payment][:details][last_vehicle.vrn])
-        .to eq(last_vehicle.serialize)
+      expect(session[:new_payment][:details][last_vehicle.vrn]).to eq(last_vehicle.serialize)
     end
   end
 end

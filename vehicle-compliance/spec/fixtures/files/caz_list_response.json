@@ -3,12 +3,29 @@
       {
           "cleanAirZoneId": "5cd7441d-766f-48ff-b8ad-1809586fea37",
           "name": "Birmingham",
-          "boundaryUrl": "https://www.birmingham.gov.uk/info/20076/pollution/1763/a_clean_air_zone_for_birmingham/3"
+          "boundaryUrl": "https://www.birmingham.gov.uk/info/20076/pollution/1763/a_clean_air_zone_for_birmingham/3",
+          "exemptionUrl": "https://www.brumbreathes.co.uk/exemptions-and-additional-support",
+          "mainInfoUrl": "https://www.brumbreathes.co.uk/",
+          "activeChargeStartDate": "2019-05-14",
+          "operatorName": "Birmingham City Council"
       },
       {
           "cleanAirZoneId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3",
-          "name": "Leeds",
-          "boundaryUrl": "https://www.arcgis.com/home/webmap/viewer.html?webmap=de0120ae980b473982a3149ab072fdfc&extent=-1.733%2c53.7378%2c-1.333%2c53.8621"
+          "name": "Futurecleanairzone",
+          "boundaryUrl": "https://www.test.com",
+          "exemptionUrl": "https://www.test.com",
+          "mainInfoUrl": "https://www.test.com",
+          "activeChargeStartDate": "2019-05-14",
+          "operatorName": "Future CAZ Operator"
+      },
+      {
+          "cleanAirZoneId": "131af03c-f7f4-4aef-81ee-aae4f56dbeb5",
+          "name": "Bath",
+          "boundaryUrl": "http://www.bathnes.gov.uk/zonemaps",
+          "exemptionUrl": "http://www.bathnes.gov.uk/CAZexemptions",
+          "mainInfoUrl": "http://www.bathnes.gov.uk/BathCAZ",
+          "activeChargeStartDate": "2019-05-14",
+          "operatorName": "Bath and North East Somerset Council"
       }
   ]
 }

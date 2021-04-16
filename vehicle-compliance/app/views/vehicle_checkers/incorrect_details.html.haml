@@ -1,14 +1,16 @@
-- content_for(:title, 'Check vehicle compliance')
-= link_to 'Back', confirm_details_vehicle_checkers_path, class: 'govuk-back-link'
+- content_for(:title, 'Incorrect vehicle details')
+= back_link(session[:possible_fraud] ? confirm_uk_details_vehicle_checkers_path : confirm_details_vehicle_checkers_path)
+
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-l Incorrect vehicle details
       %p
-        If your vehicle details are incorrect, you may need to
-        = link_to 'update them', 'https://www.gov.uk/change-vehicle-details-registration-certificate',
-          target: '_blank'
-      %p
+        If the details we hold for your vehicle are incorrect, you need to
         = succeed '.' do
-          If you would like to check the compliance of another vehicle,
-          = link_to 'search again', enter_details_vehicle_checkers_path
+          = link_to('update them with the DVLA',
+                    'https://www.gov.uk/change-vehicle-details-registration-certificate',
+                    id: 'update-them-link')
+        When updated, you can recheck your vehicle.
+
+      %p= link_to 'Check another vehicle', enter_details_vehicle_checkers_path, id: 'check-another-vrn'

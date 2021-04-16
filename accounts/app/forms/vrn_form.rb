@@ -26,11 +26,6 @@ class VrnForm < BaseForm
     @vrn = vrn&.upcase&.delete(' ')
   end
 
-  # returns first error message from the errors collection
-  def error_message
-    errors.messages.values.flatten.first
-  end
-
   private
 
   # Validates format against possible ones

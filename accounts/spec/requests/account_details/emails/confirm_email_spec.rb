@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountsDetails::EmailsController - GET #confirm_email' do
+describe 'AccountsDetails::EmailsController - GET #confirm_email', type: :request do
   subject { get confirm_email_primary_users_path }
 
   before do

@@ -1,82 +1,98 @@
-= link_to 'Back', caz_selection_air_zones_path, class: 'govuk-back-link', id: 'back-link'
+= javascript_pack_tag 'moj'
+
+- title_and_header = 'Clean Air Zone charge'
+= content_for(:title, title_and_header)
+= back_link(session[:possible_fraud] ? confirm_uk_details_vehicle_checkers_path : confirm_details_vehicle_checkers_path)
 
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h1.govuk-heading-l Clean Air Zone charge
-      %p= "Vehicle registration #{@vrn}."
+      %h1.govuk-heading-l= title_and_header
+      %p
+        Results for number plate
+        = succeed '.' do
+          %strong= @vrn
+
+      %div.scrollable-table
+        %table.govuk-table#compliance-table
+          %thead.govuk-table__head
+            %tr.govuk-table__row
+              %th.govuk-table__header{scope: 'col', 'aria-sort': 'ascending'}
+                = button_tag 'Clean Air Zone', data: {index: 0}, type: 'button'
+              %th.govuk-table__header{scope: 'col', 'aria-sort': 'none'}
+                = button_tag 'Daily charge', data: {index: 1}, type: 'button'
+              %th.govuk-table__header{scope: 'col', 'aria-sort': 'none'}
+                = button_tag 'Zone live', data: {index: 2}, type: 'button'
+              %th.govuk-table__header{scope: 'col', 'aria-sort': 'none'}
+                = button_tag 'Map', data: {index: 3}, type: 'button'
+              %th.govuk-table__header{scope: 'col', 'aria-sort': 'none'}
+                = button_tag 'Exemptions', data: {index: 4}, type: 'button'
+          %tbody.govuk-table__body
+            - @compliance_outcomes.each do |details|
+              %tr.govuk-table__row
+                %td.govuk-table__cell= details.zone_name
+
+                %td.govuk-table__cell{ data: { 'sort-value': details.charge_amount } }
+                  - if details.charged?
+                    = details.charge
+                    - bath_discount_available  = details.zone_name == 'Bath' && @phgv_discount_available
+
+                    = link_to 'Discount available', details.exemption_or_discount_url if bath_discount_available
+
+                    - if details.charging_starts == 'Now'
+                      - @any_caz_live = true
+                      - if bath_discount_available
+                        %br
+                        %br
+                      = link_to 'Pay', Rails.configuration.x.payments_ui_url, id: "#{details.zone_name.downcase}-pay-link"
+                  - else
+                    = 'No Charge'
+
+                %td.govuk-table__cell= details.charging_starts
+                %td.govuk-table__cell
+                  = link_to 'Zone boundary', details.boundary_url
+                %td.govuk-table__cell
+                  = link_to details.operator_name, details.exemption_or_discount_url
+
+      - if @any_caz_chargeable
+        %p
+          %b If your vehicle is subject to a daily charge, you do not need to pay until the zone is live.
+
+      %p The zones operate 24 hours a day, 7 days a week, every day of the year.
 
       %details.govuk-details{'data-module': 'govuk-details'}
         %summary.govuk-details__summary
           %span.govuk-details__summary-text
-            %b Please Note:
-            Results are updated on an ongoing basis. See what this means for you
+            How we calculate your charge
         .govuk-details__text
-          The Vehicle Checker service is in private beta, which means we are testing it with a
-          small group of users before launching to the public in 2020. We are continually enhancing
-          and improving the data that underpins the Vehicle Checker, as part of on-going development
-          of the service. It is recommended that users check their vehicles shortly before entering
-          any Clean Air Zones, the first of which are due to launch in summer 2020.
+          %p Factors we take into account:
+          %ul
+            %li vehicle type and its emission standards (eg car and Euro 3)
+            %li fuel type (eg diesel or petrol)
+            %li class of Clean Air Zone (A, B, C, D)
 
-      - @compliance_outcomes.each do |details|
-        %h1.govuk-heading-l{id: details.html_id}
-          = details.zone_name
+          %p
+            The ULEZ in London uses different factors to calculate its charge.
+            Which is why the charge you see here may be different from
+            = succeed('.') do
+              = link_to 'Transport for London', 'https://tfl.gov.uk/modes/driving/check-your-vehicle-35896'
 
-        - unless details.charged?
-          .govuk-panel.govuk-panel--confirmation
-            %h1.govuk-panel__title{id: "uncharged-title-#{details.html_id}"}
-              You will not be charged
-          %br
-          %p
-            There is no charge for driving in
-            = succeed ', ' do
-              = link_to "#{details.zone_name} Clean Air Zone",
-                        details.main_info_url,
-                        target: '_blank',
-                        id: "no-charge-#{details.html_id}"
-            but you may be subject to charge in other Clean Air Zones.
-        - else
-          .govuk-panel.govuk-panel--noncompliant
-            %h1.govuk-panel__title{id: "charged-title-#{details.html_id}"}
-              Subject to daily charge:
-              %br
-              = details.charge
-          %br
-          %p
-            This vehicle does not meet with the
-            = succeed '.' do
-              = link_to details.emissions_standards_url,
-                target: '_blank', class: 'caz-inline-link', id: 'emissions-standards' do
-                = details.zone_name
-                CAZ emissions standards
-            It is therefore subject to a charge when driving in the
-            = link_to details.main_info_url,
-              target: '_blank', class: 'caz-inline-link', id: 'main_info' do
-              = details.zone_name
-              Clean Air Zone
-            = ' during its'
-            = succeed '.' do
-              = link_to 'hours of operation', details.hours_of_operation_url,
-                target: '_blank', class: 'caz-inline-link', id: 'hours-of-operation'
+      %h2.govuk-heading-m Important information about vehicle data
+      %p
+        The data accuracy of this service is always improving. If you think the charge result you have
+        received is incorrect contact us.
 
-          %h2.govuk-heading-m
-            Next steps
-          %ul.govuk-list.govuk-list--bullet
-            %li
-              = link_to 'Find out if you qualify for an exemption or discount',
-                details.exemption_or_discount_url, target: '_blank', id: 'exemption-or-discount'
-            -#%li
-              = link_to "Pay the #{details.zone_name} CAZ charge",
-                details.pay_caz_url, target: '_blank', id: 'pay-caz'
-          %p
-            If you wish to avoid the charge in the future, you can change your vehicle to
-            = succeed "," do
-              = link_to 'become compliant', details.become_compliant_url,
-                target: '_blank', id: 'become-compliant'
-            and you may qualify for
-            = link_to 'financial assistance', details.financial_assistance_url,
-              target: '_blank', id: 'financial-assistance'
-            to help you do so.
+      %h2.govuk-heading-m Guidance on Clean Air Zones
+      %p
+        You can find out more about exemptions, different types of Clean Air Zones, emission standards and refunds on our
+        = succeed '.' do
+          = link_to 'guidance page', 'https://www.gov.uk/guidance/driving-in-a-clean-air-zone'
+
+      %h2.govuk-heading-m Sustainable travel
+      %p Local authorities in the Clean Air Zones have specific information on:
+      %ul.govuk-list.govuk-list--bullet
+        %li support to upgrade or replace your vehicle
+        %li cycling and public transport options
 
       = render 'go_ultra_low_icon'
       = render 'common/print_page'
@@ -90,12 +106,21 @@
             %li
               = link_to 'Check another vehicle',
                         enter_details_vehicle_checkers_path,
-                        id: 'check-another-vrn'
+                        id: 'check-another-vrn-url'
             %li
-              = link_to 'Check another Clean Air Zone',
-                        caz_selection_air_zones_path,
-                        id: 'check-another-caz'
-            %li
-              = link_to 'Contact Clean Air Zones',
-                        contact_forms_path,
-                        id: 'contact-form'
+              = link_to('Contact Clean Air Zones',
+                         Rails.configuration.x.contact_form_link,
+                         id: 'contact-form')
+        - if @any_caz_live
+          %h2.govuk-heading-m
+            Make a payment
+          %nav{'aria-labelledby': 'related-items-label', role: 'navigation'}
+            %ul.govuk-list{class: 'govuk-!-font-size-16'}
+              %li
+                = link_to 'Pay for a single vehicle',
+                          Rails.configuration.x.payments_ui_url,
+                          id: 'pay-for-single'
+              %li
+                = link_to('Pay for multiple vehicles',
+                           Rails.configuration.x.fleets_ui_url,
+                           id: 'pay-for-multiple')

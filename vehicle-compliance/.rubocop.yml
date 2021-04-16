@@ -1,25 +1,40 @@
-require: rubocop-rails
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
 inherit_from: ./lib/rubocop/blacklist.yml
 
 AllCops:
-  TargetRubyVersion: 2.6.5
+  TargetRubyVersion: 3.0.0
+  NewCops: enable
 
-Style/Documentation:
-  Enabled: false
-
-Metrics/LineLength:
-  Max: 99
+Layout/LineLength:
+  Max: 110
   IgnoredPatterns: ['(\A|\s)#']
 
+Metrics/ClassLength:
+  Max: 110
+
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context']
+  IgnoredMethods: ['describe', 'context']
   Exclude:
     - 'config/routes.rb'
     - 'config/environments/*.rb'
 
-Style/AndOr:
-  EnforcedStyle: conditionals
-
 Style/MixinUsage:
   Exclude:
     - 'features/step_definitions/*.rb'
+
+# rubocop-rspec gem excludes
+RSpec/NamedSubject:
+   Enabled: false
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 6
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/api_wrappers/compliance_checker_api/*.rb'

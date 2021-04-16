@@ -26,7 +26,7 @@
       "chargePaid": 12.5,
       "paymentStatus": "paid",
       "travelDate": "2020-07-26",
-      "vrn": "TST003"
+      "vrn": "AST003"
     },
     {
       "caseReference": "gr4q4tedct2vqqo39uvb2o1ei4",
@@ -55,6 +55,56 @@
       "paymentStatus": "paid",
       "travelDate": "2020-07-28",
       "vrn": "TST008"
+    }
+  ],
+  "modificationHistory": [
+    {
+      "amount": 5000,
+      "travelDate": "2021-02-12",
+      "vrn": "TST004",
+      "caseReference": "CR100000680",
+      "modificationTimestamp": "2021-02-12T01:00:17",
+      "entrantPaymentStatus": "REFUNDED"
+    },
+    {
+      "amount": 5000,
+      "travelDate": "2021-02-13",
+      "vrn": "TST004",
+      "caseReference": "CR100000345",
+      "modificationTimestamp": "2021-02-13T01:00:17",
+      "entrantPaymentStatus": "REFUNDED"
+    },
+    {
+      "amount": 5000,
+      "travelDate": "2021-02-14",
+      "vrn": "TST008",
+      "caseReference": "CR100000346",
+      "modificationTimestamp": "2021-02-15T01:00:17",
+      "entrantPaymentStatus": "CHARGEBACK"
+    },
+    {
+      "amount": 5000,
+      "travelDate": "2021-02-15",
+      "vrn": "TST004",
+      "caseReference": "CR100000347",
+      "modificationTimestamp": "2021-02-15T01:00:17",
+      "entrantPaymentStatus": "CHARGEBACK"
+    },
+    {
+      "amount": 5000,
+      "travelDate": "2021-02-12",
+      "vrn": "TST008",
+      "caseReference": "CR100000348",
+      "modificationTimestamp": "2021-02-12T01:00:17",
+      "entrantPaymentStatus": "CHARGEBACK"
+    },
+    {
+      "amount": 5000,
+      "travelDate": "2021-02-16",
+      "vrn": "TST008",
+      "caseReference": "CR100000349",
+      "modificationTimestamp": "2021-02-16T01:00:17",
+      "entrantPaymentStatus": "CHARGEBACK"
     }
   ]
 }

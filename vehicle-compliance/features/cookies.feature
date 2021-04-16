@@ -5,5 +5,5 @@ Feature: Cookies
 
   Scenario: User sees cookies page
     Given I am on the home page
-    When I press Cookies link
+    When I press "Cookies" footer link
     Then I should see "Cookies"

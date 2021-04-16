@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe PaymentHistory::Details, type: :model do
-  subject { described_class.new(@uuid) }
+  subject { described_class.new(SecureRandom.uuid) }
 
   before do
     api_response = read_response('payment_history/payment_details.json')
@@ -13,6 +13,21 @@ describe PaymentHistory::Details, type: :model do
   describe '.payments' do
     it 'returns an PaymentHistory::DetailsPayment instances' do
       expect(subject.payments).to all(be_a(PaymentHistory::DetailsPayment))
+    end
+
+    it 'returns details sorted by vrn' do
+      expect(subject.payments.map(&:vrn)).to eq(%w[AST003 TST003 TST004 TST008])
+    end
+  end
+
+  describe '.payment_modifications' do
+    it 'returns an PaymentHistory::DetailsPayment instances' do
+      expect(subject.payments).to all(be_a(PaymentHistory::DetailsPayment))
+    end
+
+    it 'sorts alphabetically by vrn' do
+      expect(subject.payment_modifications[2].dig('Monday 15 February 2021', 'charges_back').first.vrn)
+        .to eq('TST004')
     end
   end
 

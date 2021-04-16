@@ -1,0 +1,41 @@
+- title_and_header = 'Why do you want to close the account?'
+- content_for(:title, title_and_header)
+
+= render 'shared/js_back_link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if alert
+        = render 'shared/error_summary',
+                  error_msg_div: '#closure_reason-error',
+                  error_msg: "#{alert}"
+
+      = form_tag account_cancellation_path do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading
+                = title_and_header
+
+            - if alert
+              %span#closure_reason-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = alert
+
+            .govuk-radios
+              - @form.closure_reasons.each do |reason|
+                .govuk-radios__item
+                  %input.govuk-radios__input{name: 'reason',
+                                            type: 'radio',
+                                            value: reason.keys.first,
+                                            id: "#{reason.keys.first.downcase}-id",
+                                            checked: false}
+                  %label.govuk-label.govuk-radios__label{for: "#{reason.keys.first.downcase}-id"}
+                    = reason.values.first
+
+        = submit_tag 'Close account', class: 'govuk-button', 'data-module': 'govuk-button'
+
+        %p
+          = link_to 'Exit without closing', primary_users_account_details_path, class: 'govuk-link', id: 'exit'

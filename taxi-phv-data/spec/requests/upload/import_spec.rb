@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe 'UploadController - POST #import' do
-  subject(:http_request) { post import_upload_index_path, params: { file: csv_file } }
+describe 'UploadController - POST #import', type: :request do
+  subject { post import_upload_index_path, params: { file: csv_file } }
 
   let(:file_path) do
     File.join(
@@ -13,7 +13,7 @@ describe 'UploadController - POST #import' do
   end
   let(:csv_file) { fixture_file_upload(file_path) }
 
-  before(:each) { sign_in new_user }
+  before { sign_in create_user }
 
   context 'with valid params' do
     let(:job_name) { 'name' }
@@ -21,7 +21,7 @@ describe 'UploadController - POST #import' do
     before do
       allow(CsvUploadService).to receive(:call).and_return(true)
       allow(RegisterCheckerApi).to receive(:register_job).and_return(job_name)
-      http_request
+      subject
     end
 
     it 'returns a success response' do
@@ -44,7 +44,7 @@ describe 'UploadController - POST #import' do
     end
 
     it 'returns error' do
-      http_request
+      subject
       follow_redirect!
       expect(response.body).to include('The selected file must be named correctly')
     end

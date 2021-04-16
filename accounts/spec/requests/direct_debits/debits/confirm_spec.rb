@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe 'DirectDebits::DebitsController - GET #confirm' do
+describe 'DirectDebits::DebitsController - GET #confirm', type: :request do
   subject { get confirm_debits_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
-      add_to_session(new_payment: { caz_id: @uuid, details: {} })
+      add_to_session(new_payment: { caz_id: SecureRandom.uuid, details: {} })
       mock_clean_air_zones
       sign_in(make_payments_user)
     end

@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::VehicleController - GET #enter_details' do
+describe 'VehiclesManagement::VehicleController - GET #enter_details', type: :request do
   subject { get enter_details_vehicles_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before { sign_in manage_vehicles_user }
 
     it 'renders the view' do

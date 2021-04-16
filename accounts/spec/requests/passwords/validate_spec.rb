@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'PasswordsController - POST #validate' do
+describe 'PasswordsController - POST #validate', type: :request do
   subject { post reset_passwords_path, params: { passwords: { email_address: email_address } } }
 
   let(:email_address) { 'email@example.com' }
@@ -15,10 +15,9 @@ describe 'PasswordsController - POST #validate' do
     end
 
     it 'calls AccountsApi.initiate_password_reset' do
-      expect(AccountsApi::Auth)
-        .to receive(:initiate_password_reset)
-        .with(email: email_address, reset_url: passwords_url)
       subject
+      expect(AccountsApi::Auth).to have_received(:initiate_password_reset)
+        .with(email: email_address, reset_url: passwords_url)
     end
   end
 

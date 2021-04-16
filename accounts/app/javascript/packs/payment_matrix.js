@@ -7,5 +7,8 @@ import preventContinue from "../src/payment_matrix/emptyMatrixContinuePrevention
 window.addEventListener("DOMContentLoaded", () => {
   preventContinue();
   initSearch();
-  ["next", "previous"].forEach((direction) => initPaginationButton(direction));
 });
+
+window.addPage = function(page) {
+  initPaginationButton(page);
+}

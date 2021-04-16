@@ -1,0 +1,47 @@
+- title_and_header = 'Set up an agreement to pay by bank account'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', @back_button_url, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if alert
+        = render 'shared/error_summary',
+                 error_msg_div: '#caz-selection-error',
+                 error_msg: alert
+
+      = form_tag set_up_debits_path, method: :post do
+        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+          %fieldset.govuk-fieldset{'aria-describedby': 'caz-hint'}
+            %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
+              %h1.govuk-fieldset__heading= title_and_header
+
+            - if alert
+              %span#caz-selection-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = alert
+
+            %p#caz-hint
+              What you need to know before setting up an agreement:
+              %ul.govuk-list.govuk-list--bullet
+                %li you need to set up an agreement with each zone
+                %li paying this way means you need to authorise a payment every time you want to pay a charge - the money will not automatically come out of your account
+                %li bank account payments are made via Direct Debit and will appear as a Direct Debit in your bank account
+                %li we'll send a receipt by email to whoever makes the payment
+                %li we'll also send an email to whoever sets up the agreement when a payment is made. To let them know money is leaving the bank account
+
+            %p
+              Zones you haven't set up an agreement with and where the local authority supports this type of payment will appear here.
+            .govuk-form-group
+              .govuk-radios
+                - @zones.each do |mandate|
+                  .govuk-radios__item
+                    %input.govuk-radios__input{name: 'caz_id',
+                                               type: 'radio',
+                                               value: mandate.zone_id,
+                                               id: mandate.zone_name.downcase}
+                    %label.govuk-label.govuk-radios__label{for: mandate.zone_name.downcase}
+                      = mandate.zone_name
+
+        = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

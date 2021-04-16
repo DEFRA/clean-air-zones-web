@@ -1,5 +1,6 @@
-- content_for(:title, 'Check vehicle compliance')
-= link_to 'Back', enter_details_vehicle_checkers_path, class: 'govuk-back-link'
+- content_for(:title, 'Vehicle details could not be found')
+= back_link(enter_details_vehicle_checkers_path)
+
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
@@ -14,5 +15,8 @@
             %th.govuk-table__cell= @vehicle_registration
 
       %p
-        If you are sure that you entered the correct registration number and you need to make a further enquiries please contact
-        = link_to 'DVLA', 'https://www.gov.uk/change-vehicle-details-registration-certificate', target: '_blank'
+        If you are sure that you entered the correct number plate and you need to make further enquiries please contact
+        = succeed '.' do
+          = link_to('DVLA',
+                    'https://www.gov.uk/change-vehicle-details-registration-certificate',
+                    id: 'dvla-link')

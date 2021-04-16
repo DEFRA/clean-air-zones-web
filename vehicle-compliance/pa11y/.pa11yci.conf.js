@@ -9,76 +9,66 @@ var config = {
             args: [
                 "--no-sandbox"
             ]
-        },
-        hideElements: [".govuk-header__logotype-crown", ".govuk-footer__licence-logo"]
+        }
     },
     urls: [
-        '${BASE_URL}',
-        "${BASE_URL}/vehicle_checkers/enter_details",
+        '${BASE_URL}?home_page',
         {
-            "url": "${BASE_URL}?confirm-details",
+            "url": "${BASE_URL}?cookie_control",
             "actions": [
-                "click element .govuk-button--start",
-                "wait for element #vrn to be visible",
-                "set field #vrn to CAS310",
-				"click element #registration-country-1",
-                "click element input[type=submit]",
-                "wait for element #confirm-vehicle-1 to be visible"
+                "wait for element #ccc-dismiss-button to be visible",
+                "click element #ccc-dismiss-button"
             ]
         },
+        "${BASE_URL}/vehicle_checkers/enter_details",
         {
-            "url": "${BASE_URL}?caz-selection",
+            "url": "${BASE_URL}?confirm_details",
             "actions": [
-                "click element .govuk-button--start",
+                "click element #start-now-button",
                 "wait for element #vrn to be visible",
-                "set field #vrn to CAS310",
-				"click element #registration-country-1",
-                "click element input[type=submit]",
-                "wait for element #confirm-vehicle-1 to be visible",
-                "click element #confirm-vehicle-1",
-                "click element input[type=submit]",
-                "wait for element #caz-0 to be visible"
+                "set field #vrn to CAS338",
+                "click element #registration-country-1",
+                "click element #submit_enter_details_button",
+                "wait for element #confirm_details-1 to be visible",
             ]
         },
         {
             "url": "${BASE_URL}?compliance",
             "actions": [
-                "click element .govuk-button--start",
+                "click element #start-now-button",
                 "wait for element #vrn to be visible",
-                "set field #vrn to CAS310",
-				"click element #registration-country-1",
-                "click element input[type=submit]",
-                "wait for element #confirm-vehicle-1 to be visible",
-                "click element #confirm-vehicle-1",
-                "click element input[type=submit]",
-                "wait for element #caz-0 to be visible",
-                "check field #caz-0",
-                "check field #caz-1",
-                "click element input[type=submit]",
+                "set field #vrn to CAS338",
+                "click element #registration-country-1",
+                "click element #submit_enter_details_button",
+                "wait for element #confirm_details-1 to be visible",
+                "click element #confirm_details-1",
+                "click element #submit_confirm_details_button",
+                "wait for element #compliance-table to be visible"
             ]
         },
-		{
-            "url": "${BASE_URL}?exemption",
+		    {
+            "url": "${BASE_URL}?number_not_found",
             "actions": [
-                "click element .govuk-button--start",
+                "click element #start-now-button",
                 "wait for element #vrn to be visible",
                 "set field #vrn to CU57ABE",
-				"click element #registration-country-1",
-                "click element input[type=submit]"
+                "click element #registration-country-1",
+                "click element #submit_enter_details_button",
+                "wait for element #dvla-link to be visible"
             ]
         },
-		{
-            "url": "${BASE_URL}?incorrect-vehicle",
+		    {
+            "url": "${BASE_URL}?incorrect_details",
             "actions": [
-                "click element .govuk-button--start",
+                "click element #start-now-button",
                 "wait for element #vrn to be visible",
-                "set field #vrn to CAS310",
-				"click element #registration-country-1",
-                "click element input[type=submit]",
-                "wait for element #confirm-vehicle-2 to be visible",
-                "click element #confirm-vehicle-2",
-                "click element input[type=submit]",
-                "wait for element [href='/vehicle_checkers/enter_details'] to be visible"
+                "set field #vrn to CAS338",
+                "click element #registration-country-1",
+                "click element #submit_enter_details_button",
+                "wait for element #confirm_details-2 to be visible",
+                "click element #confirm_details-2",
+                "click element #submit_confirm_details_button",
+                "wait for element #check-another-vrn to be visible"
             ]
         }
     ]
@@ -88,9 +78,7 @@ var config = {
  * Simple method to replace nested URLs in a pa11y configuration definition
  */
 function replacePa11yBaseUrls(urls, defaults) {
-
     console.error('BASE_URL:', process.env.BASE_URL);
-
     //Iterate existing urls object from configuration
     for (var idx = 0; idx < urls.length; idx++) {
         if (typeof urls[idx] === 'object') {
@@ -109,11 +97,11 @@ function replacePa11yBaseUrls(urls, defaults) {
         urls: urls
     }
 
-	console.log('\n')
-	console.log('Generated pa11y configuration:\n')
-	console.log(result)
-	
+    console.log('\n')
+    console.log('Generated pa11y configuration:\n')
+    console.log(result)
+
     return result
-};
+}
 
 module.exports = replacePa11yBaseUrls(config.urls, config.defaults);

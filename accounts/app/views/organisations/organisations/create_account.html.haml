@@ -1,0 +1,46 @@
+- title_and_header = 'Create a business account'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', root_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      = render 'shared/error_summary', error_msg_div: '#company_name-error', error_msg: "#{@error}" if @error
+
+      %h1.govuk-heading-l= title_and_header
+      %p
+      %span#create-account-hint.govuk-hint
+        Upload and pay the charge for multiple vehicles.
+
+      %p
+        = succeed '.' do
+          By creating an account, you agree to Drive in a Clean Air Zone's
+          = link_to 'Terms and conditions', terms_and_conditions_path, class: 'govuk-link'
+
+      %fieldset.govuk-fieldset{'aria-describedby': 'create-account-hint'}
+        %legend.govuk-visually-hidden Create account fields
+
+        = form_for('organisations',
+                   url: create_account_path,
+                   method: :post,
+                   html: {autocomplete: :on, novalidate: 'novalidate', spellcheck: false}) do |f|
+
+          .govuk-form-group{class: ('govuk-form-group--error' if @error)}
+            = f.label :company_name, I18n.t('company_name_form.company_name_missing'), class: 'govuk-label'
+
+            - if @error
+              %span#company_name-error.govuk-error-message
+                %span.govuk-visually-hidden Error:
+                = (@error.include?('exists')) ? @error.remove('reset your password') : @error
+                = link_to 'reset your password', reset_passwords_path if @error.include? 'exists'
+
+            = f.text_field :company_name,
+                            class: determinate_input_class(@error),
+                            value: session.dig('new_account', 'company_name')
+
+          = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'
+
+        %p
+          If you already have an account you can
+          = link_to('sign in', new_user_session_path, id: 'sign-in-button')

@@ -1,4 +1,4 @@
-= link_to 'Back', @vehicles_present ? fleets_path : submission_method_fleets_path, class: 'govuk-back-link'
+= link_to 'Back', @vehicles_present ? fleets_path : choose_method_fleets_path, class: 'govuk-back-link'
 
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
@@ -9,9 +9,9 @@
         = render 'shared/error_summary', error_msg_div: '#govuk-error-message', error_msg: alert
 
       - title_and_header = if @vehicles_present
-        - "Replace and upload a new list of vehicles to #{current_user.actual_account_name} account"
+        - raw("Replace and upload a new list of vehicles to #{current_user.actual_account_name} account")
       - else
-        - "Upload the vehicle list to #{current_user.actual_account_name} account"
+        -raw( "Upload the vehicle list to #{current_user.actual_account_name} account")
 
       - content_for(:title, title_and_header)
       %h1.govuk-heading-l= title_and_header

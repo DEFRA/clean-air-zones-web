@@ -1,24 +1,32 @@
-= link_to 'Back', enter_details_vehicle_checkers_path, method: :get, class: 'govuk-back-link'
+- content_for(:title, 'Are these vehicle details correct?')
+= back_link(enter_details_vehicle_checkers_path)
+
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      - if alert
-        = render 'common/error_summary',
-          error_msg_div: '#confirm-vehicle-details-error',
-          error_msg: alert
+      - if @errors.present?
+        .govuk-error-summary{'aria-labelledby': 'error-summary-title',
+                             'data-module': 'govuk-error-summary',
+                             role: '@errors',
+                             tabindex: '-1'}
+          %h2#error-summary-title.govuk-error-summary__title
+            There is a problem
+          .govuk-error-summary__body
+            %ul.govuk-list.govuk-error-summary__list
+              - remove_duplicated_messages(@errors).each_with_index do |error, index|
+                %li
+                  = link_to(error.first, "##{error.second}-error", id: "#{error.second}-#{index}")
 
       %h1.govuk-heading-l Are these vehicle details correct?
       %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %td.govuk-table__header.table-without-border{colspan: 2, id: 'table-header'}
+              %h2.govuk-table__head Vehicle details
         %tbody.govuk-table__body
           %tr.govuk-table__row
-            %td.govuk-table__cell{scope: 'row'}
-            %td.govuk-table__cell
-          %tr.govuk-table__row
-            %td.govuk-table__cell{scope: 'row'} Vehicle registration
+            %td.govuk-table__cell{scope: 'row'} Number plate
             %th.govuk-table__cell{id: 'registration-number'}= @vehicle_details.registration_number
-          %tr.govuk-table__row
-            %td.govuk-table__cell{scope: 'row'} Vehicle type approval
-            %th.govuk-table__cell{id: 'type-approval'}= @vehicle_details.type_approval
           %tr.govuk-table__row
             %td.govuk-table__cell{scope: 'row'} CAZ vehicle type
             %th.govuk-table__cell{id: 'type'}= @vehicle_details.type
@@ -39,28 +47,14 @@
               %td.govuk-table__cell{scope: 'row'} Taxi
               %th.govuk-table__cell{id: 'taxi'}= @vehicle_details.taxi_private_hire_vehicle
 
-      = form_tag user_confirm_details_vehicle_checkers_path, method: :get do
-        .govuk-form-group{class: ('govuk-form-group--error' if alert)}
-          %fieldset.govuk-fieldset
-            %legend.govuk-visually-hidden
-              Are these the vehicle's details?
+      = form_for(ConfirmDetailsForm.new, url: confirm_details_vehicle_checkers_path, method: :post) do |form|
+        %fieldset.govuk-fieldset
+          %legend.govuk-visually-hidden
+            Are these the vehicle's details?
+          = form.hidden_field(:undetermined, value: @vehicle_details.undetermined?)
+          = render 'vehicle_checkers/confirm_details/radio_buttons', form: form, confirm_uk_details: false
 
-            - if alert
-              %span#confirm-vehicle-details-error.govuk-error-message
-                %span.govuk-visually-hidden Error:
-                Select yes if the details are correct
-
-            %input{name: 'vrn', type: 'hidden', value: @vehicle_details.registration_number}
-            %input{name: 'undetermined', type: 'hidden', value: @vehicle_details.undetermined?}
-            .govuk-form-group
-              .govuk-radios.govuk-radios--inline
-                .govuk-radios__item
-                  %input#confirm-vehicle-1.govuk-radios__input{name: 'confirm-vehicle', type: 'radio', value: 'yes'}
-                  %label.govuk-label.govuk-radios__label{for: "confirm-vehicle-1"}
-                    Yes
-                .govuk-radios__item
-                  %input#confirm-vehicle-2.govuk-radios__input{name: 'confirm-vehicle', type: 'radio', value: 'no'}
-                  %label.govuk-label.govuk-radios__label{for: "confirm-vehicle-2"}
-                    No
-
-        = submit_tag 'Confirm', class: 'govuk-button', 'data-module': 'govuk-button'
+        = submit_tag 'Confirm',
+                      class: 'govuk-button',
+                      'data-module': 'govuk-button',
+                      id: 'submit_confirm_details_button'

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Organisations::OrganisationsController - GET #verification_expired' do
+describe 'Organisations::OrganisationsController - GET #verification_expired', type: :request do
   subject { get verification_expired_organisations_path }
 
   it 'returns a 200 OK status' do

@@ -1,0 +1,38 @@
+- title_and_header = 'Sign in details'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', how_many_vehicles_organisations_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+
+      - if @errors.present?
+        .govuk-error-summary{'aria-labelledby': 'error-summary-title',
+                             'data-module': 'govuk-error-summary',
+                             role: 'alert',
+                             tabindex: '-1'}
+          %h2#error-summary-title.govuk-error-summary__title
+            There is a problem
+          .govuk-error-summary__body
+            %ul.govuk-list.govuk-error-summary__list
+              %li
+                - remove_duplicated_messages(@errors).each_with_index do |error, index|
+                  %li.custom-csv-error
+                    = link_to(error.first, "##{error.second}-error", id: "#{error.second}-#{index}")
+
+      = form_for('organisations', url: sign_in_details_organisations_path, method: :post,
+        html: { autocomplete: :on, novalidate: true, spellcheck: false }) do |f|
+
+        %fieldset.govuk-fieldset
+          %legend.govuk-fieldset__legend.govuk-fieldset__legend--xl
+            %h1.govuk-fieldset__heading
+              = title_and_header
+
+        - if @errors.present?
+          = render 'organisations/organisations/form_input/errored', form: f, errors: @errors
+        - else
+          = render 'organisations/organisations/form_input/normal', form: f
+
+        %br
+        = f.submit 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

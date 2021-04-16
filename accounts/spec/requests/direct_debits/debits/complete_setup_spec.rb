@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-describe 'DirectDebits::DebitsController - GET #complete_setup' do
+describe 'DirectDebits::DebitsController - GET #complete_setup', type: :request do
   subject { get complete_setup_debits_path, params: { redirect_flow_id: 'RE0002VT8ZDTEM1PE4T8W730KBDFH54X' } }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       mock_direct_debit_enabled
       sign_in manage_mandates_user
     end
 
     context 'when mandate_caz_id in session' do
-      before { add_to_session(mandate_caz_id: @uuid) }
+      before { add_to_session(mandate_caz_id: SecureRandom.uuid) }
 
-      context 'and api returns 200 status' do
+      context 'with api returns 200 status' do
         before { allow(DebitsApi).to receive(:complete_mandate_creation).and_return({}) }
 
         it 'redirects to the debits page' do
@@ -22,7 +22,7 @@ describe 'DirectDebits::DebitsController - GET #complete_setup' do
         end
       end
 
-      context 'and api returns 400 status' do
+      context 'with api returns 400 status' do
         before do
           allow(DebitsApi).to receive(:complete_mandate_creation).and_raise(
             BaseApi::Error400Exception.new(400, '', {})
@@ -34,7 +34,7 @@ describe 'DirectDebits::DebitsController - GET #complete_setup' do
         end
       end
 
-      context 'and api returns 400 status because mandate was already created ' do
+      context 'with api returns 400 status because mandate was already created ' do
         before do
           allow(DebitsApi).to receive(:complete_mandate_creation).and_raise(
             BaseApi::Error400Exception.new(

@@ -22,13 +22,14 @@ module PaymentHistory
 
     # Returns a PaymentHistory::PaginatedPayment with payments associated with the account
     # Includes data about page and total pages count
-    def pagination(page:)
+    def pagination(page:, per_page:)
       @pagination ||= begin
         data = PaymentHistoryApi.payments(
           account_id: account_id,
           user_id: user_id,
           user_payments: user_payments,
-          page: page
+          page: page,
+          per_page: per_page
         )
         PaymentHistory::PaginatedPayment.new(data)
       end

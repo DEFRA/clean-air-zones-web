@@ -1,0 +1,31 @@
+.govuk-form-group{class: ('govuk-form-group--error' if @errors[:confirm_details].present?)}
+  - if @errors[:confirm_details].present?
+    %span#confirm_details-error.govuk-error-message
+      %span.govuk-visually-hidden Error:
+      = @errors[:confirm_details].join(',')
+
+  - if confirm_uk_details
+    %p Are these vehicle details correct?
+
+  .govuk-radios.govuk-radios--inline#confirm_details_radios
+    .govuk-radios__item
+      = form.radio_button :confirm_details,
+                          'yes',
+                          class: 'govuk-radios__input',
+                          id: 'confirm_details-1',
+                          checked: params.dig(:confirm_details_form, :confirm_details) == 'yes'
+      = form.label :confirm_details,
+                   'Yes',
+                   class: 'govuk-label govuk-radios__label',
+                   for: 'confirm_details-1'
+
+    .govuk-radios__item
+      = form.radio_button :confirm_details,
+                          'no',
+                          class: 'govuk-radios__input',
+                          id: 'confirm_details-2',
+                          checked: params.dig(:confirm_details_form, :confirm_details) == 'no'
+      = form.label :confirm_details,
+                   'No',
+                   class: 'govuk-label govuk-radios__label',
+                   for: 'confirm_details-2'

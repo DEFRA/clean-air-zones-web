@@ -15,7 +15,7 @@ describe VehiclesManagement::Vehicle, type: :model do
     }
   end
 
-  let(:caz_id) { @uuid }
+  let(:caz_id) { SecureRandom.uuid }
   let(:vrn) { 'CAS310' }
   let(:type) { 'type' }
   let(:charge) { 12 }

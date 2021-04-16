@@ -63,12 +63,6 @@ module PaymentsHelper
     parse_charge(dates.length * charge)
   end
 
-  # Returns proper URL based on provided parameters
-  def charge_alternative_url_for(city_name, account_type = 'fleet')
-    url = external_urls[city_name.downcase][account_type]
-    external_link_to("#{city_name.titleize} City Council Website", url)
-  end
-
   # Reads file with additional URLs
   def external_urls
     YAML.load_file('additional_urls.yaml')

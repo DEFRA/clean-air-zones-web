@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountsDetails::NamesController - GET #edit_name' do
+describe 'AccountsDetails::NamesController - GET #edit_name', type: :request do
   subject { get edit_name_non_primary_users_path }
 
   before { mock_user_details }

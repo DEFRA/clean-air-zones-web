@@ -5,7 +5,7 @@ require 'rails_helper'
 describe TokenForm, type: :model do
   subject { described_class.new(token: token) }
 
-  let(:token) { @uuid }
+  let(:token) { SecureRandom.uuid }
 
   before do
     allow(AccountsApi::Auth).to receive(:validate_password_reset).and_return(true)
@@ -24,8 +24,8 @@ describe TokenForm, type: :model do
     end
 
     it 'does not call API' do
-      expect(AccountsApi::Auth).not_to receive(:validate_password_reset)
       subject.valid?
+      expect(AccountsApi::Auth).not_to have_received(:validate_password_reset)
     end
   end
 
@@ -35,8 +35,8 @@ describe TokenForm, type: :model do
     end
 
     it 'calls API' do
-      expect(AccountsApi::Auth).to receive(:validate_password_reset).with(token: token)
       subject.valid?
+      expect(AccountsApi::Auth).to have_received(:validate_password_reset).with(token: token)
     end
   end
 

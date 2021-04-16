@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+##
+# Module used to wrap communication with Amazon Cognito
 module Cognito
   ##
   # Class responsible for validating user data and perform set a new password when user sign in for
@@ -54,7 +56,7 @@ module Cognito
       @user = Cognito::GetUser.call(
         access_token: access_token,
         user: user,
-        username: user.username
+        username: user.username&.downcase
       )
     end
 
@@ -73,24 +75,21 @@ module Cognito
 
     # Sets a new user password on Cognito.
     def call_cognito
-      log_action "Respond to auth call by a user: #{user.username}"
-      result = COGNITO_CLIENT.respond_to_auth_challenge(
+      log_action('Respond to auth call')
+      client.respond_to_auth_challenge(
         challenge_name: 'NEW_PASSWORD_REQUIRED',
-        client_id: ENV['AWS_COGNITO_CLIENT_ID'],
+        client_id: ENV.fetch('AWS_COGNITO_CLIENT_ID', 'AWS_COGNITO_CLIENT_ID'),
         session: user.aws_session,
         challenge_responses: { 'NEW_PASSWORD' => password, 'USERNAME' => user.username }
       )
-      log_successful_call
-      result
     end
 
     class << self
       # Returns hash, error message.
       def password_complexity_error
         {
-          base_message: I18n.t('password.errors.complexity'),
-          link: true,
-          password: I18n.t('password.errors.complexity')
+          password: I18n.t('password.errors.complexity'),
+          password_confirmation: I18n.t('password.errors.complexity')
         }
       end
     end

@@ -17,7 +17,8 @@ class ChargeableZonesService < BaseService
   #
   def initialize(vehicle_details:)
     @vrn = vehicle_details['vrn']
-    @type = vehicle_details['type']
+    @undetermined_taxi = vehicle_details['undetermined_taxi']
+    @type = @undetermined_taxi ? 'TAXI_OR_PHV' : vehicle_details['type']
     @non_dvla = vehicle_details['country'] != 'UK' || vehicle_details['unrecognised'] ||
                 vehicle_details['undetermined']
   end
@@ -32,16 +33,21 @@ class ChargeableZonesService < BaseService
   def call
     return [] if chargeable_zones_data.empty?
 
-    chargeable_vehicles_ids = non_dvla ? non_dvla_data : dvla_data
-    # TODO: charge to filter_map when updated to ruby 2.7
-    # https://blog.saeloun.com/2019/05/25/ruby-2-7-enumerable-filter-map.html
-    chargeable_zones_data
-      .select { |zone| zone['cleanAirZoneId'].in?(chargeable_vehicles_ids) }
-      .map { |zone| Caz.new(zone) }
-      .sort_by(&:name)
+    chargeable_zones_data.filter_map do |zone|
+      Caz.new(zone) if zone['cleanAirZoneId'].in?(chargeable_vehicles_ids)
+    end.sort_by(&:name)
   end
 
   private
+
+  # Selects if data should be fetched from dvla or non-dvla source.
+  def chargeable_vehicles_ids
+    @chargeable_vehicles_ids ||= if non_dvla || undetermined_taxi
+                                   non_dvla_data
+                                 else
+                                   dvla_data
+                                 end
+  end
 
   # Calls +ComplianceCheckerApi.clean_air_zones+ and then calls
   # +ComplianceCheckerApi.vehicle_compliance+ to check if any of zones has charge price
@@ -56,7 +62,7 @@ class ChargeableZonesService < BaseService
   end
 
   # Variable used internally by the service
-  attr_reader :vrn, :non_dvla, :type
+  attr_reader :vrn, :non_dvla, :type, :undetermined_taxi
 
   # Returns an array of IDS of the available local authorities.
   def zone_ids
@@ -73,11 +79,8 @@ class ChargeableZonesService < BaseService
     @zone_data ||= ComplianceCheckerApi.clean_air_zones
   end
 
+  # Select chargeable zones and returns ids
   def select_chargeable(data)
-    # TODO: charge to filter_map when updated to ruby 2.7
-    # https://blog.saeloun.com/2019/05/25/ruby-2-7-enumerable-filter-map.html
-    data
-      .select { |zone| zone['charge'].to_i.positive? }
-      .map { |zone| zone['cleanAirZoneId'] }
+    data.filter_map { |zone| zone['cleanAirZoneId'] if zone['charge'].to_i.positive? }
   end
 end

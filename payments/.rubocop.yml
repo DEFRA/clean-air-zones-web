@@ -1,60 +1,19 @@
-require: rubocop-rails
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
 inherit_from: ./lib/rubocop/blacklist.yml
 
 AllCops:
-  TargetRubyVersion: 2.6.6
-
-Style/Documentation:
-  Enabled: false
-
-Style/GuardClause:
-  Enabled: false
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
-
-Style/SlicingWithRange:
-  Enabled: true
-
-Style/ExponentialNotation:
-  Enabled: true
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
+  TargetRubyVersion: 3.0.0
+  NewCops: enable
 
 Layout/LineLength:
   Max: 110
   IgnoredPatterns: ['(\A|\s)#']
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context']
+  IgnoredMethods: ['describe', 'context']
   Exclude:
     - 'config/routes.rb'
     - 'config/environments/*.rb'
@@ -62,3 +21,29 @@ Metrics/BlockLength:
 Style/MixinUsage:
   Exclude:
     - 'features/step_definitions/*.rb'
+
+Lint/MissingSuper:
+  Enabled: false
+
+# rubocop-rspec gem excludes
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 6
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/api_wrappers/compliance_checker_api/*.rb'
+    - 'spec/api_wrappers/payments_api/*.rb'
+    - 'spec/api_wrappers/vehicles_checker_api/*.rb'
+    - 'spec/requests/application_controller/*.rb'
+
+RSpec/ExampleLength:
+  Enabled: false

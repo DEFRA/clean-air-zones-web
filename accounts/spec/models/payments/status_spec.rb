@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 describe Payments::Status, type: :model do
-  subject { described_class.new(id, 'Leeds') }
+  subject { described_class.new(id, 'Bath') }
 
-  let(:id) { @uuid }
+  let(:id) { SecureRandom.uuid }
   let(:status) { 'success' }
   let(:email) { 'test@example.com' }
 
   before do
     allow(PaymentsApi).to receive(:payment_status)
-      .with(payment_id: id, caz_name: 'Leeds').and_return(
+      .with(payment_id: id, caz_name: 'Bath').and_return(
         'paymentId' => id, 'status' => status, 'userEmail' => email
       )
   end
@@ -31,7 +31,7 @@ describe Payments::Status, type: :model do
   describe '.success?' do
     context 'when status is success' do
       it 'returns true' do
-        expect(subject.success?).to be_truthy
+        expect(subject).to be_success
       end
     end
 
@@ -39,7 +39,7 @@ describe Payments::Status, type: :model do
       let(:status) { 'failure' }
 
       it 'returns false' do
-        expect(subject.success?).to be_falsey
+        expect(subject).not_to be_success
       end
     end
   end

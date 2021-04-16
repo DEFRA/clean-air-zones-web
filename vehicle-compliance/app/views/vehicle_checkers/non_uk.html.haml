@@ -1,11 +1,22 @@
-- content_for(:title, 'Check vehicle compliance')
-= link_to 'Back', enter_details_vehicle_checkers_path, class: 'govuk-back-link'
+- content_for(:title, 'Vehicle is registered outside of the UK')
+= back_link(enter_details_vehicle_checkers_path)
+
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
       %h1.govuk-heading-l Vehicle is registered outside of the UK
       %p
-        Thank you for informing us that your vehicle is registered outside of the UK.
+        We only hold data on UK-registered vehicles.
       %p
-        If you would like to contact us to discuss the compliance of your vehicle please use this form to
-        = link_to 'contact us', contact_forms_path, id: 'contact_us'
+        Check your vehicle registration information against the national
+        = link_to('standards',
+                  'https://www.gov.uk/guidance/driving-in-a-clean-air-zone',
+                  id: 'standards-link')
+        and the zone you want to drive in. If your vehicle does not meet the standards, you need to pay a
+        charge to drive in the Clean Air Zone.
+      %p
+        If you pay a charge in error, you may be able to claim a
+        = link_to('refund',
+                  'https://www.gov.uk/guidance/driving-in-a-clean-air-zone',
+                  id: 'refund-link')
+        from the local authority of the zone you drove in.

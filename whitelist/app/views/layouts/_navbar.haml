@@ -1,0 +1,23 @@
+%button.govuk-header__menu-button.govuk-js-header-toggle{'aria-controls': 'navigation',
+                                                         'aria-label': 'Show or hide Top Level Navigation',
+                                                         role: 'button',
+                                                         type: 'button',
+                                                         id: 'menu'} Menu
+%nav
+  %ul#navigation.govuk-header__navigation{'aria-label': 'Top Level Navigation'}
+    - if user_signed_in?
+      %li.govuk-header__navigation-item{class: current_path?(data_rules_upload_index_path)}
+        %a.govuk-header__link{href: data_rules_upload_index_path, id: 'data_rules_link'}
+          Data rules
+      %li.govuk-header__navigation-item{class: current_path?(new_user_session_path)}
+        = link_to('Sign out',
+                  destroy_user_session_path,
+                  method: :delete,
+                  class: 'govuk-header__link',
+                  id: 'sign-out-link')
+    - else
+      %li.govuk-header__navigation-item{class: current_path?(new_user_session_path)}
+        = link_to('Sign in',
+                  new_user_session_path,
+                  class: 'govuk-header__link',
+                  id: 'sign-in-link')

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::PrimaryUsersController - GET #primary_account_details' do
+describe 'AccountDetails::PrimaryUsersController - GET #primary_account_details', type: :request do
   subject { get primary_users_account_details_path }
 
   before { mock_account_details }

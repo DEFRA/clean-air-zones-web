@@ -3,7 +3,10 @@
 require 'rails_helper'
 
 describe UsersManagement::AccountUsers do
-  subject { described_class.call(account_id: @uuid, user_id: @uuid) }
+  subject { described_class.call(account_id: account_id, user_id: user_id) }
+
+  let(:account_id) { SecureRandom.uuid }
+  let(:user_id) { SecureRandom.uuid }
 
   describe '#call' do
     before { mock_users }
@@ -12,8 +15,11 @@ describe UsersManagement::AccountUsers do
       expect(subject.count).to eq(9)
     end
 
-    it 'returns sorted users by downcase name' do
+    it 'returns a proper downcase name for the first value' do
       expect(subject.first.name).to eq('anisah Melendez')
+    end
+
+    it 'returns a proper downcase name for the last value' do
       expect(subject.last.name).to eq('Reef Giles')
     end
 
@@ -22,13 +28,13 @@ describe UsersManagement::AccountUsers do
     end
 
     it 'calls AccountsApi with proper params' do
-      expect(AccountsApi::Users).to receive(:users).with(account_id: @uuid)
       subject
+      expect(AccountsApi::Users).to have_received(:users).with(account_id: account_id)
     end
   end
 
   describe '#filtered' do
-    subject { described_class.new(account_id: @uuid, user_id: @uuid).filtered_users }
+    subject { described_class.new(account_id: account_id, user_id: user_id).filtered_users }
 
     before { mock_users }
 
@@ -36,8 +42,11 @@ describe UsersManagement::AccountUsers do
       expect(subject.count).to eq(9)
     end
 
-    it 'returns not sorted users by name' do
+    it 'returns a proper first value' do
       expect(subject.first['name']).to eq('John Doe')
+    end
+
+    it 'returns a proper last value' do
       expect(subject.last['name']).to eq('Giles Kelsea')
     end
 
@@ -46,8 +55,8 @@ describe UsersManagement::AccountUsers do
     end
 
     it 'calls AccountsApi with proper params' do
-      expect(AccountsApi::Users).to receive(:users).with(account_id: @uuid)
       subject
+      expect(AccountsApi::Users).to have_received(:users).with(account_id: account_id)
     end
   end
 end

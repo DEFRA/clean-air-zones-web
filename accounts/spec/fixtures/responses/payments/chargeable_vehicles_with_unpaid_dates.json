@@ -1,0 +1,29 @@
+{
+  "chargeableAccountVehicles": {
+    "results": [
+      {
+        "vrn": "CU12345",
+        "paidDates": [],
+        "charge": 50.0,
+        "tariffCode": "BCC01-HEAVY GOODS VEHICLE"
+      },
+      {
+        "vrn": "CU34567",
+        "paidDates": [],
+        "charge": 50.0,
+        "tariffCode": "BCC01-HEAVY GOODS VEHICLE"
+      },
+      {
+        "vrn": "CU34568",
+        "paidDates": [],
+        "charge": 50.0,
+        "tariffCode": "BCC01-HEAVY GOODS VEHICLE"
+      }
+    ]
+  },
+  "perPage": 10,
+  "page": 1,
+  "pageCount": 1,
+  "totalVehiclesCount": 3,
+  "anyUndeterminedVehicles": false
+}

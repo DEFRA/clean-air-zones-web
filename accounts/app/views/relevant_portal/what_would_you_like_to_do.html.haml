@@ -6,33 +6,51 @@
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h1.govuk-heading-xl
-        = title_and_header
+      %h1.govuk-heading-xl= title_and_header
+
       - if alert
         = render 'shared/error_summary',
                   error_msg_div: '#check_vehicle_option-error',
                   error_msg: "#{alert}"
+
       = form_for('relevant_portal', url: what_would_you_like_to_do_path, method: :post) do |f|
         .govuk-form-group{class: ('govuk-form-group--error' if alert.present?)}
           %fieldset.govuk-fieldset
             %legend.govuk-visually-hidden What would you like to do
+
             - if alert.present?
               %span#check_vehicle_option-error.govuk-error-message
                 %span.govuk-visually-hidden Error:
                 = alert
+
             .govuk-radios
               .govuk-radios__item
-                %input#check-vehicle-option-1.govuk-radios__input{name: 'check_vehicle_option', type: 'radio', value: 'single', checked: checked_fleet_checked?('single') }
+                %input#check-vehicle-option-1.govuk-radios__input{name: 'check_vehicle_option',
+                                                                  type: 'radio',
+                                                                  value: 'single',
+                                                                  checked: checked_fleet_checked?('single') }
                 %label.govuk-label.govuk-radios__label{for: 'check-vehicle-option-1'}
                   %b Check a single vehicle
                 .govuk-hint.govuk-radios__hint
                   Find out if your vehicle will be charged to drive in a Clean Air Zone.
 
               .govuk-radios__item
-                %input#check-vehicle-option-2.govuk-radios__input{name: 'check_vehicle_option', type: 'radio', value: 'multiple', checked: checked_fleet_checked?('multiple')}
+                %input#check-vehicle-option-2.govuk-radios__input{name: 'check_vehicle_option',
+                                                                  type: 'radio',
+                                                                  value: 'pay'}
                 %label.govuk-label.govuk-radios__label{for: 'check-vehicle-option-2'}
-                  %b Check multiple vehicles
+                  %b Pay a charge for a single vehicle
                 .govuk-hint.govuk-radios__hint
-                  If you have a business that owns or manages multiple vehicles, create an account or sign in to check if the vehicles will be charged to drive in a Clean Air Zone.
+                  If you have driven or are planning on driving in a charging Clean Air Zone.
+
+              .govuk-radios__item
+                %input#check-vehicle-option-3.govuk-radios__input{name: 'check_vehicle_option',
+                                                                  type: 'radio',
+                                                                  value: 'multiple',
+                                                                  checked: checked_fleet_checked?('multiple')}
+                %label.govuk-label.govuk-radios__label{for: 'check-vehicle-option-3'}
+                  %b Check and pay for multiple vehicles
+                .govuk-hint.govuk-radios__hint
+                  If you're a business and want to check and pay for multiple vehicles, create an account or sign in.
 
         = f.submit 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ConfirmationForm, type: :model do
+describe ConfirmationForm, type: :model do
   subject(:form) { described_class.new(confirmation) }
 
   let(:confirmation) { 'yes' }
@@ -28,11 +28,11 @@ RSpec.describe ConfirmationForm, type: :model do
   context 'when confirmation is empty' do
     let(:confirmation) { '' }
 
-    it { is_expected.not_to be_valid }
-
     before do
       form.valid?
     end
+
+    it { is_expected.not_to be_valid }
 
     it 'has a proper error message' do
       expect(form.errors.messages[:confirmation]).to include(

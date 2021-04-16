@@ -20,7 +20,7 @@ class User
                 :days_to_password_expiry, :beta_tester
 
   # Delegates fleet methods to fleet
-  delegate :add_vehicle, :charges, :charges_by_vrn, to: :fleet
+  delegate :add_vehicle, to: :fleet
 
   # Delegates debit methods to payment_method
   delegate :mandates, to: :direct_debit

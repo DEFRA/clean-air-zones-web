@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'VehicleCheckersController - GET #cannot_determinate', type: :request do
-  subject { get cannot_determinate_vehicle_checkers_path }
+describe 'VehicleCheckersController - GET #cannot_determine', type: :request do
+  subject { get cannot_determine_vehicle_checkers_path }
 
   before { add_vrn_to_session }
 

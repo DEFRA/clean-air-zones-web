@@ -8,7 +8,9 @@
 #
 # All methods are on the class level, so there is no initializer method.
 class RegisterCheckerApi < BaseApi
-  base_uri ENV['RETROFIT_API_URL'] + '/v1/retrofit/register-csv-from-s3'
+  # Url is needed for submit vehicles
+  API_URL = ENV.fetch('RETROFIT_API_URL', 'localhost:3001').freeze
+  base_uri "#{API_URL}/v1/retrofit/register-csv-from-s3"
 
   class << self
     ##
@@ -17,13 +19,13 @@ class RegisterCheckerApi < BaseApi
     #
     # ==== Attributes
     #
-    # * +file_name+ - Csv file name, eg. 'CAZ-2020-01-08-5'
+    # * +file_name+ - Csv file name, eg. 'CAZ-2020-01-08'
     # * +correlation_id+ - Correlation id, eg '98faf123-d201-48cb-8fd5-4b30c1f80918'
     #
     # ==== Example
     #
     #    RegisterCheckerApi.register_job(
-    #     'CAZ-2020-01-08-5',
+    #     'CAZ-2020-01-08',
     #     '98faf123-d201-48cb-8fd5-4b30c1f80918'
     #    )
     #
@@ -103,17 +105,17 @@ class RegisterCheckerApi < BaseApi
     #
     # ==== Attributes
     #
-    # * +file_name+ - Csv file name,  eg. 'CAZ-2020-01-08-5'
+    # * +file_name+ - Csv file name,  eg. 'CAZ-2020-01-08'
     #
     # ==== Result
     #
     # Returns a json,
-    #   eg. "{\"filename\":\"CAZ-2020-01-08-5\",\"s3Bucket\":\"test-update-server\"}".
+    #   eg. "{\"filename\":\"CAZ-2020-01-08\",\"s3Bucket\":\"test-update-server\"}".
     #
     def register_body(file_name)
       {
-        "filename": file_name,
-        "s3Bucket": ENV['S3_AWS_BUCKET']
+        filename: file_name,
+        s3Bucket: ENV.fetch('S3_AWS_BUCKET', 'S3_AWS_BUCKET')
       }.to_json
     end
 
@@ -136,17 +138,6 @@ class RegisterCheckerApi < BaseApi
         'Content-Type' => 'application/json',
         'X-Correlation-ID' => correlation_id
       }
-    end
-
-    ##
-    # Logs given message at +info+ level with a proper tag.
-    #
-    # ==== Attributes
-    #
-    # * +msg+ - string, log message
-    #
-    def log_call(msg)
-      Rails.logger.info "[RegisterCheckerApi] #{msg}"
     end
   end
 end

@@ -1,0 +1,73 @@
+---
+en:
+  add_vrn_form:
+    errors:
+      vrn_exists: VRN is already Whitelisted
+    success: You have successfully added '%{vrn}' to the whitelist.
+  application_title: Whitelisted vehicle register
+  confirm_remove_vrn_form:
+    errors:
+      answer_required: Choose Yes or No
+    vrn_not_exist: Unable to remove '%{vrn}', the registration does not exist on the
+      whitelist.
+    vrn_removed: You have successfully removed '%{vrn}' from the whitelist.
+  csv:
+    errors:
+      base: The selected file could not be uploaded – try again
+      invalid_ext: The selected file must be a CSV
+      no_file: Select a CSV file to upload
+  database_updated: Whitelisted vehicles register has been successfully updated.
+  email:
+    errors:
+      invalid_format: Enter your email address in a valid format
+      required: Enter your email address
+      too_long: The email exceeds the limit of 45 characters
+  expired_session: Your session has expired
+  external_link: opens in a new window
+  input_form:
+    errors:
+      invalid_format: "%{attribute} is in an invalid format"
+      missing: "%{attribute} is required"
+      too_long: "%{attribute} is too long (maximum is 50 characters)"
+  labels:
+    vrn: Number plate
+  password:
+    errors:
+      code_mismatch: The confirmation code does not match or has expired
+      code_required: Enter your confirmation code
+      complexity: Password must be at least 12 characters long, include at least one
+        upper case letter, a number, and a special character
+      confirmation_required: Enter your password confirmation
+      password_equality: Enter a password and password confirmation that are the same
+      password_required: Enter your password
+      password_unchanged: New password must be different than your temporary one
+      required: Enter your password
+  search_vrn_form:
+    errors:
+      dates:
+        invalid:
+          end_date_format: End date must be a real date
+          start_date: Start date must be earlier than end date
+          start_date_format: Start date must be a real date
+          start_date_in_future: Start date must be before tomorrow
+          too_many_numbers: You have entered a date with too many numbers, Re-enter
+            a date.
+        missing:
+          all: "%{parameter} must include a day, month and year"
+          day: "%{parameter} must include a day"
+          day_month: "%{parameter} must include a day and month"
+          day_year: "%{parameter} must include a day and year"
+          month: "%{parameter} must include a month"
+          month_year: "%{parameter} must include a month and year"
+          search_type: Choose a search type
+          year: "%{parameter} must include a year"
+      historic_not_found: Results not found. '%{vrn}' did not exist on the whitelist
+        between %{start_date} and %{end_date}.
+      not_found: Results not found. '%{vrn}' does not exist on the whitelist.
+    header: Search for a vehicle
+  vrn_form:
+    errors:
+      vrn_invalid_format: Enter the number plate of the vehicle in a valid format
+      vrn_missing: Enter the number plate of the vehicle
+      vrn_too_long: The number plate of the vehicle is too long
+      vrn_too_short: The number plate of the vehicle is too short

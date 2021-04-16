@@ -17,13 +17,13 @@ class UploadMailer < ApplicationMailer
   #
   #    user = User.new
   #    user.email = 'test@example.com'
-  #    filename = 'CAZ-2020-01-08-Leeds-1.csv'
+  #    filename = 'CAZ-2020-01-08.csv'
   #    time = Time.current.strftime(Rails.configuration.x.time_format)
   #    UploadMailer.success_upload(user, filename, time).deliver
   #
   def success_upload(user, filename, submission_time)
     @filename = filename
     @submission_time = submission_time
-    mail(to: user.email, subject: 'Upload successful')
+    mail(to: user.email, subject: 'Your file upload confirmation email')
   end
 end

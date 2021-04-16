@@ -22,7 +22,7 @@ Feature: Password reset
     Given I am on the forgotten password page
     When I enter invalid email
     Then I remain on the update password page
-      And I should see "The email is in an invalid format"
+      And I should see "Enter your email address in a valid format"
 
   Scenario: Filling only confirmation code
     Given I am on the forgotten password page
@@ -30,4 +30,10 @@ Feature: Password reset
     When I enter my username
       And I should see "Update your password"
     Then I enter only confirmation code
-      And I should see "Password is required"
+      And I should see "Enter your password"
+
+  Scenario: Filling invalid passwords
+    Given I am on the 'Reset link sent' page
+    When I enter passwords that does not comply with Cognito setup password policy
+      And I press 'Update password' button
+      And I should see 'Password must be at least 12 characters long, include at least one upper case letter, a number, and a special character' 3 times

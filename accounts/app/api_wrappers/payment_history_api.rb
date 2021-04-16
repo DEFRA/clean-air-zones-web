@@ -16,6 +16,7 @@ class PaymentHistoryApi < PaymentsApi
     # * +user_id+ - uuid, ID of the user
     # * +user_payments+ - boolean, to filter out company payments and show only users payments
     # * +page+ - requested page of the results
+    # * +per_page+ - number of payments per page, defaults to 10
     #
     # ==== Result
     #
@@ -31,9 +32,9 @@ class PaymentHistoryApi < PaymentsApi
     # * {404 Exception}[rdoc-ref:BaseApi::Error404Exception] - account not found
     # * {500 Exception}[rdoc-ref:BaseApi::Error500Exception] - backend API error
     #
-    def payments(account_id:, user_id:, user_payments:, page: 1)
+    def payments(account_id:, user_id:, user_payments:, per_page:, page: 1)
       log_action('Getting payments history')
-      query = { 'pageNumber' => calculate_page_number(page), 'pageSize' => 10 }
+      query = { 'pageNumber' => calculate_page_number(page), 'pageSize' => per_page }
       query.merge!('accountUserId' => user_id) if user_payments
       request(:get, "/accounts/#{account_id}/payments", query: query)
     end
@@ -54,7 +55,19 @@ class PaymentHistoryApi < PaymentsApi
     # * +paymentProviderId+ - id of provider
     # * +totalPaid+ - amount of payment
     # * +telephonePayment+ - status of payment
-    # * +lineItems+* - array of objects
+    # * +lineItems+ - array of objects, history of payments for current payment reference
+    #   * +vrn+ - string, vrn number
+    #   * +caseReference+ - integer, central reference number of the payment
+    #   * +paymentStatus+ - status of payment, e.g. 'paid'
+    #   * +chargePaid+ - integer, total charge paid
+    #   * +travelDate+ - string, payment date format
+    # * +modificationHistory+ - refund or chargeback information
+    #   * +amount+ integer, charge paid
+    #   * +travelDate+ - string, date format
+    #   * +vrn+ - string, eg. 'CU57ABC'
+    #   * +caseReference+ - integer, central reference number of the payment
+    #   * +modificationTimestamp+ - string, payment date format in UTC time
+    #   * +entrantPaymentStatus+ - string, payment status e.g 'CHARGEBACK' or 'REFUNDED'
     #
     # ==== Exceptions
     #

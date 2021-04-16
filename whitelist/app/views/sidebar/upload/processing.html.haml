@@ -1,0 +1,17 @@
+= javascript_pack_tag 'autorefresh_page'
+- title_and_header = 'Validating submission...'
+- content_for(:title, title_and_header)
+
+.govuk-grid-column-two-thirds
+
+  %h1.govuk-heading-l
+    = title_and_header
+  %p
+    We are validating your CSV submission to
+    = succeed '.' do
+      = service_name
+    Please do not leave this page. It will automatically refresh to present your submission status.
+
+  %p
+    If the page does not refresh automatically in 30 seconds
+    = link_to 'click here.', processing_upload_index_path

@@ -5,15 +5,14 @@
   %p.govuk-visually-hidden{'aria-labelledby': 'pagination-label'}
     Pagination navigation
   %ul.moj-pagination__list
-    - if total_pages > 1
-      - unless page == 1
-        = render 'pagination_button', button_text: 'Previous', page: page - 1, form_class: 'prev'
+    - unless page == 1
+      = render 'pagination_button', button_text: 'Previous', page: page - 1, form_class: 'prev'
 
-      - fleets_paginated_pages(page, total_pages).each do |i|
-        = render 'pagination_button', button_text: i, page: i, active: page == i
+    - fleets_paginated_pages(page, total_pages).each do |i|
+      = render 'pagination_button', button_text: i, page: i, active: page == i
 
-      - unless page == total_pages
-        = render 'pagination_button', button_text: 'Next', page: page + 1, form_class: 'next'
+    - unless page == total_pages
+      = render 'pagination_button', button_text: 'Next', page: page + 1, form_class: 'next'
 
   - unless page > total_pages
     %p.moj-pagination__results

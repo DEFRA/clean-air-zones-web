@@ -11,19 +11,19 @@
 
       %h1.govuk-heading-l
         = title_and_header
-      %p A weekly charge allows you to drive in Leeds for 7 consecutive days.
+      %p A weekly charge allows you to drive in future clean air zones for 7 consecutive days.
       %p A daily charge period runs from midnight to midnight.
 
       - if @all_paid
         .govuk-inset-text
-          If the weekly charge you want to pay for is not available, 
+          If the weekly charge you want to pay for is not available,
           it is because you have paid for a date in those 7 consecutive days.
 
       - if @d_day_notice
         .govuk-inset-text
           The Clean Air Zone charge came into operation on #{parse_single_date(@charge_start_date)}.
 
-      = form_tag confirm_date_weekly_dates_path, method: :post do
+      = form_tag submit_url, method: :post do
         .govuk-form-group{class: ('govuk-form-group--error' if alert)}
           %fieldset.govuk-fieldset
             %h2.govuk-heading-m

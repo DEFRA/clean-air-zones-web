@@ -2,33 +2,33 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ComplianceCheckerApi.vehicle_details' do
-  subject(:call) { ComplianceCheckerApi.vehicle_compliance(vrn, zones) }
+describe 'ComplianceCheckerApi.vehicle_compliance' do
+  subject { ComplianceCheckerApi.vehicle_compliance(vrn) }
 
   let(:vrn) { 'CAS310' }
-  let(:zones) { %w[birmingham leeds] }
 
   context 'when call returns 200' do
     before do
-      vehicle_details = file_fixture('vehicle_compliance_response.json').read
-      stub_request(:get, /compliance\?zones=/).to_return(
-        status: 200,
-        body: vehicle_details
-      )
+      vehicle_compliance = file_fixture('vehicle_compliance_response.json').read
+      stub_request(:get, /compliance/).to_return(status: 200, body: vehicle_compliance)
     end
 
     it 'returns registration number' do
-      expect(call['registrationNumber']).to eq(vrn)
+      expect(subject['registrationNumber']).to eq(vrn)
     end
 
-    it 'returns compliance data for zones' do
-      expect(call['complianceOutcomes'][0].keys).to contain_exactly(
-        'cleanAirZoneId', 'charge', 'name', 'informationUrls'
+    it 'returns if PHGV discount is available' do
+      expect(subject['phgvDiscountAvailable']).to be_truthy
+    end
+
+    it 'returns compliance data for all zones' do
+      expect(subject['complianceOutcomes'][0].keys).to contain_exactly(
+        'cleanAirZoneId', 'charge', 'name', 'operatorName', 'informationUrls', 'tariffCode'
       )
     end
   end
 
-  context 'when call returns 500' do
+  context 'when subject returns 500' do
     before do
       stub_request(:get, /compliance/).to_return(
         status: 500,
@@ -37,11 +37,11 @@ RSpec.describe 'ComplianceCheckerApi.vehicle_details' do
     end
 
     it 'raises Error500Exception' do
-      expect { call }.to raise_exception(BaseApi::Error500Exception)
+      expect { subject }.to raise_exception(BaseApi::Error500Exception)
     end
   end
 
-  context 'when call returns 400' do
+  context 'when subject returns 400' do
     before do
       stub_request(:get, /compliance/).to_return(
         status: 400,
@@ -50,11 +50,11 @@ RSpec.describe 'ComplianceCheckerApi.vehicle_details' do
     end
 
     it 'raises Error500Exception' do
-      expect { call }.to raise_exception(BaseApi::Error400Exception)
+      expect { subject }.to raise_exception(BaseApi::Error400Exception)
     end
   end
 
-  context 'when call returns 404' do
+  context 'when subject returns 404' do
     before do
       stub_request(:get, /compliance/).to_return(
         status: 404,
@@ -63,11 +63,11 @@ RSpec.describe 'ComplianceCheckerApi.vehicle_details' do
     end
 
     it 'raises Error500Exception' do
-      expect { call }.to raise_exception(BaseApi::Error404Exception)
+      expect { subject }.to raise_exception(BaseApi::Error404Exception)
     end
   end
 
-  context 'when call returns 422' do
+  context 'when subject returns 422' do
     before do
       stub_request(:get, /compliance/).to_return(
         status: 422,
@@ -76,7 +76,7 @@ RSpec.describe 'ComplianceCheckerApi.vehicle_details' do
     end
 
     it 'raises Error500Exception' do
-      expect { call }.to raise_exception(BaseApi::Error422Exception)
+      expect { subject }.to raise_exception(BaseApi::Error422Exception)
     end
   end
 end

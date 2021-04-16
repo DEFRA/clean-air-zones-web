@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-describe 'PasswordsController - POST #create' do
+describe 'PasswordsController - POST #create', type: :request do
   subject do
     post passwords_path, params: {
       token: token, passwords: { password: password, password_confirmation: confirmation }
     }
   end
 
-  let(:token) { @uuid }
+  let(:token) { SecureRandom.uuid }
   let(:password) { 'password' }
   let(:confirmation) { password }
 
@@ -30,8 +30,8 @@ describe 'PasswordsController - POST #create' do
     end
 
     it 'calls AccountsApi::Auth.set_password with right params' do
-      expect(AccountsApi::Auth).to receive(:set_password).with(token: token, password: password)
       subject
+      expect(AccountsApi::Auth).to have_received(:set_password).with(token: token, password: password)
     end
 
     it 'clears the token' do
@@ -48,8 +48,8 @@ describe 'PasswordsController - POST #create' do
       end
 
       it 'does not call AccountsApi::Auth.set_password' do
-        expect(AccountsApi::Auth).not_to receive(:set_password)
         subject
+        expect(AccountsApi::Auth).not_to have_received(:set_password)
       end
 
       it 'assigns token' do
@@ -76,8 +76,8 @@ describe 'PasswordsController - POST #create' do
       end
 
       it 'calls AccountsApi::Auth.set_password with right params' do
-        expect(AccountsApi::Auth).to receive(:set_password).with(token: token, password: password)
         subject
+        expect(AccountsApi::Auth).to have_received(:set_password).with(token: token, password: password)
       end
 
       it 'assigns token' do
@@ -112,8 +112,8 @@ describe 'PasswordsController - POST #create' do
       end
 
       it 'calls AccountsApi::Auth.set_password with right params' do
-        expect(AccountsApi::Auth).to receive(:set_password).with(token: token, password: password)
         subject
+        expect(AccountsApi::Auth).to have_received(:set_password).with(token: token, password: password)
       end
 
       it 'assigns token' do
@@ -162,8 +162,8 @@ describe 'PasswordsController - POST #create' do
       end
 
       it 'calls AccountsApi::Auth.set_password with right params' do
-        expect(AccountsApi::Auth).to receive(:set_password).with(token: token, password: password)
         subject
+        expect(AccountsApi::Auth).to have_received(:set_password).with(token: token, password: password)
       end
 
       it 'assigns token' do

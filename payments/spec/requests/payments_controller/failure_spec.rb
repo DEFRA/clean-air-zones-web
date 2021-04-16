@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'PaymentsController - GET #success', type: :request do
+describe 'PaymentsController - GET #success', type: :request do
   subject { get failure_payments_path }
 
   let(:payment_id) { 'XYZ123ABC' }
   let(:vrn) { 'CU57ABC' }
 
   before do
-    add_to_session(payment_id: payment_id, vrn: vrn)
+    add_vehicle_details_to_session(payment_id: payment_id, vrn: vrn)
     subject
   end
 

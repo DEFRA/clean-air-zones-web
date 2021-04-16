@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Cognito::RespondToAuthChallenge do
+describe Cognito::RespondToAuthChallenge do
   subject(:service_call) do
     described_class.call(user: user, password: password, confirmation: password_confirmation)
   end
@@ -31,7 +31,7 @@ RSpec.describe Cognito::RespondToAuthChallenge do
     allow(Cognito::GetUser).to receive(:call)
       .with(access_token: token, user: user, username: user.username)
       .and_return(cognito_user)
-    allow(COGNITO_CLIENT).to receive(:respond_to_auth_challenge)
+    allow(Cognito::Client.instance).to receive(:respond_to_auth_challenge)
       .with(
         challenge_name: 'NEW_PASSWORD_REQUIRED',
         client_id: anything,
@@ -64,7 +64,7 @@ RSpec.describe Cognito::RespondToAuthChallenge do
     let(:error) { I18n.t('password.errors.complexity') }
 
     before do
-      allow(COGNITO_CLIENT).to receive(:respond_to_auth_challenge).and_raise(
+      allow(Cognito::Client.instance).to receive(:respond_to_auth_challenge).and_raise(
         Aws::CognitoIdentityProvider::Errors::InvalidPasswordException.new('', '')
       )
     end
@@ -78,7 +78,7 @@ RSpec.describe Cognito::RespondToAuthChallenge do
     let(:error) { I18n.t('expired_session') }
 
     before do
-      allow(COGNITO_CLIENT).to receive(:respond_to_auth_challenge).and_raise(
+      allow(Cognito::Client.instance).to receive(:respond_to_auth_challenge).and_raise(
         Aws::CognitoIdentityProvider::Errors::UserNotFoundException.new('', '')
       )
     end

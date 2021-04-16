@@ -24,4 +24,14 @@ module ApplicationHelper
   def transformed_errors(errors)
     errors.map { |error| error.second.map { |msg| [msg, error.first] } }.flatten(1)
   end
+
+  # Returns name of service, eg. 'Drive in a Clean Air Zone'
+  def service_name
+    Rails.configuration.x.service_name
+  end
+
+  # Renders back link
+  def back_link(url, text = 'Back')
+    link_to(text, url, class: 'govuk-back-link back-link')
+  end
 end

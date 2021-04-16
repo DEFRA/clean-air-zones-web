@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-describe 'DirectDebits::DebitsController - GET #cancel' do
+describe 'DirectDebits::DebitsController - GET #cancel', type: :request do
   subject { get cancel_payments_path }
 
-  context 'correct permissions' do
-    context 'and CAZ locked by current user' do
+  context 'when correct permissions' do
+    context 'with CAZ locked by current user' do
       before do
         add_to_session(new_payment: { caz_id: caz_id, details: {} })
         sign_in create_user
@@ -14,7 +14,7 @@ describe 'DirectDebits::DebitsController - GET #cancel' do
       end
 
       let(:user) { manage_mandates_user }
-      let(:caz_id) { @uuid }
+      let(:caz_id) { SecureRandom.uuid }
 
       it 'returns a 200 OK status' do
         expect(response).to have_http_status(:ok)

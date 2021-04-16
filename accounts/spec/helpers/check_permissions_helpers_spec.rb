@@ -23,7 +23,7 @@ describe CheckPermissionsHelper do
       it { is_expected.to be_falsey }
     end
 
-    context 'when new_user permissions is correct' do
+    context 'when new_user permissions is nil' do
       let(:permissions) { nil }
 
       it { is_expected.to be_nil }

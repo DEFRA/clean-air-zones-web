@@ -10,6 +10,8 @@ module Dates
   # * +session+ - session
   #
   class ValidateSelectedWeeklyDate < Base
+    include DatesHelper
+
     ##
     # Start date of selected week in YYYY-MM-DD format
     # eg 2020-6-1
@@ -33,12 +35,13 @@ module Dates
     # Sets correct error message
     # Returns string
     def error
+      weekly_scope = 'dates.weekly'
       if !@start_date
-        I18n.t('empty', scope: 'dates.weekly')
+        I18n.t('empty', scope: weekly_scope)
       elsif already_selected?
-        I18n.t('already_selected', scope: 'dates.weekly')
+        I18n.t('already_selected', scope: weekly_scope)
       else
-        I18n.t('not_available', scope: 'dates.weekly')
+        I18n.t('not_available', scope: weekly_scope)
       end
     end
 
@@ -98,7 +101,7 @@ module Dates
       return if @session[:second_week_selected] == false
 
       formatted_date = Time.zone.parse(@start_date).strftime(VALUE_DATE_FORMAT)
-      @session.dig(:vehicle_details, 'dates')&.include?(formatted_date)
+      disable_week(@session[:first_week_start_date]).include?(formatted_date)
     end
   end
 end

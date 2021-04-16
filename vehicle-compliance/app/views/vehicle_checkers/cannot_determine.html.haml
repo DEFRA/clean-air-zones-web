@@ -1,0 +1,36 @@
+- content_for(:title, 'Vehicle details are incomplete')
+= back_link(confirm_details_vehicle_checkers_path)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l.not-found-title Vehicle details are incomplete
+      %table.govuk-table
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'}
+            %td.govuk-table__cell
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} You searched for
+            %th.govuk-table__cell= @vehicle_registration
+
+      %p
+        Data used to calculate the compliance of your vehicle is missing from your V5C registration
+        certificate (log book).
+      %p
+        You may be charged for driving in a Clean Air Zone when the zones start charging in early 2021.
+      %p
+        If you want to discuss this matter further
+        = succeed '.' do
+          = link_to('Contact Clean Air Zones',
+                     Rails.configuration.x.contact_form_link,
+                     id: 'contact-formm')
+
+    .govuk-grid-column-one-third
+      %aside#related-items-label.app-related-items{role: 'complementary'}
+        %h2.govuk-heading-m
+          Related tasks
+        %nav{'aria-labelledby': 'related-items-label', role: 'navigation'}
+          %ul.govuk-list{class: 'govuk-!-font-size-16'}
+            %li
+              = link_to 'Check another vehicle', enter_details_vehicle_checkers_path, id: 'check-another-vrn'

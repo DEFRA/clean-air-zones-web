@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::CreateUsersController - GET #confirmation' do
+describe 'UsersManagement::CreateUsersController - GET #confirmation', type: :request do
   subject { get confirmation_users_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before { sign_in manage_users_user }
 
     it 'renders the view' do

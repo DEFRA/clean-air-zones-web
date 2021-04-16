@@ -3,18 +3,21 @@
     {
       "cleanAirZoneId": "5cd7441d-766f-48ff-b8ad-1809586fea37",
       "name": "Birmingham",
+      "operatorName": "Birmingham City Council",
       "boundaryUrl": "https://www.birmingham.gov.uk/info/20076/pollution/1763/a_clean_air_zone_for_birmingham/3",
       "activeChargeStartDate": "2020-05-14"
     },
-    {
-      "cleanAirZoneId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3",
-      "name": "Leeds",
-      "boundaryUrl": "https://www.arcgis.com/home/webmap/viewer.html?webmap=de0120ae980b473982a3149ab072fdfc&extent=-1.733%2c53.7378%2c-1.333%2c53.8621",
-      "activeChargeStartDate": "2020-05-14"
+    {	
+      "cleanAirZoneId": "eeb34ad2-a49e-4aef-8965-e0ed04a2e0cc",	
+      "name": "Test",	
+      "operatorName": "Test City Council",	
+      "boundaryUrl": "https://www.birmingham.gov.uk/info/20076/pollution/1763/a_clean_air_zone_for_birmingham/3",	
+      "activeChargeStartDate": "2020-05-14"	
     },
     {
       "cleanAirZoneId": "44590023-9b0f-450e-8a6a-feed267fea23",
       "name": "Bath",
+      "operatorName": "Bath and North East Somerset Council",
       "boundaryUrl": "http://www.bathnes.gov.uk/zonemaps",
       "activeChargeStartDate": "2020-05-14"
     }

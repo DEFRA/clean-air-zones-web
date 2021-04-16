@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe PaymentHistory::History, type: :model do
-  subject { described_class.new(@uuid, @uuid, true) }
+  subject { described_class.new(SecureRandom.uuid, SecureRandom.uuid, true) }
 
   describe '.pagination' do
     before do
@@ -12,7 +12,7 @@ describe PaymentHistory::History, type: :model do
     end
 
     it 'returns an PaymentHistory::PaginatedPayment instances' do
-      expect(subject.pagination(page: 1)).to be_an_instance_of(PaymentHistory::PaginatedPayment)
+      expect(subject.pagination(page: 1, per_page: 10)).to be_an_instance_of(PaymentHistory::PaginatedPayment)
     end
   end
 end

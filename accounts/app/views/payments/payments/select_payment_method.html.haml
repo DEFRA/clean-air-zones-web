@@ -28,18 +28,18 @@
               .govuk-radios__item
                 %input.govuk-radios__input{name: 'payment_method',
                                            type: 'radio',
-                                           value: 'true',
-                                           id: 'direct_debit',
-                                           checked: session[:new_payment]['payment_method'] == 'true'}
-                %label.govuk-label.govuk-radios__label{for: 'direct_debit'}
-                  Direct Debit (one-off payment)
+                                           value: 'false',
+                                           id: 'card_payment'}
+                %label.govuk-label.govuk-radios__label{for: 'card_payment'}
+                  card payment
 
               .govuk-radios__item
                 %input.govuk-radios__input{name: 'payment_method',
                                            type: 'radio',
-                                           value: 'false',
-                                           id: 'card_payment'}
-                %label.govuk-label.govuk-radios__label{for: 'card_payment'}
-                  Card payment
+                                           value: 'true',
+                                           id: 'direct_debit',
+                                           checked: session[:new_payment]['payment_method'] == 'true'}
+                %label.govuk-label.govuk-radios__label{for: 'direct_debit'}
+                  payment through bank account (Direct Debit)
 
         = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

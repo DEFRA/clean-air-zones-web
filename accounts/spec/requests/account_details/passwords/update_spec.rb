@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::PasswordsController - PATCH #update' do
+describe 'AccountDetails::PasswordsController - PATCH #update', type: :request do
   subject do
     patch edit_password_path,
           params: {
@@ -28,11 +28,6 @@ describe 'AccountDetails::PasswordsController - PATCH #update' do
       it 'redirects to the success page' do
         expect(subject).to redirect_to(primary_users_account_details_path)
       end
-
-      it 'calls AccountsApi::Auth.set_password' do
-        expect(AccountsApi::Auth).to receive(:update_password)
-        subject
-      end
     end
   end
 
@@ -47,12 +42,12 @@ describe 'AccountDetails::PasswordsController - PATCH #update' do
       end
 
       it 'calls AccountsApi::Auth.set_password with right params' do
-        expect(AccountsApi::Auth).to receive(:update_password).with(
+        subject
+        expect(AccountsApi::Auth).to have_received(:update_password).with(
           user_id: user_id,
           old_password: old_password,
           new_password: password
         )
-        subject
       end
     end
 
@@ -129,10 +124,6 @@ describe 'AccountDetails::PasswordsController - PATCH #update' do
 
       it 'renders the view' do
         expect(response).to render_template(:edit)
-      end
-
-      it 'does not call AccountsApi::Auth.set_password' do
-        expect(AccountsApi::Auth).not_to receive(:update_password)
       end
 
       it 'assigns correct error message' do

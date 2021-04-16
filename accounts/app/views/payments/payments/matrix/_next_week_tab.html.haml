@@ -8,7 +8,7 @@
     %strong
       Select all that apply.
 
-  - unless @charges.all_days_unpaid?
+  - unless @pagination.all_days_unpaid?
     %p
       If you have already paid for a date, it will show as Paid.
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::EmailsController - POST #update_email' do
+describe 'AccountDetails::EmailsController - POST #update_email', type: :request do
   subject { post update_email_primary_users_path, params: params }
 
   before { sign_in user }
@@ -45,7 +45,9 @@ describe 'AccountDetails::EmailsController - POST #update_email' do
 
       it 'assigns :error variable' do
         subject
-        expect(assigns(:errors)).to include(email: [I18n.t('edit_user_email_form.errors.email_duplicated')])
+        expect(assigns(:errors)).to eq(
+          { email: ['Email address already exists'], confirmation: [] }
+        )
       end
     end
 
@@ -63,7 +65,9 @@ describe 'AccountDetails::EmailsController - POST #update_email' do
 
       it 'assigns :error variable' do
         subject
-        expect(assigns(:errors)).to include(email: ['Enter email in a valid format'])
+        expect(assigns(:errors)).to eq(
+          { email: ['Enter email in a valid format'], confirmation: ['Enter email in a valid format'] }
+        )
       end
     end
   end

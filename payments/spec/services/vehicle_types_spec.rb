@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe VehicleTypes do
+describe VehicleTypes do
   subject(:service_call) { described_class.call }
 
   it 'returns 7 types' do
@@ -14,7 +14,6 @@ RSpec.describe VehicleTypes do
   end
 
   it 'sorts objects by name' do
-    expect(service_call.map { |type| type[:name] })
-      .to eq(service_call.map { |type| type[:name] }.sort)
+    expect(service_call.pluck(:name)).to eq(service_call.pluck(:name).sort)
   end
 end

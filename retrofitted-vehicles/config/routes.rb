@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'sessions' }
 
   authenticated(:user) { root 'upload#index', as: :authenticated_root }
   devise_scope(:user) { root to: 'devise/sessions#new' }
@@ -26,13 +26,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :cookies, only: :index
+  scope controller: 'static_pages' do
+    get :cookies
+    get :accessibility_statement
+  end
 
-  get :health, to: 'application#health'
-  get :build_id, to: 'application#build_id'
+  scope controller: 'application' do
+    get :build_id
+    get :health
+  end
 
   match '/404', to: 'errors#not_found', via: :all
-  # There is no 422 error page in design systems
   match '/422', to: 'errors#internal_server_error', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
 end

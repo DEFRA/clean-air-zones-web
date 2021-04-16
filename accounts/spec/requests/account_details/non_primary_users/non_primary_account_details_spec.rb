@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::NonPrimaryUsersController - GET #non_primary_account_details' do
+describe 'AccountDetails::NonPrimaryUsersController - GET #non_primary_account_details', type: :request do
   subject { get non_primary_users_account_details_path }
 
   before { mock_account_details }

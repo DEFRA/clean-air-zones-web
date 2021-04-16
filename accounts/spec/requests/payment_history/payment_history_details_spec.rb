@@ -2,16 +2,15 @@
 
 require 'rails_helper'
 
-describe 'PaymentHistory::PaymentHistoryController - GET #payment_history_details' do
+describe 'PaymentHistory::PaymentHistoryController - GET #payment_history_details', type: :request do
   subject do
-    get payment_history_details_path,
-        params: { payment_id: @uuid },
-        headers: { 'HTTP_REFERER': last_page }
+    get payment_history_details_path, params: { payment_id: SecureRandom.uuid },
+                                      headers: { HTTP_REFERER: last_page }
   end
 
-  let(:last_page) { company_payment_history_path }
+  let(:last_page) { payment_history_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       api_response = read_response('payment_history/payment_details.json')
       allow(PaymentHistoryApi).to receive(:payment_details).and_return(api_response)
@@ -33,18 +32,6 @@ describe 'PaymentHistory::PaymentHistoryController - GET #payment_history_detail
       end
     end
 
-    context 'when last visited page was the User payment history page' do
-      let(:last_page) { user_payment_history_path }
-
-      it 'not adding `company_payment_history` to the session' do
-        expect(session[:company_payment_history]).to be_nil
-      end
-
-      it 'adding `payment_details_back_link` to the session' do
-        expect(session[:payment_details_back_link]).to eq(last_page)
-      end
-    end
-
     context 'when no last visited page' do
       let(:last_page) { nil }
 
@@ -53,7 +40,7 @@ describe 'PaymentHistory::PaymentHistoryController - GET #payment_history_detail
       end
 
       it 'adding `payment_details_back_link` to the session' do
-        expect(session[:payment_details_back_link]).to eq(user_payment_history_path)
+        expect(session[:payment_details_back_link]).to eq(payment_history_path)
       end
     end
   end

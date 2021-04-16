@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::UploadsController - GET #download template' do
+describe 'VehiclesManagement::UploadsController - GET #download template', type: :request do
   subject { get download_template_uploads_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       sign_in manage_vehicles_user
       subject

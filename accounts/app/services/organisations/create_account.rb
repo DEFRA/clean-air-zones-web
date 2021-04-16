@@ -39,6 +39,7 @@ module Organisations
       raise InvalidCompanyNameException, form.first_error_message
     end
 
+    # Calling api
     def perform_api_call
       AccountsApi::Accounts.create_account(company_name: company_name)
     rescue BaseApi::Error422Exception => e

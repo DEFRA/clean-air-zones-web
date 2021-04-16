@@ -8,7 +8,7 @@ class BaseForm
 
   # Email Address Regular Expression
   EMAIL_FORMAT = %r{\A(([\w\d!#$%&'*+\-/=?^_`{|}~]+)(\.{1}))*
-    ([\w\d!#$%&'*+\-/=?^_`{|}~]+)@[a-zA-Z\d\-]+(\.[a-zA-Z\d\-]+)*\.[a-zA-Z]+\z}x.freeze
+    ([\w\d!#$%&'*+\-/=?^_`{|}~]+)@[a-zA-Z\d\-]+(\.[a-zA-Z\d\-]+)*\.[a-zA-Z]+\z}x
 
   # Overrides default initializer for compliance with form_for method in content_form view
   def initialize(attributes = {})

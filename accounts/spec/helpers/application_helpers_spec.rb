@@ -21,7 +21,7 @@ describe ApplicationHelper do
 
   describe '.single_vehicle_payment_link' do
     it 'returns a proper date format' do
-      expect(helper.single_vehicle_payment_link.include?('vehicles/enter_details')).to be_truthy
+      expect(helper.single_vehicle_payment_link).to include('vehicles/enter_details')
     end
   end
 end

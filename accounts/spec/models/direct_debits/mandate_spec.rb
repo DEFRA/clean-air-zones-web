@@ -21,9 +21,9 @@ describe DirectDebits::Mandate, type: :model do
     }
   end
 
-  let(:zone_id) { @uuid }
-  let(:zone_name) { 'Leeds' }
-  let(:mandate_id) { @uuid }
+  let(:zone_id) { SecureRandom.uuid }
+  let(:zone_name) { 'Bath' }
+  let(:mandate_id) { SecureRandom.uuid }
   let(:reference) { '1626' }
   let(:status) { 'pending_submission' }
 

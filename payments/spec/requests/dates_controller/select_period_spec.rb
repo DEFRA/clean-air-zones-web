@@ -2,11 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe 'DatesController - GET #select_period', type: :request do
+describe 'DatesController - GET #select_period', type: :request do
   subject { get select_period_dates_path }
 
+  let(:transaction_id) { SecureRandom.uuid }
+
   context 'with VRN and LA in the session' do
-    context 'when Leeds weekly discount is possible' do
+    context 'when Taxidiscountcaz discount is possible' do
       before { add_details_to_session(weekly_possible: true) }
 
       it 'returns a success response' do
@@ -42,8 +44,8 @@ RSpec.describe 'DatesController - GET #select_period', type: :request do
       end
     end
 
-    context 'when Leeds weekly discount is NOT possible' do
-      it_behaves_like 'not allowed Leeds discount'
+    context 'when Taxidiscountcaz discount is NOT possible' do
+      it_behaves_like 'not allowed Taxidiscountcaz discount'
     end
   end
 
@@ -53,6 +55,7 @@ RSpec.describe 'DatesController - GET #select_period', type: :request do
 
   context 'without LA in the session' do
     before do
+      add_transaction_id_to_session(transaction_id)
       add_vrn_to_session
     end
 

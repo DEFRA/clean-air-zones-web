@@ -23,16 +23,15 @@
         %strong Payment ID:
         = @details.provider_payment_id
 
-
       - unless @payments.empty?
         %table.govuk-table
           %caption.govuk-table__caption
             .govuk-visually-hidden Charge details table
           %thead.govuk-table__head
             %tr.govuk-table__row
-              %th.govuk-table__header{scope: 'col'} Number plate
-              %th.govuk-table__header{scope: 'col'} Dates of entry
-              %th.govuk-table__header{scope: 'col'} Total
+              %th.govuk-table__header.number-plate-header{scope: 'col'} Number plate
+              %th.govuk-table__header.date-of-entry-header{scope: 'col'} Dates of entry
+              %th.govuk-table__header{scope: 'col', style: 'width: 35%'} Charge
           %tbody.govuk-table__body
             - @payments.each_with_index do |payment|
               %tr.govuk-table__row
@@ -43,6 +42,17 @@
                     %br
                 %td.govuk-table__cell= parse_charge(payment.total_paid)
                 %td.govuk-table__cell
+      - @payment_modifications.each do |payment_modification|
+        - payment_modification.each do |date, type|
+          - if type['refunds'].present?
+            %h1.govuk-heading-m Refund
+            = render 'payment_history/payment_history/payment_modifications', date: date, payment_modifications: type['refunds']
+
+          - if type['charges_back'].present?
+            %h1.govuk-heading-m Chargeback
+            %p
+              Payment returned after the charge was disputed.
+            = render 'payment_history/payment_history/payment_modifications', date: date, payment_modifications: type['charges_back']
 
       %p
         = link_to 'Return to payment history', @back_button_url

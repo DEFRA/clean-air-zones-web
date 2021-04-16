@@ -12,11 +12,11 @@ module Organisations
 
     skip_before_action :authenticate_user!
     # checks if new_company account_id is present in session
-    before_action :check_account_id, only: %i[new_credentials create email_sent]
+    before_action :check_account_id, only: %i[sign_in_details submit_sign_in_details email_sent]
     # checks if new account details is present in session
     before_action :check_account_details, only: %i[email_sent resend_email]
     # add data to session to render it in the text fields after using `Back` link
-    before_action :add_credentials_to_session, only: :create
+    before_action :add_credentials_to_session, only: :submit_sign_in_details
     before_action :assign_payment_enabled, only: :cannot_create
 
     ##
@@ -24,30 +24,30 @@ module Organisations
     #
     # ==== Path
     #
-    #    :GET /organisations
+    #    :GET /create_account
     #
-    def new
+    def create_account
       @error = alert
     end
 
     ##
     # Validates submitted account name.
-    # If successful, redirects to {:new_credentials}[rdoc-ref:new_credentials]
+    # If successful, redirects to {:sign_in_details}[rdoc-ref:sign_in_details]
     # If no, redirects to {:new}[rdoc-ref:new]
     #
     # ==== Path
     #
-    #    POST /organisations
+    #    :POST /create_account
     #
     # ==== Params
     # * +company_name+ - string, account name e.g. 'Company name'
     #
-    def set_name
+    def submit_create_account
       create_new_account if account_not_created_or_name_changed?
-      redirect_to fleet_check_organisations_path
+      redirect_to how_many_vehicles_organisations_path
     rescue InvalidCompanyNameException, UnableToCreateAccountException => e
       @error = e.message
-      render 'organisations/organisations/new'
+      render 'organisations/organisations/create_account'
     end
 
     ##
@@ -55,9 +55,9 @@ module Organisations
     #
     # ==== Path
     #
-    #    GET /organisations/fleet_check
+    #    :GET /organisations/how_many_vehicles
     #
-    def fleet_check
+    def how_many_vehicles
       # renders static page
     end
 
@@ -67,15 +67,15 @@ module Organisations
     #
     # ==== Path
     #
-    #    POST /organisations/fleet_check
+    #    :POST /organisations/how_many_vehicles
     #
-    def submit_fleet_check
+    def submit_how_many_vehicles
       SessionManipulation::SetFleetCheck.call(session: session, params: company_params)
       Organisations::ValidateFleetCheck.call(confirm_fleet_check: company_params[:confirm_fleet_check])
-      redirect_to new_credentials_organisations_path
+      redirect_to sign_in_details_organisations_path
     rescue InvalidFleetCheckException => e
       @error = e.message
-      render 'organisations/organisations/fleet_check'
+      render 'organisations/organisations/how_many_vehicles'
     rescue AccountForMultipleVehiclesException
       redirect_to cannot_create_organisations_path
     end
@@ -85,7 +85,7 @@ module Organisations
     #
     # ==== Path
     #
-    #    GET /organisations/cannot_create
+    #    :GET /organisations/cannot_create
     #
     def cannot_create
       # renders static page
@@ -96,12 +96,12 @@ module Organisations
     #
     # ==== Path
     #
-    #    GET /organisations/new_credentials
+    #    :GET /organisations/sign_in_details
     #
     # ==== Params
     # * +company_name+ - string, account name stored in the session e.g. 'Company name'
     #
-    def new_credentials
+    def sign_in_details
       # renders static page
     end
 
@@ -112,12 +112,12 @@ module Organisations
     #
     # ==== Path
     #
-    #    POST /organisations/new_credentials
+    #    :POST /organisations/sign_in_details
     #
     # ==== Params
     # * +company_name+ - string, account name stored in the session e.g. 'Company name'
     #
-    def create
+    def submit_sign_in_details
       user = Organisations::CreateUserAccount.call(
         organisations_params: organisations_params,
         account_id: new_account['account_id'],
@@ -127,7 +127,7 @@ module Organisations
       redirect_to email_sent_organisations_path
     rescue NewPasswordException => e
       @errors = e.errors_object
-      render :new_credentials
+      render :sign_in_details
     end
 
     ##

@@ -4,11 +4,10 @@
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
     .govuk-grid-column-two-thirds
-      %h1.govuk-heading-l
-        = title_and_header
+      %h1.govuk-heading-l= title_and_header
 
       %p
-        As your account has become inactive we need to sign you out to keep your account secure. 
+        Due to a lack of activity, we are signing you out, to keep the business account secure.
         If you would like to stay signed in, continue.
 
       = link_to 'Continue', @back_button_url, class: 'govuk-button'

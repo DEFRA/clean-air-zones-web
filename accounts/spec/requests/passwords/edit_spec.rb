@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'PasswordsController - GET #edit' do
+describe 'PasswordsController - GET #edit', type: :request do
   subject { get edit_passwords_path }
 
   context 'when signed in' do

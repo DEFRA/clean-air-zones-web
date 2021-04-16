@@ -17,7 +17,7 @@ RSpec.shared_examples 'a vrn required view' do
     end
 
     context 'with VRN in the session' do
-      before { add_to_session(vrn: @vrn) }
+      before { add_to_session(vrn: mocked_vrn) }
 
       it 'returns http success' do
         subject

@@ -3,7 +3,7 @@
 ##
 # Controller class for the password change.
 #
-class PasswordsController < ApplicationController
+class PasswordsController < ApplicationController # rubocop:disable Metrics/ClassLength
   # checks if a user is logged in
   before_action :authenticate_user!, only: %i[new create]
   # checks if a user has a 'FORCE_NEW_PASSWORD' status
@@ -13,6 +13,8 @@ class PasswordsController < ApplicationController
   # prevent browser page caching if a password_reset_token is present
   before_action :validate_password_reset_token,
                 only: %i[send_confirmation_code confirm_reset change]
+  # assign back button path
+  before_action :assign_back_button_url, only: %i[reset confirm_reset]
 
   ##
   # Renders the password change page.
@@ -79,11 +81,11 @@ class PasswordsController < ApplicationController
   # redirects to the {password reset page}[rdoc-ref:PasswordsController.reset]
   #
   def send_confirmation_code
-    Cognito::ForgotPassword.call(username: username)
     session[:password_reset_username] = username
+    Cognito::ForgotPassword::Reset.call(username: username)
     redirect_to confirm_reset_passwords_path
   rescue Cognito::CallException => e
-    redirect_to e.path, alert: e.message
+    redirect_to e.path, alert: (e.message.presence ? e.message : nil)
   end
 
   ##
@@ -94,15 +96,13 @@ class PasswordsController < ApplicationController
   #    :GET /passwords/confirm_reset
   #
   def confirm_reset
-    unless session[:password_reset_username]
-      return redirect_to new_user_session_path, alert: 'Email is missing'
-    end
+    return redirect_to new_user_session_path, alert: 'Email is missing' unless username_in_session
 
-    @username = session[:password_reset_username]
+    @username = username_in_session
   end
 
   ##
-  # Sets provided new password in Cognito.
+  # Sets provided new password and +reset_counter+ to 1 in Cognito.
   #
   # ==== Path
   #
@@ -115,17 +115,13 @@ class PasswordsController < ApplicationController
   # * +code+ - 6 digit string of numbers, code sent to user
   #
   # ==== Exceptions
-  # Any exception raised during {API call}[rdoc-ref:Cognito::ConfirmForgotPassword.call]
+  # Any exception raised during {API call}[rdoc-ref:Cognito::ForgotPassword::Confirm.call]
   # redirects to the {password reset page}[rdoc-ref:PasswordsController.confirm_reset]
   #
   def change
-    Cognito::ConfirmForgotPassword.call(
-      username: username,
-      password: password,
-      password_confirmation: password_confirmation,
-      code: code
-    )
-    %w[token username].each { |attr| session["password_reset_#{attr}".to_sym] = nil }
+    update_password_call
+    Cognito::ForgotPassword::UpdateUser.call(reset_counter: 1, username: username)
+    reset_user_lockout_data
     redirect_to success_passwords_path
   rescue Cognito::CallException => e
     redirect_to confirm_reset_passwords_path, alert: e.message
@@ -191,11 +187,32 @@ class PasswordsController < ApplicationController
 
   # Returns a string
   def username
-    password_params[:username]
+    password_params[:username]&.downcase
   end
 
   # Returns a string
   def code
     password_params[:confirmation_code]
+  end
+
+  # Calls {ConfirmForgotPassword}[rdoc-ref:Cognito::ForgotPassword::Confirm.call] and update user session
+  def update_password_call
+    Cognito::ForgotPassword::Confirm.call(
+      username: username,
+      password: password,
+      password_confirmation: password_confirmation,
+      code: code
+    )
+    %w[token username].each { |attr| session["password_reset_#{attr}".to_sym] = nil }
+  end
+
+  # username in session
+  def username_in_session
+    session[:password_reset_username]
+  end
+
+  # Updates user data associated with account lockout.
+  def reset_user_lockout_data
+    Cognito::Lockout::UpdateUser.call(username: username, failed_logins: 0)
   end
 end

@@ -9,6 +9,7 @@ Feature: Fleets
     Then I select Bulk upload
       And I press the Continue
     Then I should be on the upload page
+      And I should not see 'Results per page'
 
   Scenario: Visiting the manage fleet page with not empty fleet
     When I have vehicles in my fleet
@@ -17,6 +18,8 @@ Feature: Fleets
     Then I should see 'Upcoming' 1 times
     Then I should not see 'What does undetermined mean?'
     Then I am able to export my data to CSV file
+      And I should see 'Showing 1 to 10 of 15'
+      And I should see 'Results per page'
 
   Scenario: Visiting the manage fleet page with undetermined vehicles in my fleet
     When I have undetermined vehicles in my fleet

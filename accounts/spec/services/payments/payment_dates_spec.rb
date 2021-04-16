@@ -96,7 +96,7 @@ describe Payments::PaymentDates do
       end
     end
 
-    context 'and #charge_start_date is today' do
+    context 'with #charge_start_date is today' do
       let(:charge_start_date) { Date.current }
 
       it 'returns true' do

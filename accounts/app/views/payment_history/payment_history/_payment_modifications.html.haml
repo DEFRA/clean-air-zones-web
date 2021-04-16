@@ -1,0 +1,24 @@
+%p
+  %strong
+    Date received from Local Authority:
+  = date
+
+%div.scrollable-table
+  %table.govuk-table
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header.number-plate-header{scope: 'col'} Number plate
+        %th.govuk-table__header.date-of-entry-header{scope: 'col'} Date of entry
+        %th.govuk-table__header.charge-header{scope: 'col'} Charge
+        %th.govuk-table__header.case-reference-header{scope: 'col'} Case reference
+    %tbody.govuk-table__body
+      - payment_modifications.each do |payment_modification|
+        %tr.govuk-table__row
+          %td.govuk-table__cell{scope: 'row'}
+            = payment_modification.vrn
+          %td.govuk-table__cell{scope: 'row'}
+            = payment_modification.travel_date
+          %td.govuk-table__cell{scope: 'row'}
+            = parse_charge(payment_modification.amount)
+          %td.govuk-table__cell{scope: 'row'}
+            = payment_modification.reference

@@ -8,6 +8,7 @@ describe CleanAirZone, type: :model do
   let(:data) do
     {
       name: name,
+      operatorName: operator_name,
       cleanAirZoneId: id,
       boundaryUrl: url,
       exemptionUrl: url,
@@ -15,6 +16,7 @@ describe CleanAirZone, type: :model do
     }.stringify_keys
   end
   let(:name) { 'Birmingham' }
+  let(:operator_name) { 'Bath and North East Somerset Council' }
   let(:id) { 'a49afb83-d1b3-48b6-b08b-5db8142045dc' }
   let(:url) { 'www.example.com' }
   let(:active_charge_start_date) { '2020-05-14' }
@@ -28,6 +30,12 @@ describe CleanAirZone, type: :model do
   describe '.name' do
     it 'returns a proper name' do
       expect(subject.name).to eq(name)
+    end
+  end
+
+  describe '.operator_name' do
+    it 'returns a proper value' do
+      expect(subject.operator_name).to eq(operator_name)
     end
   end
 
@@ -77,7 +85,7 @@ describe CleanAirZone, type: :model do
     end
 
     context 'when another caz was selected' do
-      let(:another_id) { @uuid }
+      let(:another_id) { SecureRandom.uuid }
 
       it 'returns false' do
         expect(subject.checked?([another_id])).to eq(false)
@@ -94,7 +102,7 @@ describe CleanAirZone, type: :model do
     end
 
     it 'returns an array of CleanAirZone instances' do
-      expect(subject).to all(be_a(CleanAirZone))
+      expect(subject).to all(be_a(described_class))
     end
 
     it 'returns only active CleanAirZone' do
@@ -102,16 +110,17 @@ describe CleanAirZone, type: :model do
     end
   end
 
-  describe '.active' do
-    subject { described_class.active }
+  describe '.active_cazes' do
+    subject { described_class.active_cazes }
 
     before do
-      caz_list = read_response('caz_list_active.json')['cleanAirZones']
-      allow(ComplianceCheckerApi).to receive(:clean_air_zones).and_return(caz_list)
+      caz_list ||= read_response('caz_list_active.json')['cleanAirZones']
+      stub = caz_list.map { |caz_data| described_class.new(caz_data) }.sort_by(&:name)
+      allow(described_class).to receive(:all).and_return(stub)
     end
 
     it 'returns an array of CleanAirZone instances' do
-      expect(subject).to all(be_a(CleanAirZone))
+      expect(subject).to all(be_a(described_class))
     end
 
     it 'returns only active CleanAirZone' do
@@ -135,10 +144,10 @@ describe CleanAirZone, type: :model do
     end
 
     context 'when another caz name' do
-      let(:name) { 'Leeds' }
+      let(:name) { 'Birmingham' }
 
       it 'returns a proper value' do
-        expect(subject.charging_starts).to eq('Early 2021')
+        expect(subject.charging_starts).to eq('1 June 2021')
       end
     end
   end

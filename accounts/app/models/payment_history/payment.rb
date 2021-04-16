@@ -11,34 +11,44 @@ module PaymentHistory
       @data = data.transform_keys { |key| key.underscore.to_sym }
     end
 
-    # payment id
+    # Returns payment id
     def payment_id
       data[:payment_id]
     end
 
-    # parsed payment date
+    # Returns parsed payment date
     def date
       Date.parse(data[:payment_date]).strftime('%d/%m/%Y')
     end
 
-    # payment made by
+    # Returns payment made by
     def payer_name
       data[:payer_name]
     end
 
-    # Clean Air Zone name
+    # Returns Clean Air Zone name
     def caz_name
       data[:caz_name]
     end
 
-    # count of entries
+    # Returns count of entries
     def entries_count
       data[:entries_count]
     end
 
-    # amount paid
+    # Returns amount paid
     def total_paid
       data[:total_paid]
+    end
+
+    # Returns a boolean, e.g. true
+    def refunded?
+      data[:is_refunded]
+    end
+
+    # Returns a boolean, e.g. true
+    def charged_back?
+      data[:is_chargedback]
     end
 
     private

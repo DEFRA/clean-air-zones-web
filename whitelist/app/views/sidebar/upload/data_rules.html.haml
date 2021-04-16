@@ -1,0 +1,73 @@
+- title_and_header = 'Whitelist VRN Data Rules'
+- content_for(:title, title_and_header)
+
+.govuk-grid-column-two-thirds
+  %h1.govuk-heading-l
+    = title_and_header
+
+  %p To upload your whitelisted number plates you need to make sure it is in the correct format.
+  %p The file should be a CSV with columns filled in like this.
+
+  %table.govuk-table
+    %caption.govuk-table__caption
+    %thead.govuk-table__head
+      %tr.govuk-table__row
+        %th.govuk-table__header.table-without-border{scope: 'col'} VRN
+        %th.govuk-table__header.table-without-border{scope: 'col'} Category
+        %th.govuk-table__header.table-without-border{scope: 'col'} Reason
+        %th.govuk-table__header.table-without-border{scope: 'col'} Manufacturer
+        %th.govuk-table__header.table-without-border{scope: 'col'} Action
+    %tbody.govuk-table__body
+      %tr
+        %td.table-without-border AFG692S
+        %td.table-without-border Exemption
+        %td.table-without-border
+          EURO Status
+          %br Compliant
+        %td.table-without-border
+          Example
+          %br Manufacturer
+        %td.table-without-border C
+
+  %h2.govuk-heading-m Adding, removing or deleting data
+
+  %p Enter the following values into the column for Action
+  %ul.govuk-list-govuk-list--bullet
+    %li
+      %p C - new record
+    %li
+      %p D - delete an entry from the table
+    %li
+      %p U - update or insert an entry
+
+  %h2.govuk-heading-m Data validation rules
+  %p To ensure the CSV uploads with no errors:
+  %ul.govuk-list-govuk-list--bullet
+    %li
+      %p
+        Don't include a header row
+    %li
+      %p
+        Don't include a railing row
+    %li
+      %p
+        Ensure there is no trailing comma for the last field
+    %li
+      %p
+        No field contains a newline character
+    %li
+      %p
+        No spaces between field values and separating commas
+    %li
+      %p
+        Each record is separated by a newline (ASCII carriage return)
+
+  %h2.govuk-heading-s Accepted characters
+  %p Only the following characters may be included in the CSV file:
+  %ul.govuk-list-govuk-list--bullet
+    %li
+      %p A to Z (upper case)
+    %li
+      %p a to z (lower case)
+    %li
+      %p Numeric 0-9

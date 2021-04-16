@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Organisations::OrganisationsController - GET #verification_failed' do
+describe 'Organisations::OrganisationsController - GET #verification_failed', type: :request do
   subject { get verification_failed_organisations_path }
 
   it 'returns a 200 OK status' do

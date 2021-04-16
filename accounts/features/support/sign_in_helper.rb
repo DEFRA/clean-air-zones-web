@@ -37,7 +37,7 @@ module SignInHelper
     {
       user_id: options[:user_id] || SecureRandom.uuid,
       account_id: options[:account_id] || SecureRandom.uuid,
-      account_name: options[:account_name] || 'Royal Mail',
+      account_name: options[:account_name] || "Royal Mail's",
       permissions: options[:permissions] || account_permissions,
       days_to_password_expiry: options[:days_to_password_expiry] || 90,
       beta_tester: options[:beta_tester] || false
@@ -45,7 +45,7 @@ module SignInHelper
   end
 
   def account_permissions
-    %w[MANAGE_VEHICLES MANAGE_MANDATES MAKE_PAYMENTS MANAGE_USERS]
+    %w[MANAGE_VEHICLES MANAGE_MANDATES MAKE_PAYMENTS MANAGE_USERS VIEW_PAYMENTS]
   end
 
   def remote_ip

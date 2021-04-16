@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Given('I go to the create account page') do
-  visit organisations_path
+  visit create_account_path
 end
 
 Given('I visit the verification link with a token status {string}') do |string|
@@ -19,7 +19,7 @@ Then('I enter a company name') do
   stub_request(:post, /accounts/).to_return(
     status: 201,
     body: {
-      'accountId': 'ccb37077-c4b8-4cc2-b34f-4931de0774f9'
+      accountId: 'ccb37077-c4b8-4cc2-b34f-4931de0774f9'
     }.to_json
   )
   fill_in('organisations_company_name', with: 'Company name')
@@ -33,8 +33,8 @@ Then('I enter api invalid company: {string}') do |string|
   stub_request(:post, /accounts/).to_return(
     status: 422,
     body: {
-      'message': "Invalid company name: #{string}",
-      'errorCode': string
+      message: "Invalid company name: #{string}",
+      errorCode: string
     }.to_json
   )
   fill_in('organisations_company_name', with: 'Company name')
@@ -53,8 +53,8 @@ And('I enter the account details with not uniq email address') do
   stub_request(:post, /users/).to_return(
     status: 422,
     body: {
-      'message': 'Submitted parameters are invalid',
-      'errorCode': 'emailNotUnique'
+      message: 'Submitted parameters are invalid',
+      errorCode: 'emailNotUnique'
     }.to_json
   )
   fill_account_details
@@ -80,9 +80,9 @@ def fill_account_details
 end
 
 And('I should be on the Company creation page') do
-  expect_path(organisations_path)
+  expect_path(create_account_path)
 end
 
 And('I should be on the Fleet check page') do
-  expect_path(fleet_check_organisations_path)
+  expect_path(how_many_vehicles_organisations_path)
 end

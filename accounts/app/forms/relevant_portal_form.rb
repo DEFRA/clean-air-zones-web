@@ -9,7 +9,7 @@
 #
 class RelevantPortalForm < BaseForm
   validates :check_vehicle_option, inclusion: {
-    in: %w[single multiple], message: I18n.t('relevant_portal_form.errors.missing_answer')
+    in: %w[single multiple pay], message: I18n.t('relevant_portal_form.errors.missing_answer')
   }
 
   ##

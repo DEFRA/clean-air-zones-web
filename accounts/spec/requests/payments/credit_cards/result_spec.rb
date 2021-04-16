@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'Payments::CreditCardsController - GET #result' do
+describe 'Payments::CreditCardsController - GET #result', type: :request do
   subject { get result_payments_path }
 
-  let(:id) { @uuid }
+  let(:id) { SecureRandom.uuid }
   let(:details) do
     {
       'CU12345' =>
@@ -19,9 +19,9 @@ describe 'Payments::CreditCardsController - GET #result' do
   end
 
   before do
-    add_to_session(initiated_payment: { caz_id: 'Leeds', payment_id: id, details: details })
+    add_to_session(initiated_payment: { caz_id: 'Bath', payment_id: id, details: details })
     allow(PaymentsApi).to receive(:payment_status)
-      .with(payment_id: id, caz_name: 'Leeds').and_return(
+      .with(payment_id: id, caz_name: 'Bath').and_return(
         'paymentId' => id, 'status' => 'success', 'userEmail' => 'test@example.com'
       )
     sign_in create_user

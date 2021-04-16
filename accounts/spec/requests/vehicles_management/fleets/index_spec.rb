@@ -2,10 +2,12 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::FleetsController - GET #index' do
-  subject { get fleets_path }
+describe 'VehiclesManagement::FleetsController - GET #index', type: :request do
+  subject { get fleets_path, params: { vrn: vrn } }
 
-  context 'correct permissions' do
+  let(:vrn) { nil }
+
+  context 'when correct permissions' do
     before { sign_in user }
 
     let(:user) { manage_vehicles_user }
@@ -14,16 +16,16 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
     context 'with empty fleet' do
       before { mock_fleet(create_empty_fleet) }
 
-      it 'redirects to the #submission_method' do
+      it 'redirects to the #choose_method' do
         subject
-        expect(response).to redirect_to submission_method_fleets_path
+        expect(response).to redirect_to choose_method_fleets_path
       end
     end
 
     context 'with vehicles in fleet' do
       before { mock_clean_air_zones }
 
-      context 'and without upload data in redis' do
+      context 'with without upload data in redis' do
         before do
           mock_fleet
           subject
@@ -35,6 +37,10 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
 
         it 'sets default page value to 1' do
           expect(assigns(:pagination).page).to eq(1)
+        end
+
+        it 'sets default per_page value to 10' do
+          expect(assigns(:pagination).per_page).to eq(10)
         end
 
         it 'not sets :success flash message' do
@@ -50,7 +56,7 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
           subject
         end
 
-        context 'and when status is SUCCESS' do
+        context 'with when status is SUCCESS' do
           let(:status) { 'SUCCESS' }
 
           it 'renders manage vehicles page' do
@@ -62,7 +68,7 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
           end
         end
 
-        context 'and when status is CHARGEABILITY_CALCULATION_IN_PROGRESS' do
+        context 'with when status is CHARGEABILITY_CALCULATION_IN_PROGRESS' do
           let(:status) { 'CHARGEABILITY_CALCULATION_IN_PROGRESS' }
 
           it 'redirects to the calculating chargeability page' do
@@ -74,7 +80,7 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
           end
         end
 
-        context 'and when status is RUNNING' do
+        context 'with when status is RUNNING' do
           let(:status) { 'RUNNING' }
 
           it 'redirects to the process uploading page' do
@@ -86,7 +92,7 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
           end
         end
 
-        context 'and when status is unknown' do
+        context 'with when status is unknown' do
           let(:status) { 'UNKNOWN' }
 
           it 'renders manage vehicles page' do
@@ -103,7 +109,7 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
         end
       end
 
-      context 'and when api returns 404 status' do
+      context 'with when api returns 404 status' do
         before do
           add_upload_job_to_redis
           mock_fleet
@@ -118,6 +124,40 @@ describe 'VehiclesManagement::FleetsController - GET #index' do
 
         it 'deletes job data from redis' do
           expect(REDIS.hget(upload_job_redis_key, 'job_id')).to be_nil
+        end
+      end
+
+      context 'with search vrn' do
+        before { allow(FleetsApi).to receive(:vehicles).and_return(read_response('vehicles.json')['1']) }
+
+        context 'with invalid search vrn format' do
+          let(:vrn) { 'ABCDE$%' }
+
+          it 'calls FleetsApi.vehicles with proper params' do
+            subject
+            expect(FleetsApi).to have_received(:vehicles).with(
+              account_id: user.account_id,
+              page: 1,
+              per_page: 10,
+              only_chargeable: nil,
+              vrn: nil
+            )
+          end
+        end
+
+        context 'with valid search vrn format' do
+          let(:vrn) { 'ABCD123' }
+
+          it 'calls FleetsApi.vehicles with proper params' do
+            subject
+            expect(FleetsApi).to have_received(:vehicles).with(
+              account_id: user.account_id,
+              page: 1,
+              per_page: 10,
+              only_chargeable: nil,
+              vrn: vrn
+            )
+          end
         end
       end
     end

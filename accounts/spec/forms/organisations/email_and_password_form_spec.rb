@@ -23,7 +23,7 @@ describe Organisations::EmailAndPasswordForm, type: :model do
 
   it { is_expected.to be_valid }
 
-  context 'email and email_confirmation fields' do
+  context 'when email and email_confirmation fields' do
     context 'when email is empty' do
       let(:email) { '' }
 
@@ -104,7 +104,7 @@ describe Organisations::EmailAndPasswordForm, type: :model do
     end
   end
 
-  context 'password and password_confirmation fields' do
+  context 'when password and password_confirmation fields' do
     context 'when password is empty' do
       let(:password) { '' }
 

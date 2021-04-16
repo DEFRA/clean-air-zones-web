@@ -5,6 +5,7 @@ When('I visit the enter details page') do
   mock_users
   mock_actual_account_name
   mock_clean_air_zones
+  mock_debits
   login_user(permissions: 'MANAGE_VEHICLES')
   visit enter_details_vehicles_path
 end

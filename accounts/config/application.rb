@@ -10,9 +10,9 @@ module FleetsUI
   # An Engine with the responsibility of coordinating the whole boot process.
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
     # Load custom Devise strategies
-    config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << "#{config.root}/lib"
     # feedback url
     config.x.feedback_url = ENV.fetch('FEEDBACK_URL', 'https://defragroup.eu.qualtrics.com/jfe/form/SV_7U7lt37vNismJI9')
     # payments ui url

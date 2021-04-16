@@ -117,10 +117,6 @@ describe AccountDetails::EditUserEmailForm, type: :model do
 
     it { is_expected.not_to be_valid }
 
-    it 'does not check email uniqueness' do
-      expect(AccountsApi::Accounts).not_to receive(:user_validations)
-    end
-
     it 'has a proper email error message' do
       expect(subject.errors.messages[:email]).to(
         include(I18n.t('edit_user_email_form.errors.email_too_long'))
@@ -135,12 +131,13 @@ describe AccountDetails::EditUserEmailForm, type: :model do
   end
 
   context 'when emails match but have invalid format' do
-    before { allow(AccountsApi::Accounts).to receive(:user_validations).and_return(true) }
-
     let(:email) { 'invalid-format' }
     let(:confirmation) { 'invalid-format' }
 
-    before { subject.valid? }
+    before do
+      allow(AccountsApi::Accounts).to receive(:user_validations).and_return(true)
+      subject.valid?
+    end
 
     it { is_expected.not_to be_valid }
 

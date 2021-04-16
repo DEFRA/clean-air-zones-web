@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::RemoveUsersController - POST #confirm_remove' do
-  subject { post remove_user_path(@uuid), params: params }
+describe 'UsersManagement::RemoveUsersController - POST #confirm_remove', type: :request do
+  subject { post remove_user_path(user_id), params: params }
 
   let(:params) { { 'confirm-remove-user': confirmation } }
+  let(:user_id) { SecureRandom.uuid }
   let(:confirmation) { 'yes' }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     context 'with edit user data in session' do
       before { add_to_session(edit_user: { name: 'John Doe' }) }
 
@@ -35,7 +36,7 @@ describe 'UsersManagement::RemoveUsersController - POST #confirm_remove' do
           let(:confirmation) { 'no' }
 
           it 'redirects to the edit user page' do
-            expect(subject).to redirect_to(edit_user_path(@uuid))
+            expect(subject).to redirect_to(edit_user_path(user_id))
           end
         end
 
@@ -76,7 +77,7 @@ describe 'UsersManagement::RemoveUsersController - POST #confirm_remove' do
     end
 
     context 'when user want to delete his own account' do
-      before { sign_in manage_users_user(user_id: @uuid) }
+      before { sign_in manage_users_user(user_id: user_id) }
 
       it 'redirects to the users page' do
         expect(subject).to redirect_to users_path

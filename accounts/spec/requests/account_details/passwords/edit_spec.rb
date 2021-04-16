@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'AccountDetails::PasswordsController - GET #edit' do
+describe 'AccountDetails::PasswordsController - GET #edit', type: :request do
   subject { get edit_password_path }
 
   context 'when user is an owner' do

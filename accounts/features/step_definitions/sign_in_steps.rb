@@ -5,6 +5,7 @@ Given('I am on the Sign in page') do
 end
 
 Given('I am on the set up account confirmation page') do
+  mock_payment_history
   visit set_up_confirmation_users_path
 end
 

@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::VehicleController - GET #not_found' do
+describe 'VehiclesManagement::VehicleController - GET #not_found', type: :request do
   subject { get not_found_vehicles_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     let(:no_vrn_path) { enter_details_vehicles_path }
 
     it_behaves_like 'a vrn required view'

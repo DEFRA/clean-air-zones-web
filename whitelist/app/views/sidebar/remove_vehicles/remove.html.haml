@@ -1,0 +1,35 @@
+- title_and_header = I18n.t('application_title')
+- content_for(:title, title_and_header)
+
+.govuk-grid-column-two-thirds
+
+  - if @errors
+    = render 'common/error_summary',
+      error_msg_div: '#vrn-error',
+      error_msg: @errors.first
+
+  = render 'common/header_and_body'
+
+  = form_tag remove_vehicles_path, method: :post do
+    %fieldset.govuk-fieldset
+      %legend.govuk-fieldset__legend.govuk-fieldset__legend--m
+      %h2.govuk-heading-m Remove a vehicle
+      .govuk-form-group{class: ('govuk-form-group--error' if @errors)}
+        - if @errors
+          %span#vrn-error.govuk-error-message
+            %span.govuk-visually-hidden Error:
+            = @errors.first
+
+        %label#vrn-label.govuk-label{for: 'vrn'}
+          = I18n.t('labels.vrn')
+        %input#vrn.govuk-input.vrn-input{'aria-labelledby': 'vrn-label',
+                                         'aria-describedby': 'vrn',
+                                          name: 'vrn',
+                                          type: 'text',
+                                          maxlength: 14,
+                                          value: session['remove_vrn']}
+
+      = submit_tag 'Remove',
+                    class: 'govuk-button',
+                    'data-module': 'govuk-button',
+                    id: 'remove-button'

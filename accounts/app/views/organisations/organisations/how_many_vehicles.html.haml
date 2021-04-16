@@ -1,0 +1,35 @@
+- title_and_header = 'How many vehicles do you want to add to the business account?'
+- content_for(:title, title_and_header)
+
+= link_to 'Back', create_account_path, class: 'govuk-back-link'
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      %h1.govuk-heading-l
+        = title_and_header
+      %p
+
+      %fieldset.govuk-fieldset{'aria-describedby': 'create-account-hint'}
+        %legend.govuk-visually-hidden Create account fields
+
+        = form_for('organisations', url: how_many_vehicles_organisations_path, method: :post,
+            html: { autocomplete: :on, novalidate: 'novalidate', spellcheck: false }) do |f|
+          .govuk-form-group{class: ('govuk-form-group--error' if @error)}
+            %fieldset.govuk-fieldset
+              - if @error
+                %span#confirm-delete-error.govuk-error-message
+                  %span.govuk-visually-hidden Error:
+                  = @error
+
+              .govuk-radios
+                .govuk-radios__item
+                  %input#confirm-fleet-check-1.govuk-radios__input{name: 'organisations[confirm_fleet_check]', type: 'radio', value: 'less_than_two', checked: checked_fleet_checked?('less_than_two') }
+                  %label.govuk-label.govuk-radios__label{for: 'confirm-fleet-check-1'}
+                    Less than two
+                .govuk-radios__item
+                  %input#confirm-fleet-check-2.govuk-radios__input{name: 'organisations[confirm_fleet_check]', type: 'radio', value: 'two_or_more', checked: checked_fleet_checked?('two_or_more')}
+                  %label.govuk-label.govuk-radios__label{for: 'confirm-fleet-check-2'}
+                    Two or more
+
+          = f.submit 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'

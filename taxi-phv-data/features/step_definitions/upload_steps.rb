@@ -27,7 +27,7 @@ When('I press refresh page link') do
   allow(RegisterCheckerApi).to receive(:job_status)
     .with(job_name, correlation_id).and_return('SUCCESS')
 
-  click_link 'click here.'
+  click_link 'click here'
 end
 
 Then('I am redirected to the Success page') do
@@ -48,7 +48,7 @@ When('I press refresh page link when api response not running or finished') do
     .with(job_name, correlation_id).and_return('FAILURE')
   allow(RegisterCheckerApi).to receive(:job_errors)
     .with(job_name, correlation_id).and_return(%w[error])
-  click_link 'click here.'
+  click_link 'click here'
 end
 
 #  Scenario: Upload a csv file whose name is not compliant with the naming rules
@@ -88,6 +88,14 @@ When('I upload a csv file whose format that is not .csv or .CSV') do
   click_button 'Upload'
 end
 
+# Scenario: Upload a csv file whose size is too big
+When('I upload a csv file whose size is too big') do
+  attach_file(:file, csv_file('CAZ-2020-01-08-AuthorityID.csv'))
+  allow_any_instance_of(ActionDispatch::Http::UploadedFile).to receive(:size)
+    .and_return(52_428_801)
+  click_button 'Upload'
+end
+
 # Upload a valid csv file during error is encountered writing to S3
 When('I upload a csv file during error on S3') do
   allow_any_instance_of(Aws::S3::Object).to receive(:upload_file).and_return(false)
@@ -99,6 +107,12 @@ end
 # Scenario: Show processing page without uploaded csv file
 When('I want go to processing page') do
   visit processing_upload_index_path
+end
+
+Then('I change my IP') do
+  allow_any_instance_of(ActionDispatch::Request)
+    .to receive(:remote_ip)
+    .and_return('4.3.2.1')
 end
 
 def empty_csv_file(filename)

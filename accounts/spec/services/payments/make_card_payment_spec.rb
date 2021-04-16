@@ -10,6 +10,7 @@ describe Payments::MakeCardPayment do
       return_url: return_url
     )
   end
+
   let(:charge_in_pounds) { 50.0 }
   let(:payment_data) do
     {

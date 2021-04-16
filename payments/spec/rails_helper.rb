@@ -10,7 +10,7 @@ require 'rspec/rails'
 require 'rack_session_access'
 
 # load support folder
-Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.include AddToSession
@@ -30,7 +30,7 @@ RSpec.configure do |config|
   # You can disable this behaviour by removing the line below, and instead
   # explicitly tag your specs with their type, e.g.:
   #
-  #     RSpec.describe UsersController, :type => :controller do
+  #     describe UsersController, :type => :controller do
   #       # ...
   #     end
   #

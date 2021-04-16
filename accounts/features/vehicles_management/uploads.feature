@@ -6,7 +6,7 @@ Feature: Uploads
   Scenario: Uploading file with no vehicles in the fleet
     Given I have no vehicles in my fleet
       And I visit the upload page
-    Then I should see 'Upload the vehicle list to Royal Mail account' title
+    Then I should see "Upload the vehicle list to Royal Mail's account" title
     When I press Upload file button
     Then I should see 'Select a CSV file to upload' 2 times
     When I attach a file
@@ -81,7 +81,7 @@ Feature: Uploads
     When I am on the processing page
       And My upload is failed with error: 'Some error message'
       And I reload the page
-    Then I should see 'Upload the vehicle list to Royal Mail account' title
+    Then I should see "Upload the vehicle list to Royal Mail's account" title
       And I should see 'Some error message'
 
   Scenario: Upload a csv file whose size is too big

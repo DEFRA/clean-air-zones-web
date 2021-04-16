@@ -11,7 +11,7 @@ describe 'AccountsApi::Auth.update_owner_email - PUT' do
     )
   end
 
-  let(:account_user_id) { @uuid }
+  let(:account_user_id) { SecureRandom.uuid }
   let(:new_email) { 'jan@kowalski.com' }
   let(:confirm_url) { 'http://example.com' }
 

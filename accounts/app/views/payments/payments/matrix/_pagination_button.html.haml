@@ -1,0 +1,22 @@
+- active ||= false
+- form_class ||= nil
+- id = "pagination-button-#{transform_to_id(button_text)}"
+
+- if page == '...'
+  %li.moj-pagination__item= button_text
+- elsif active
+  %li.moj-pagination__item.moj-pagination__item--active{id: id}
+    = button_text
+    - if button_text.is_a?(Integer)
+      %span.govuk-visually-hidden
+        page
+- else
+  %li.moj-pagination__item{id: id, class: ("moj-pagination__item--#{form_class}" if form_class)}
+    = link_to(matrix_payments_path(page: page, vrn: params[:vrn]), class: 'moj-pagination__link', onclick: "addPage(#{page});") do
+      = button_text
+      - if button_text.is_a?(Integer)
+        %span.govuk-visually-hidden
+          page
+      - if button_text.is_a?(String)
+        %span.govuk-visually-hidden
+          set of pages

@@ -13,8 +13,9 @@
             %span.govuk-warning-text__assistive Warning
             = @warning
       %h2.govuk-heading-m What happens next
-      %p We have saved your data to the Retrofitted vehicles database.
-      %p You will need to reupload updated document regularly.
+      %p You can update your data whenever you need to by uploading a new file.
       %p
-        = link_to 'What did you think of this service?', Rails.configuration.x.feedback_url, target: '_blank'
-        (takes 30 seconds)
+        = external_link_to('What did you think of this service?',
+                           Rails.configuration.x.feedback_url,
+                           id: 'feedback-link')
+        (takes 30 seconds).

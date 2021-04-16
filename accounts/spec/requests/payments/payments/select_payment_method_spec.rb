@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-describe 'PaymentsController - GET #select_payment_method' do
+describe 'PaymentsController - GET #select_payment_method', type: :request do
   subject { get select_payment_method_payments_path }
+
   before { mock_direct_debit_enabled }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
-      add_to_session(new_payment: { caz_id: @uuid, details: {} })
+      add_to_session(new_payment: { caz_id: SecureRandom.uuid, details: {} })
       sign_in create_user
     end
 

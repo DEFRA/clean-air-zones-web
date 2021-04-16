@@ -2,15 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe Cognito::AuthUser do
-  subject(:service_call) { described_class.call(username: username, password: password) }
+describe Cognito::AuthUser do
+  subject(:service_call) do
+    described_class.call(username: username, password: password, login_ip: remote_ip)
+  end
 
-  let(:username) { 'wojtek' }
+  let(:remote_ip) { '1.2.3.4' }
+  let(:username) { 'wojtek@example.com' }
   let(:password) { 'password' }
 
   context 'with successful call' do
     before do
-      allow(COGNITO_CLIENT).to receive(:initiate_auth).with(
+      allow(Cognito::Client.instance).to receive(:initiate_auth).with(
         client_id: anything,
         auth_flow: 'USER_PASSWORD_AUTH',
         auth_parameters: { 'USERNAME' => username, 'PASSWORD' => password }
@@ -26,12 +29,13 @@ RSpec.describe Cognito::AuthUser do
       before do
         allow(Cognito::GetUser)
           .to receive(:call)
-          .with(access_token: token, username: username)
           .and_return(User.new)
       end
 
       it 'calls Cognito::GetUser' do
-        expect(Cognito::GetUser).to receive(:call).with(access_token: token, username: username)
+        expect(Cognito::GetUser)
+          .to receive(:call)
+          .with(access_token: token, username: username, user: an_instance_of(User))
         service_call
       end
     end
@@ -69,12 +73,16 @@ RSpec.describe Cognito::AuthUser do
       it 'sets hashed password' do
         expect(service_call.hashed_password).to eq(Digest::MD5.hexdigest(password))
       end
+
+      it 'sets login_ip' do
+        expect(service_call.login_ip).to eq(remote_ip)
+      end
     end
   end
 
-  context 'when call raises exception' do
+  context 'when call raises `NotAuthorizedException` exception' do
     before do
-      allow(COGNITO_CLIENT)
+      allow(Cognito::Client.instance)
         .to receive(:initiate_auth)
         .and_raise(
           Aws::CognitoIdentityProvider::Errors::NotAuthorizedException.new('', 'error')
@@ -82,7 +90,19 @@ RSpec.describe Cognito::AuthUser do
     end
 
     it 'returns false' do
-      expect(service_call).to be_falsey
+      expect(subject).to be_falsey
+    end
+  end
+
+  context 'when call raises `ServiceError` exception' do
+    before do
+      allow(Cognito::Client.instance).to receive(:initiate_auth).and_raise(
+        Aws::CognitoIdentityProvider::Errors::ServiceError.new('', 'error')
+      )
+    end
+
+    it 'returns false' do
+      expect(subject).to be_falsey
     end
   end
 end

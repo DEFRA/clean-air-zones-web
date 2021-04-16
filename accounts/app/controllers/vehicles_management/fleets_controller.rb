@@ -13,13 +13,13 @@ module VehiclesManagement
 
     before_action -> { check_permissions(allow_manage_vehicles?) }
     before_action :assign_fleet
-    before_action :check_vrn, only: %i[delete confirm_delete]
+    before_action :check_vrn, only: %i[remove confirm_remove]
     before_action :set_cache_headers, only: :index
     before_action :check_job_status, only: :index
     before_action :clear_user_data, only: :index
 
     ##
-    # Renders manage fleet page. If the fleet is empty, redirects to :submission_method
+    # Renders manage fleet page. If the fleet is empty, redirects to :choose_method
     #
     # ==== Path
     #
@@ -28,14 +28,16 @@ module VehiclesManagement
     # ==== Params
     #
     # * +page+ - used to paginate vehicles list, defaults to 1, present in the query params
-    # * only_chargeable* - flag, to filter out non-charged vehicles
+    # * +only_chargeable+ - flag, to filter out non-charged vehicles
+    # * +page_size+ - integer value, to manipulate number of vehicles on the page
     # * +vrn+ - alphanumeric character part of vrn number
     #
     def index
-      return redirect_to submission_method_fleets_path if @fleet.empty?
+      return redirect_to choose_method_fleets_path if @fleet.empty?
 
       page = (params[:page] || 1).to_i
-      assign_variables(page)
+      per_page = (params[:per_page] || 10).to_i
+      assign_variables(page, per_page)
     rescue BaseApi::Error400Exception
       return redirect_to fleets_path unless page == 1
     end
@@ -45,14 +47,13 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    :POST /fleets/submit_search
+    #    :POST /manage_vehicles/submit_search
     #
     def submit_search
-      form = VehiclesManagement::SearchVrnForm.new(params[:vrn])
-      @pagination = @fleet.pagination(vrn: form.vrn)
-
-      if form.valid? && @pagination.total_vehicles_count.zero?
-        return redirect_to vrn_not_found_fleets_path(vrn: form.vrn)
+      form = SearchVrnForm.new(params[:vrn])
+      per_page = (params[:per_page] || 10).to_i
+      if form.valid? && @fleet.pagination(vrn: form.vrn, per_page: per_page).total_vehicles_count.zero?
+        return redirect_to vrn_not_found_fleets_path(vrn: form.vrn, per_page: per_page)
       end
 
       render_fleets_page(form)
@@ -63,7 +64,7 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    :GET /fleets/vrn_not_found
+    #    :GET /manage_vehicles/vrn_not_found
     #
     def vrn_not_found
       @search = params[:vrn]
@@ -74,9 +75,9 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    :GET /fleets/submission_method
+    #    :GET /manage_vehicles/choose_method
     #
-    def submission_method
+    def choose_method
       # renders static page
     end
 
@@ -85,19 +86,19 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    :POST /fleets/submission_method
+    #    :POST /manage_vehicles/choose_method
     #
     # ==== Params
     # * +submission-method+ - manual or upload - selected submission method
     #
-    def submit_method
-      form = VehiclesManagement::SubmissionMethodForm.new(submission_method: params['submission-method'])
-      session[:submission_method] = form.submission_method
+    def submit_choose_method
+      form = VehiclesManagement::SubmissionMethodForm.new(choose_method: params['submission-method'])
+      session[:choose_method] = form.choose_method
       if form.valid?
         redirect_to form.manual? ? enter_details_vehicles_path : uploads_path
       else
         @errors = form.errors
-        render :submission_method
+        render :choose_method
       end
     end
 
@@ -106,7 +107,7 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    :GET /fleets/first_upload
+    #    :GET /manage_vehicles/first_upload
     #
     def first_upload
       # renders static page
@@ -117,16 +118,16 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    :GET /fleets/assign_delete
+    #    :GET /manage_vehicles/assign_remove
     #
     # ==== Params
     # * +vrn+ - vehicle registration number, required in params
     #
-    def assign_delete
+    def assign_remove
       return redirect_to fleets_path unless params[:vrn]
 
       session[:vrn] = params[:vrn]
-      redirect_to delete_fleets_path
+      redirect_to remove_fleets_path
     end
 
     ##
@@ -134,12 +135,12 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    GET /fleets/delete
+    #    GET /manage_vehicles/remove
     #
     # ==== Params
     # * +vrn+ - vehicle registration number, required in the session
     #
-    def delete
+    def remove
       @vehicle_registration = vrn
     end
 
@@ -148,15 +149,15 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #    POST /fleets/delete
+    #    POST /manage_vehicles/remove
     #
     # ==== Params
     # * +vrn+ - vehicle registration number, required in the session
     # * +confirm-delete+ - form confirmation, possible values: 'yes', 'no', nil
     #
-    def confirm_delete
+    def confirm_remove
       form = VehiclesManagement::ConfirmationForm.new(confirm_delete_param)
-      return redirect_to delete_fleets_path, alert: confirmation_error(form) unless form.valid?
+      return redirect_to remove_fleets_path, alert: confirmation_error(form) unless form.valid?
 
       remove_vehicle if form.confirmed?
       session[:vrn] = nil
@@ -168,7 +169,7 @@ module VehiclesManagement
     #
     # ==== Path
     #
-    #     GET /fleets/export
+    #     GET /manage_vehicles/export
     #
     def export
       file_url = AccountsApi::Accounts.csv_exports(account_id: current_user.account_id)
@@ -203,10 +204,7 @@ module VehiclesManagement
     # Removes vehicle and sets successful flash message
     def remove_vehicle
       @fleet.delete_vehicle(vrn)
-      flash[:success] = I18n.t(
-        'vrn_form.messages.single_vrn_removed',
-        vrn: session[:vrn]
-      )
+      flash[:success] = I18n.t('vrn_form.messages.single_vrn_removed', vrn: session[:vrn])
     end
 
     # Returns redirect path after successful removal of vehicle from the fleet
@@ -222,23 +220,34 @@ module VehiclesManagement
     end
 
     # Assign variables needed in :index view
-    def assign_variables(page)
+    def assign_variables(page, per_page)
       @search = params[:vrn]
-      @pagination = @fleet.pagination(
-        page: page,
-        only_chargeable: params[:only_chargeable],
-        vrn: @search
-      )
-      @zones = CleanAirZone.all
+      form = SearchVrnForm.new(@search)
+      if form.valid?
+        fetch_pagination_and_zones(page, per_page, @search)
+      else
+        fetch_pagination_and_zones(page, per_page)
+      end
       assign_payment_enabled
     end
 
     # Renders :index with assigned zones and errors
     def render_fleets_page(form)
-      @zones = CleanAirZone.all
       @search = form.vrn
-      flash.now[:alert] = form.error_message if form.error_message
+      fetch_pagination_and_zones
+      flash.now[:alert] = form.first_error_message if form.first_error_message
       render :index
+    end
+
+    # Make api calls
+    def fetch_pagination_and_zones(page = 1, per_page = 10, vrn = nil)
+      @pagination = @fleet.pagination(
+        page: page,
+        per_page: per_page,
+        only_chargeable: params[:only_chargeable],
+        vrn: vrn
+      )
+      @zones = CleanAirZone.all
     end
   end
 end

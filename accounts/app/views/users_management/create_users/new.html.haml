@@ -1,4 +1,4 @@
-- title_and_header = "Add a user to #{current_user.actual_account_name} account"
+- title_and_header = raw("Add a user to #{current_user.actual_account_name} account")
 - content_for(:title, title_and_header)
 - errors = flash[:errors]
 

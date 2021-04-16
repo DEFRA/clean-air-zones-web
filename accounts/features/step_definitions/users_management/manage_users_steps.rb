@@ -150,4 +150,5 @@ def mock_api
   mock_clean_air_zones
   mock_vehicles_in_fleet
   mock_debits
+  mock_payment_history
 end

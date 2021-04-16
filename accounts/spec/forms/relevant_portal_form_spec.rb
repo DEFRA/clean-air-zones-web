@@ -12,11 +12,9 @@ describe RelevantPortalForm, type: :model do
   context 'when check_vehicle_option is empty' do
     let(:check_vehicle_option) { '' }
 
-    it { is_expected.not_to be_valid }
+    before { subject.valid? }
 
-    before do
-      subject.valid?
-    end
+    it { is_expected.not_to be_valid }
 
     it 'has a proper error message' do
       expect(subject.errors.messages[:check_vehicle_option]).to include('You must choose an answer')
@@ -26,9 +24,9 @@ describe RelevantPortalForm, type: :model do
   context 'when check_vehicle_option is invalid' do
     let(:check_vehicle_option) { 'invalid' }
 
-    it { is_expected.not_to be_valid }
-
     before { subject.valid? }
+
+    it { is_expected.not_to be_valid }
 
     it 'has a proper error message' do
       expect(subject.errors.messages[:check_vehicle_option]).to include('You must choose an answer')

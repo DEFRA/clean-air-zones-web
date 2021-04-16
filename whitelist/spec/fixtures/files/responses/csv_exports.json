@@ -1,0 +1,4 @@
+{
+  "fileUrl": "https://s3.eu-west-2.amazonaws.com/csv-export-bucket/generated-file.csv",
+  "bucketName": "csv-export-bucket"
+}

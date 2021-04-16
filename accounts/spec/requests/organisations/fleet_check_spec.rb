@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe 'Organisations::OrganisationsController - GET #fleet_check' do
-  subject { get fleet_check_organisations_path }
+describe 'Organisations::OrganisationsController - GET #how_many_vehicles', type: :request do
+  subject { get how_many_vehicles_organisations_path }
 
   it 'returns a 200 OK status' do
     subject

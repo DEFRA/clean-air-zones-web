@@ -12,7 +12,10 @@
         page
 - else
   %li.moj-pagination__item{id: id, class: ("moj-pagination__item--#{form_class}" if form_class)}
-    = link_to(fleets_path(page: page, only_chargeable: params[:only_chargeable], vrn: params[:vrn]), class: 'moj-pagination__link') do
+    = link_to(fleets_path(page: page,
+                          only_chargeable: params[:only_chargeable],
+                          vrn: params[:vrn],
+                          per_page: params[:per_page]), class: 'moj-pagination__link') do
       = button_text
       - if button_text.is_a?(Integer)
         %span.govuk-visually-hidden

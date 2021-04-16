@@ -5,10 +5,12 @@ module MockDebit
   def mock_api_endpoints(caz_mandates = 'caz_mandates')
     mock_clean_air_zones
     mock_vehicles_in_fleet
+    mock_chargeable_vehicles
     mock_debits('mandates')
     mock_caz_mandates(caz_mandates)
     mock_create_mandate
     mock_create_payment
+    mock_payment_history
     mock_users
   end
 

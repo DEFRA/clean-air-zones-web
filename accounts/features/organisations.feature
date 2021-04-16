@@ -75,7 +75,7 @@ Feature: Organisations
 
   Scenario: User wants to verify account with invalid token
     Given I visit the verification link with a token status 'invalid'
-    Then I should see 'Your account verification failed'
+    Then I should see 'Account verification failed'
 
   Scenario: User wants to verify account with expired token
     Given I visit the verification link with a token status 'expired'
@@ -84,6 +84,7 @@ Feature: Organisations
   Scenario: User wants to verify account second time
     Given I visit the verification link second time
     Then I should see 'Sign in'
+      And I should see 'User already confirmed'
 
   Scenario: User wants to create a company when api returns 422 errors
     Given I go to the create account page

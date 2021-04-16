@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 describe 'PasswordsController - GET #new', type: :request do
-  subject(:http_request) { get new_password_path }
+  subject { get new_password_path }
 
   before do
     sign_in user
-    http_request
+    subject
   end
 
   context 'when user aws_status is OK' do
-    let(:user) { new_user(aws_status: 'OK') }
+    let(:user) { create_user }
 
     it 'returns a redirect to root_path' do
       expect(response).to redirect_to(root_path)
@@ -19,7 +19,7 @@ describe 'PasswordsController - GET #new', type: :request do
   end
 
   context 'when user aws_session is missing' do
-    let(:user) { new_user(aws_status: 'FORCE_NEW_PASSWORD') }
+    let(:user) { create_user(aws_status: 'FORCE_NEW_PASSWORD') }
 
     it 'returns a redirect to new_user_session_path' do
       expect(response).to redirect_to(new_user_session_path)
@@ -28,11 +28,11 @@ describe 'PasswordsController - GET #new', type: :request do
 
   context 'with valid params' do
     let(:user) do
-      new_user(aws_status: 'FORCE_NEW_PASSWORD', aws_session: SecureRandom.uuid)
+      create_user(aws_status: 'FORCE_NEW_PASSWORD', aws_session: SecureRandom.uuid)
     end
 
-    it 'returns 200' do
-      expect(response).to be_successful
+    it 'returns a 200 OK status' do
+      expect(response).to have_http_status(:ok)
     end
   end
 end

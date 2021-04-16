@@ -7,16 +7,16 @@
       "activeChargeStartDate": "2020-05-14"
     },
     {
-      "cleanAirZoneId": "39e54ed8-3ed2-441d-be3f-38fc9b70c8d3",
-      "name": "Leeds",
-      "boundaryUrl": "https://www.arcgis.com/home/webmap/viewer.html?webmap=de0120ae980b473982a3149ab072fdfc&extent=-1.733%2c53.7378%2c-1.333%2c53.8621",
-      "activeChargeStartDate": "2222-05-14"
-    },
-    {
       "cleanAirZoneId": "44590023-9b0f-450e-8a6a-feed267fea23",
       "name": "Bath",
       "boundaryUrl": "http://www.bathnes.gov.uk/zonemaps",
       "activeChargeStartDate": "2222-05-14"
+    },
+    {	
+      "cleanAirZoneId": "eeb34ad2-a49e-4aef-8965-e0ed04a2e0cc",	
+      "name": "Test",	
+      "boundaryUrl": "https://www.arcgis.com/home/webmap/viewer.html?webmap=de0120ae980b473982a3149ab072fdfc&extent=-1.733%2c53.7378%2c-1.333%2c53.8621",	
+      "activeChargeStartDate": "2222-05-14"	
     }
   ]
 }

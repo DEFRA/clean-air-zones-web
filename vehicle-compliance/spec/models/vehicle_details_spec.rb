@@ -2,29 +2,24 @@
 
 require 'rails_helper'
 
-RSpec.describe VehicleDetails, type: :model do
-  subject(:compliance) { described_class.new(vrn) }
+describe VehicleDetails, type: :model do
+  subject { described_class.new(vrn) }
 
   let(:vrn) { 'CU57ABC' }
-  let(:type_approval) { 'M1' }
-  let(:taxi_or_phv) { false }
-
+  let(:type) { 'Car' }
   let(:response) do
     {
-      'registration_number' => vrn,
-      'typeApproval' => type_approval,
-      'type' => 'car',
+      'registrationNumber' => vrn,
+      'type' => type,
       'make' => 'peugeot',
       'model' => '208',
       'colour' => 'grey',
       'fuelType' => 'diesel',
-      'taxiOrPhv' => taxi_or_phv
+      'taxiOrPhv' => 'false'
     }
   end
 
-  before do
-    allow(ComplianceCheckerApi).to receive(:vehicle_details).and_return(response)
-  end
+  before { allow(ComplianceCheckerApi).to receive(:vehicle_details).and_return(response) }
 
   describe '.registration_number' do
     it 'returns a proper registration number' do
@@ -56,22 +51,6 @@ RSpec.describe VehicleDetails, type: :model do
     end
   end
 
-  describe '.taxi_private_hire_vehicle' do
-    describe 'when taxi_or_phv value is false' do
-      it "returns a 'No'" do
-        expect(subject.taxi_private_hire_vehicle).to eq('No')
-      end
-    end
-
-    describe 'when taxi_or_phv value is true' do
-      let(:taxi_or_phv) { true }
-
-      it "returns a 'Yes'" do
-        expect(subject.taxi_private_hire_vehicle).to eq('Yes')
-      end
-    end
-  end
-
   describe '.exempt?' do
     describe 'when key is not present' do
       it 'returns a nil' do
@@ -80,44 +59,10 @@ RSpec.describe VehicleDetails, type: :model do
     end
 
     describe 'when key is present' do
-      before do
-        allow(ComplianceCheckerApi).to receive(:vehicle_details).and_return('exempt' => true)
-      end
+      before { allow(ComplianceCheckerApi).to receive(:vehicle_details).and_return('exempt' => true) }
 
       it 'returns a true' do
         expect(subject.exempt?).to eq(true)
-      end
-    end
-  end
-
-  describe '.type_approval' do
-    it 'returns a proper type approval' do
-      expect(subject.type_approval).to eq('M1')
-    end
-
-    context 'when key is not present' do
-      before do
-        allow(ComplianceCheckerApi).to receive(:vehicle_details).and_return({})
-      end
-
-      it 'returns a nil' do
-        expect(compliance.type_approval).to eq(nil)
-      end
-    end
-
-    context 'when value is empty' do
-      let(:type_approval) { ' ' }
-
-      it 'returns a nil' do
-        expect(compliance.type_approval).to eq(nil)
-      end
-    end
-
-    context "when value is equal to 'null'" do
-      let(:type_approval) { 'null' }
-
-      it 'returns a nil' do
-        expect(compliance.type_approval).to eq(nil)
       end
     end
   end

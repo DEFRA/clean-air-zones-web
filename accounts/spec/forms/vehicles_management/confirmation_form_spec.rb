@@ -28,11 +28,9 @@ describe VehiclesManagement::ConfirmationForm, type: :model do
   context 'when confirmation is empty' do
     let(:confirmation) { '' }
 
-    it { is_expected.not_to be_valid }
+    before { subject.valid? }
 
-    before do
-      subject.valid?
-    end
+    it { is_expected.not_to be_valid }
 
     it 'has a proper error message' do
       expect(subject.errors.messages[:confirmation]).to include('You must choose an answer')

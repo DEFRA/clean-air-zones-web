@@ -21,7 +21,16 @@ module UsersManagement
     #    GET /users/:id/remove
     #
     def remove
-      # renders removal confirmation page
+      @is_mandate_creator = UsersManagement::IsDirectDebitCreator.call(
+        account_id: current_user.account_id,
+        account_user_id: params[:id]
+      )
+
+      return unless @is_mandate_creator
+
+      email_fetcher = UsersManagement::EmailFetcher.new(account_id: current_user.account_id)
+      @user_email = email_fetcher.for_account_user(params[:id])
+      @owner_email = email_fetcher.for_owner
     end
 
     ##

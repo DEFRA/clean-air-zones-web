@@ -17,8 +17,9 @@ describe Organisations::ValidateFleetCheck do
     end
 
     it 'calls Organisations::FleetCheckForm with proper params' do
-      expect(Organisations::FleetCheckForm).to receive(:new).with(confirm_fleet_check: confirm_fleet_check)
       subject
+      expect(Organisations::FleetCheckForm).to have_received(:new)
+        .with(confirm_fleet_check: confirm_fleet_check)
     end
   end
 

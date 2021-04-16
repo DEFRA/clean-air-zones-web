@@ -92,6 +92,7 @@ module UsersManagement
     #    GET /users/confirmation
     #
     def confirmation
+      flash[:success] = I18n.t('add_user.success', full_user_name: session.dig(:new_user, 'name'))
       @new_user_email = session.dig(:new_user, 'email')
     end
 

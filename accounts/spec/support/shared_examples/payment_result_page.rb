@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 shared_examples 'payment result page' do
-  context ':payment_details variable' do
+  context 'with :payment_details variable' do
     it 'has correct total_charge value' do
       expect(assigns(:payment_details).total_charge).to eq(150)
     end

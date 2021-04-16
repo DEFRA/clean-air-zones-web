@@ -13,14 +13,12 @@ module PaymentHistory
     # ==== Attributes
     #
     # * +session+ - session object
-    # * +session_key+ - session key
     # * +back_button+ - boolean, e.g true if back button was used
     # * +page+ - string, page number, eg. '4'
     # * +default_url+ - string, eg. 'http://www.example.com/dashboard'
     # * +url+ - string, eg. 'http://www.example.com/company_payment_history?page=4?back=true'
-    def initialize(session:, session_key:, back_button:, page:, default_url:, url:) # rubocop:disable Metrics/ParameterLists
+    def initialize(session:, back_button:, page:, default_url:, url:)
       @session = session
-      @session_key = session_key
       @back_button = back_button
       @page = page
       @default_url = default_url
@@ -42,12 +40,12 @@ module PaymentHistory
     def update_steps_history # rubocop:disable Metrics/AbcSize
       if history.nil?
         log_action('Creating first step into the back link history')
-        session[session_key] = { '1' => page }
+        session[:back_link_history] = { '1' => page }
       elsif last_step_page != page
         return clear_unused_steps if back_button && history
 
         log_action('Adding step to the back link history')
-        session[session_key][next_step] = page
+        session[:back_link_history][next_step] = page
       end
     end
 
@@ -55,12 +53,12 @@ module PaymentHistory
     def clear_unused_steps
       log_action('Clearing future steps from the back link history')
       current_step_keys = history.select { |k, _v| k <= previous_step }.keys
-      session[session_key] = history.slice(*current_step_keys)
+      session[:back_link_history] = history.slice(*current_step_keys)
     end
 
     # Clear first step from history in case if we already have more the 10 steps in the session
     def clear_more_then_10_steps
-      session[session_key].shift if history && history.size > 10
+      session[:back_link_history].shift if history && history.size > 10
     end
 
     # Returns back link url, e.g '.../vehicles/historic_search?page=3?back=true'
@@ -68,7 +66,7 @@ module PaymentHistory
       if history.nil? || history.size == 1
         default_url
       else
-        "#{url}?page=#{session.dig(session_key, previous_step)}?back=true"
+        "#{url}?page=#{session.dig(:back_link_history, previous_step)}?back=true"
       end
     end
 
@@ -89,10 +87,10 @@ module PaymentHistory
 
     # Back link histories from the session
     def history
-      session[session_key]
+      session[:back_link_history]
     end
 
     # Attributes reader
-    attr_reader :session, :session_key, :back_button, :page, :default_url, :url
+    attr_reader :session, :back_button, :page, :default_url, :url
   end
 end

@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'UsersManagement::UsersController - GET #index' do
+describe 'UsersManagement::UsersController - GET #index', type: :request do
   subject { get users_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before do
       sign_in manage_users_user
       mock_actual_account_name
@@ -17,7 +17,7 @@ describe 'UsersManagement::UsersController - GET #index' do
     end
 
     context 'when last visited page is confirmation user' do
-      subject { get users_path, headers: { 'HTTP_REFERER': confirmation_users_path } }
+      subject { get users_path, headers: { HTTP_REFERER: confirmation_users_path } }
 
       before do
         add_to_session(new_user: {})

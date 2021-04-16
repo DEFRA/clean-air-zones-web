@@ -1,5 +1,7 @@
-- content_for(:title, 'Check vehicle compliance')
-= link_to 'Back', root_path, class: 'govuk-back-link'
+- title_and_header = 'Enter the number plate of the vehicle'
+- content_for(:title, title_and_header)
+
+= render 'common/js_back_link'
 
 %main.govuk-main-wrapper#main-content{role: 'main'}
   .govuk-grid-row
@@ -21,7 +23,7 @@
         %fieldset.govuk-fieldset
           %legend.govuk-fieldset__legend.govuk-fieldset__legend--l
             %h1.govuk-fieldset__heading
-              Enter the registration details of the vehicle you want to check
+              = title_and_header
           - if @errors[:vrn]
             = render 'vehicle_checkers/vrn_input/errored', message: @errors[:vrn][:message]
           - else
@@ -32,4 +34,7 @@
           - else
             = render 'vehicle_checkers/country_input/normal'
 
-          = submit_tag 'Continue', class: 'govuk-button', 'data-module': 'govuk-button'
+          = submit_tag 'Continue',
+                        class: 'govuk-button',
+                        'data-module': 'govuk-button',
+                        id: 'submit_enter_details_button'

@@ -32,9 +32,9 @@ module Payments
       @total_charge = total_charge
     end
 
-    # Returns selected local authority name, eg. 'Leeds'
-    def caz_name
-      CleanAirZone.find(session_details[:caz_id]).name
+    # Returns an 'CleanAirZone' instance
+    def clean_air_zone
+      CleanAirZone.find(session_details[:caz_id])
     end
 
     # Returns user email address

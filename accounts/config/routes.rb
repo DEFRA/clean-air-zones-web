@@ -27,16 +27,16 @@ Rails.application.routes.draw do
   end
 
   scope module: 'organisations', path: '/' do
+    get :create_account, to: 'organisations#create_account'
+    post :create_account, to: 'organisations#submit_create_account'
+
     resources :organisations, only: %i[] do
       collection do
-        get :new
-        post :new, to: 'organisations#set_name'
-        get :fleet_check
-        post :fleet_check, to: 'organisations#submit_fleet_check'
+        get :how_many_vehicles
+        post :how_many_vehicles, to: 'organisations#submit_how_many_vehicles'
         get :cannot_create
-        get :new_credentials
-        post :new_credentials, to: 'organisations#create'
-
+        get :sign_in_details
+        post :sign_in_details, to: 'organisations#submit_sign_in_details'
         get :email_sent
         get :resend_email
         get :email_verified
@@ -48,16 +48,16 @@ Rails.application.routes.draw do
   end
 
   scope module: 'vehicles_management', path: '/' do
-    resources :fleets, only: %i[index] do
+    resources :fleets, only: %i[index], path: 'manage_vehicles' do
       collection do
         post :index, to: 'fleets#submit_search'
         get :vrn_not_found, to: 'fleets#vrn_not_found'
-        get :submission_method
-        post :submission_method, to: 'fleets#submit_method'
+        get :choose_method
+        post :choose_method, to: 'fleets#submit_choose_method'
         get :first_upload
-        get :assign_delete
-        get :delete
-        post :delete, to: 'fleets#confirm_delete'
+        get :assign_remove
+        get :remove
+        post :remove, to: 'fleets#confirm_remove'
         get :export
       end
     end
@@ -91,13 +91,14 @@ Rails.application.routes.draw do
     resources :payments, only: :index do
       collection do
         post :local_authority
-        get :no_chargeable_vehicles
-        get :matrix
-        post :matrix, to: 'payments#submit'
-        scope '/matrix' do
-          get :vrn_not_found, to: 'payments#vrn_not_found'
+        scope '/which_days' do
+          get :matrix
+          post :matrix, to: 'payments#submit'
+          get :vrn_not_found
           post :vrn_not_found, to: 'payments#submit_search'
         end
+        get :no_chargeable_vehicles
+        get :undetermined_vehicles
         get :clear_search
         get :review
         post :confirm_review
@@ -108,7 +109,7 @@ Rails.application.routes.draw do
         get :result, to: 'credit_cards#result'
         get :in_progress
         get :success
-        get :failure
+        get :unsuccessful
         get :post_payment_details
         get :cancel, to: '/direct_debits/debits#cancel'
       end
@@ -116,14 +117,16 @@ Rails.application.routes.draw do
   end
 
   scope module: 'direct_debits', path: '/' do
-    resources :debits, only: %i[index new create] do
+    resources :debits, only: %i[index], path: 'direct_debits' do
       collection do
+        get :set_up
+        post :set_up, to: 'debits#submit_set_up'
         get :first_mandate
         get :confirm
         post :initiate
         get :success
         get :complete_setup
-        get :failure
+        get :unsuccessful
       end
     end
   end
@@ -172,6 +175,14 @@ Rails.application.routes.draw do
       end
     end
 
+    scope controller: 'account_cancellations' do
+      get :account_closing_notice
+      post :account_closing_notice, to: 'account_cancellations#confirm_account_closing_notice'
+      get :account_cancellation
+      post :account_cancellation, to: 'account_cancellations#submit_account_cancellation'
+      get :account_closed
+    end
+
     get :non_primary_users_account_details, to: 'non_primary_users#non_primary_account_details'
     resources :non_primary_users, only: %i[] do
       collection do
@@ -184,8 +195,7 @@ Rails.application.routes.draw do
   end
 
   scope module: 'payment_history', path: '/', controller: 'payment_history' do
-    get :company_payment_history
-    get :user_payment_history
+    get :payment_history
     get :payment_history_details
   end
 

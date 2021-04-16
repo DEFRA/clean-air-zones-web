@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-describe 'Organisations::OrganisationsController - GET #resend_email' do
+describe 'Organisations::OrganisationsController - GET #resend_email', type: :request do
   subject { get resend_email_organisations_path }
 
   let(:user) { create_user }
-  let(:session_data) { { new_account: create_user.serializable_hash.merge(account_id: @uuid) } }
+  let(:session_data) { { new_account: create_user.serializable_hash.merge(account_id: SecureRandom.uuid) } }
 
   before do
     add_to_session(session_data)
@@ -24,7 +24,7 @@ describe 'Organisations::OrganisationsController - GET #resend_email' do
   end
 
   context 'without new_account data in the session' do
-    let(:session_data) { { new_account: { 'account_id': @uuid } } }
+    let(:session_data) { { new_account: { account_id: SecureRandom.uuid } } }
 
     it 'does not call AccountApi to resend the email' do
       subject

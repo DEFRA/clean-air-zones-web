@@ -2,7 +2,7 @@
   "cleanAirZones": [
     {
       "cazId": "87c17807-d6ec-4128-9174-9ce66cc5ed73",
-      "cazName": "Leeds",
+      "cazName": "Bath",
       "directDebitEnabled": true,
       "mandates": []
     },
@@ -14,16 +14,19 @@
         {
           "id": "55f9d425-f60b-4919-9020-b6e48d641ba4",
           "status": "active",
+          "accountUserId": "61c193b6-30b4-4fef-831f-7af7513e40e6",
           "created": "2020-04-30T08:08:31"
         },
         {
           "id": "09b72307-e56a-4b61-802a-03eee58748ba",
           "status": "failed",
+          "accountUserId": "6ffc41fd-ff2d-4cc1-a2a2-90006ae26446",
           "created": "2020-04-30T08:08:31"
         },
         {
           "id": "45725067-ae01-4c68-9884-8aac0f5c320b",
           "status": "cancelled",
+          "accountUserId": "51862a1f-7a9c-4389-9a0f-8eb0296e2b3b",
           "created": "2020-04-30T08:08:31"
         }
       ]

@@ -2,7 +2,6 @@
 
 ##
 # This is an abstract class used as a base for all API exceptions.
-
 class ApiException < StandardError
   ##
   # HTTP error status as integer
@@ -20,7 +19,7 @@ class ApiException < StandardError
   # * +status+ - string or integer, HTTP error status
   # * +status_message+ - string, HTTP error message
   # * +body+ - request body
-  def initialize(status, status_message, body)
+  def initialize(status, status_message, body) # rubocop:disable Lint/MissingSuper
     @status         = status.to_i
     @status_message = status_message
     @message        = body.is_a?(Hash) ? body['message'] : status_message

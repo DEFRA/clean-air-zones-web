@@ -8,7 +8,7 @@ describe VehiclesManagement::VehicleDetails, type: :model do
   let(:vrn) { 'CU57ABC' }
   let(:taxi_or_phv) { false }
   let(:type) { 'car' }
-  let(:las) { %w[Leeds Birmingham] }
+  let(:las) { %w[Bath Birmingham] }
   let(:response) do
     {
       registration_number: vrn,
@@ -119,32 +119,6 @@ describe VehiclesManagement::VehicleDetails, type: :model do
       it 'returns a nil' do
         expect(subject.undetermined?).to eq('true')
       end
-    end
-  end
-
-  describe '.leeds_taxi?' do
-    subject { compliance.leeds_taxi? }
-
-    context 'when Leeds is in licensingAuthoritiesNames' do
-      it { is_expected.to be_truthy }
-    end
-
-    context 'when Leeds is NOT in licensingAuthoritiesNames' do
-      let(:las) { %w[Birmingham London] }
-
-      it { is_expected.to be_falsey }
-    end
-
-    context 'when licensingAuthoritiesNames is empty' do
-      let(:las) { [] }
-
-      it { is_expected.to be_falsey }
-    end
-
-    context 'when licensingAuthoritiesNames is nil' do
-      let(:las) { nil }
-
-      it { is_expected.to be_falsey }
     end
   end
 end

@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
   def render_sign_in(exception)
     Rails.logger.error "#{exception.class}: #{exception}"
 
-    request.env['warden'].errors[:base] = [exception.message]
+    flash[:errors] = { base: [exception.message] }
     render 'devise/sessions/new'
   end
 
@@ -127,7 +127,7 @@ class ApplicationController < ActionController::Base
 
   # Creates an instance of DirectDebits::Debit class and assign it to +@debit+ variable
   def assign_debit
-    @debit = DirectDebits::Debit.new(current_user.account_id)
+    @debit = DirectDebits::Debit.new(current_user.account_id, user_beta_tester: current_user&.beta_tester)
   end
 
   # Checks if password is outdated

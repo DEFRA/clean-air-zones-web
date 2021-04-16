@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe DirectDebits::Debit, type: :model do
-  subject(:debit) { described_class.new(account_id) }
+  subject(:debit) { described_class.new(account_id, user_beta_tester: user_beta_tester) }
 
-  let(:account_id) { @uuid }
+  let(:account_id) { SecureRandom.uuid }
+  let(:user_beta_tester) { false }
 
   describe '.mandates' do
     subject { debit.mandates }
@@ -14,8 +15,8 @@ describe DirectDebits::Debit, type: :model do
       before { mock_debits }
 
       it 'calls DebitsApi.account_mandates with proper params' do
-        expect(DebitsApi).to receive(:mandates).with(account_id: account_id)
         subject
+        expect(DebitsApi).to have_received(:mandates).with(account_id: account_id)
       end
 
       it 'returns an array of DirectDebits::Mandate instances' do
@@ -31,7 +32,7 @@ describe DirectDebits::Debit, type: :model do
       end
     end
 
-    context 'when only one caz is enabled' do
+    context 'when only one caz is enabled and user is not in a beta group' do
       before do
         api_response = read_response('/debits/mandates.json')
         api_response['cleanAirZones'].second['directDebitEnabled'] = false
@@ -51,6 +52,29 @@ describe DirectDebits::Debit, type: :model do
         expect(subject.first.zone_id).not_to be_nil
       end
     end
+
+    context 'when only one caz is enabled and user is in a beta group' do
+      let(:user_beta_tester) { true }
+
+      before do
+        api_response = read_response('/debits/mandates.json')
+        api_response['cleanAirZones'].second['directDebitEnabled'] = false
+        allow(DebitsApi).to receive(:mandates).and_return(api_response['cleanAirZones'])
+        debit.mandates
+      end
+
+      it 'returns an array of DirectDebits::Mandate instances' do
+        expect(subject).to all(be_a(DirectDebits::Mandate))
+      end
+
+      it 'returns a proper count of enabled cazes' do
+        expect(subject.count).to be(2)
+      end
+
+      it 'assigns data to mandates' do
+        expect(subject.first.zone_id).not_to be_nil
+      end
+    end
   end
 
   describe '.caz_mandates' do
@@ -58,11 +82,11 @@ describe DirectDebits::Debit, type: :model do
 
     before { mock_caz_mandates('caz_mandates') }
 
-    let(:zone_id) { @uuid }
+    let(:zone_id) { SecureRandom.uuid }
 
     it 'calls DebitsApi.caz_mandates with proper params' do
-      expect(DebitsApi).to receive(:caz_mandates).with(account_id: account_id, zone_id: zone_id)
       subject
+      expect(DebitsApi).to have_received(:caz_mandates).with(account_id: account_id, zone_id: zone_id)
     end
 
     it 'returns a hash' do

@@ -2,7 +2,7 @@
 %html{html_attrs('en')}
   %head
     %meta{charset: 'utf-8'}
-    %title= content_for?(:title) ? yield(:title) : 'Drive in a Clean Air Zone'
+    %title= content_for?(:title) ? "#{yield(:title)} | Drive in a Clean Air Zone" : 'Drive in a Clean Air Zone'
 
     = csrf_meta_tags
     = csp_meta_tag
@@ -35,7 +35,8 @@
     = link_to 'Skip to main content', '#main-content', class: 'govuk-skip-link'
     = render 'layouts/header'
     .govuk-width-container
-      = render 'layouts/feedback_section'
+      - unless @relevant_portal
+        = render 'layouts/feedback_section'
       = yield
       = render 'layouts/timeout'
     = render 'layouts/footer'

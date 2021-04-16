@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe SessionManipulation::SetComplianceDetails do
-  subject(:service) { described_class.call(session: session, la_id: la_id) }
+describe SessionManipulation::SetComplianceDetails do
+  subject { described_class.call(session: session, la_id: la_id) }
 
   let(:session) { { vehicle_details: details } }
   let(:details) { { 'vrn' => 'CU123AB', 'country' => 'UK' } }
   let(:la_id) { SecureRandom.uuid }
-  let(:la_name) { 'Leeds' }
+  let(:la_name) { 'Taxidiscountcaz' }
   let(:daily_charge) { 12.5 }
   let(:tariff) { 'BCC01-private_car' }
 
@@ -21,20 +21,18 @@ RSpec.describe SessionManipulation::SetComplianceDetails do
   end
 
   it 'creates instance of ComplianceDetails with right params' do
-    expect(ComplianceDetails)
-      .to receive(:new)
-      .with(details.merge('la_id' => la_id))
-    service
+    subject
+    expect(ComplianceDetails).to have_received(:new).with(details.merge('la_id' => la_id))
   end
 
   describe 'adding fields' do
-    before { service }
+    before { subject }
 
     it 'sets la_id' do
       expect(session[:vehicle_details]['la_id']).to eq(la_id)
     end
 
-    it 'sets la_id' do
+    it 'sets la_name' do
       expect(session[:vehicle_details]['la_name']).to eq(la_name)
     end
 
@@ -50,8 +48,8 @@ RSpec.describe SessionManipulation::SetComplianceDetails do
       expect(session[:vehicle_details]['tariff_code']).to eq(tariff)
     end
 
-    context 'when vehicle is a taxi in Leeds' do
-      let(:session) { { vehicle_details: details.merge('leeds_taxi' => true) } }
+    context 'when vehicle is a taxi in Taxidiscountcaz' do
+      let(:session) { { vehicle_details: details.merge('weekly_taxi' => true) } }
 
       it 'sets weekly_possible to true' do
         expect(session[:vehicle_details]['weekly_possible']).to be_truthy

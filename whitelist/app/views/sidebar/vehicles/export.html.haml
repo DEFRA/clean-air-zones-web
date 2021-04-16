@@ -1,0 +1,18 @@
+= javascript_pack_tag 'export_button_notice'
+
+- content_for(:title, I18n.t('application_title'))
+
+.govuk-grid-column-two-thirds
+  = render 'common/header_and_body'
+
+  %h2.govuk-heading-m
+    %strong Export database to CSV
+  = link_to 'Export',
+            download_csv_vehicles_path,
+            class: 'govuk-button',
+            id: 'export-button'
+  %div.hidden-download-message{id: "download_message"}
+    %p
+      Your export is downloading...
+= javascript_pack_tag 'export_button_notice'
+

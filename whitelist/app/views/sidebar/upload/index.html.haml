@@ -1,0 +1,43 @@
+- content_for(:title, I18n.t('application_title'))
+
+.govuk-grid-column-two-thirds
+
+  - if @job_errors
+    = render 'sidebar/upload/job_errors'
+  - elsif alert
+    = render 'shared/errors'
+
+  = render 'common/header_and_body'
+
+  %h2.govuk-heading-m
+    Uploading your whitelist data
+  %h2.govuk-heading-s
+    Before you start
+  %p
+    Your vehicle data should be in a .CSV file in a valid format, see
+    = succeed '.' do
+      = link_to 'data rules',
+                data_rules_upload_index_path,
+                id: 'data-rules'
+    If your data is not in the correct format, you will get errors and be unable to upload
+    vehicle details.
+
+  = form_tag(import_upload_index_path, multipart: true) do
+    .govuk-form-group{class: ('govuk-form-group--error' if alert)}
+      %label.govuk-visually-hidden.govuk-label{for: 'file-upload-1'}
+        Upload a file
+
+      - if alert
+        %span#govuk-error-message.govuk-error-message
+          %span.govuk-visually-hidden Error:
+          = alert
+
+      %input#file-upload-1.govuk-file-upload{class:('govuk-file-upload--error' if alert),
+                                             'aria-describedby': 'file-upload-1',
+                                             name: 'file',
+                                             type: 'file'}
+    .govuk-form-group
+      = submit_tag 'Upload',
+                    class: 'govuk-button',
+                    'data-module': 'govuk-button',
+                    id: 'file-upload-button'

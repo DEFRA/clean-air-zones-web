@@ -1,20 +1,37 @@
-import createHiddenInput from "./createHiddenInput";
 import submitForm from "./submitForm";
 
-export default function (direction) {
+export default function (page) {
   const form = document.getElementById("payment-form");
-  const paginationButton = document.getElementById(
-    `pagination-${direction}-link`
-  );
 
+  const paginationButton = document.getElementById(`pagination-button-${page}`);
   if (paginationButton) {
     paginationButton.addEventListener("click", (e) => {
-      form.appendChild(createHiddenInput("commit", capitalize(direction)));
+      form.appendChild(addPageNumber(page));
+      submitForm(e, form);
+    });
+  }
+
+  const paginationButtonPrevious = document.getElementById(`pagination-button-previous`);
+  if (paginationButtonPrevious) {
+    paginationButtonPrevious.addEventListener("click", (e) => {
+      form.appendChild(addPageNumber(page));
+      submitForm(e, form);
+    });
+  }
+
+  const paginationButtonNext = document.getElementById(`pagination-button-next`);
+  if (paginationButtonNext) {
+    paginationButtonNext.addEventListener("click", (e) => {
+      form.appendChild(addPageNumber(page));
       submitForm(e, form);
     });
   }
 }
 
-function capitalize(string) {
-  return string[0].toUpperCase() + string.slice(1);
+function addPageNumber(page) {
+  const input = document.createElement("input");
+  input.type = "hidden";
+  input.name = "commit";
+  input.value = page;
+  return input;
 }

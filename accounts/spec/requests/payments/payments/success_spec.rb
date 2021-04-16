@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe 'PaymentsController - GET #success' do
+describe 'PaymentsController - GET #success', type: :request do
   subject { get success_payments_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     let(:payment_data) do
-      { caz_id: @uuid,
+      { caz_id: mocked_uuid,
         details: { 'PAY001' =>
                    { vrn: 'PAY001',
                      charge: 50.0,

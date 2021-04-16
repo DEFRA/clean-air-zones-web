@@ -2,14 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ChargesController - GET #review_payment', type: :request do
-  subject { get review_payment_charges_path }
+describe 'ChargesController - GET #review_payment', type: :request do
+  subject { get review_payment_charges_path, params: params }
 
+  let(:params) { nil }
+  let(:transaction_id) { SecureRandom.uuid }
   let(:vrn) { 'CU57ABC' }
   let(:country) { 'UK' }
   let(:zone_id) { SecureRandom.uuid }
   let(:charge) { 50 }
-  let(:la_name) { 'Leeds' }
+  let(:la_name) { 'Taxidiscountcaz' }
   let(:details) { {} }
 
   context 'with full payment details in the session' do
@@ -49,26 +51,70 @@ RSpec.describe 'ChargesController - GET #review_payment', type: :request do
       end
     end
 
-    context 'with Leeds charge flow' do
+    context 'with Taxidiscountcaz charge flow' do
       before do
         caz_double = instance_double(Caz, active_charge_start_date: '2020-03-01')
         allow(FetchSingleCazData).to receive(:call).and_return(caz_double)
         allow(PaymentsApi).to receive(:paid_payments_dates).and_return([])
-        add_full_payment_details(weekly: true)
         mock_chargeable_zones
-        subject
+        add_full_payment_details(weekly: true)
       end
 
-      it 'assigns DatesController#select_weekly_date as return path' do
-        expect(assigns(:return_path)).to eq(select_weekly_date_dates_path)
+      context 'when last visited page was select weekly date page' do
+        before { subject }
+
+        it 'assigns DatesController#select_weekly_date as return path' do
+          expect(assigns(:return_path)).to eq(select_weekly_date_dates_path)
+        end
+
+        it 'assigns weekly_period to true' do
+          expect(assigns(:weekly_period)).to be_truthy
+        end
+
+        it 'assigns second_week_available' do
+          expect(assigns(:second_week_available)).to be_truthy
+        end
       end
 
-      it 'assigns weekly_period to true' do
-        expect(assigns(:weekly_period)).to be_truthy
+      context 'when last visited page was select weekly period page' do
+        before do
+          add_full_payment_details(weekly: true, confirm_weekly_charge_today: true)
+          subject
+        end
+
+        it 'assigns return_path variable' do
+          expect(assigns(:return_path)).to eq(select_weekly_period_dates_path)
+        end
       end
 
-      it 'assigns second_week_available' do
-        expect(assigns(:second_week_available)).to be_truthy
+      context 'when last visited page was select second weekly date page' do
+        before do
+          add_to_session(second_week_start_date: '2020-05-01')
+          subject
+        end
+
+        it 'assigns return_path variable' do
+          expect(assigns(:return_path)).to eq(select_second_weekly_date_dates_path)
+        end
+      end
+
+      context 'when cancel_second_week params is true' do
+        let(:params) { { cancel_second_week: 'true' } }
+
+        before do
+          allow(SessionManipulation::CalculateTotalCharge).to receive(:call).and_return(true)
+          add_to_session({ first_week_start_date: '2020-05-01' })
+        end
+
+        it 'sets second_week_selected in the session' do
+          subject
+          expect(session[:second_week_selected]).to be_falsey
+        end
+
+        it 'calls SessionManipulation::CalculateTotalCharge' do
+          subject
+          expect(SessionManipulation::CalculateTotalCharge).to have_received(:call)
+        end
       end
     end
   end
@@ -78,7 +124,10 @@ RSpec.describe 'ChargesController - GET #review_payment', type: :request do
   end
 
   context 'without compliance details in the session' do
-    before { add_vrn_to_session }
+    before do
+      add_transaction_id_to_session(transaction_id)
+      add_vrn_to_session
+    end
 
     it_behaves_like 'la is missing'
   end

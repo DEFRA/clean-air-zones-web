@@ -1,0 +1,69 @@
+- content_for(:title, 'Your vehicle is UK registered')
+= back_link(enter_details_vehicle_checkers_path)
+
+%main.govuk-main-wrapper#main-content{role: 'main'}
+  .govuk-grid-row
+    .govuk-grid-column-two-thirds
+      - if @errors.present?
+        .govuk-error-summary{'aria-labelledby': 'error-summary-title',
+                             'data-module': 'govuk-error-summary',
+                             role: '@errors',
+                             tabindex: '-1'}
+          %h2#error-summary-title.govuk-error-summary__title
+            There is a problem
+          .govuk-error-summary__body
+            %ul.govuk-list.govuk-error-summary__list
+              - remove_duplicated_messages(@errors).each_with_index do |error, index|
+                %li
+                  = link_to(error.first, "##{error.second}-error", id: "#{error.second}-#{index}")
+
+      %h1.govuk-heading-l Your vehicle is UK registered
+      %p
+        The DVLA holds a record for this vehicle.
+        %br
+        If your vehicle is registered outside the UK, contact
+        = succeed '.' do
+          = link_to 'DVLA', Rails.configuration.x.contact_form_link, id: 'dvla-link'
+        %br
+        If the details displayed are correct, confirm to continue.
+
+      %table.govuk-table
+        %thead.govuk-table__head
+          %tr.govuk-table__row
+            %td.govuk-table__header.table-without-border{colspan: 2, id: 'table-header'}
+              %h2.govuk-table__head Vehicle details
+        %tbody.govuk-table__body
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} Number plate
+            %th.govuk-table__cell{id: 'registration-number'}= @vehicle_details.registration_number
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} CAZ vehicle type
+            %th.govuk-table__cell{id: 'type'}= @vehicle_details.type
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} Make
+            %th.govuk-table__cell{id: 'make'}= @vehicle_details.make
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} Model
+            %th.govuk-table__cell{id: 'model'}= @vehicle_details.model
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} Colour
+            %th.govuk-table__cell{id: 'colour'}= @vehicle_details.colour
+          %tr.govuk-table__row
+            %td.govuk-table__cell{scope: 'row'} Fuel type
+            %th.govuk-table__cell{id: 'fuel-type'}= @vehicle_details.fuel_type
+          - if @vehicle_details.taxi_private_hire_vehicle.eql?('Yes')
+            %tr.govuk-table__row
+              %td.govuk-table__cell{scope: 'row'} Taxi
+              %th.govuk-table__cell{id: 'taxi'}= @vehicle_details.taxi_private_hire_vehicle
+
+      = form_for(ConfirmDetailsForm.new, url: confirm_uk_details_vehicle_checkers_path, method: :post) do |form|
+        %fieldset.govuk-fieldset
+          %legend.govuk-visually-hidden
+            Are these the vehicle's details?
+          = form.hidden_field(:undetermined, value: @vehicle_details.undetermined?)
+          = render 'vehicle_checkers/confirm_details/radio_buttons', form: form, confirm_uk_details: true
+
+        = submit_tag 'Confirm',
+                      class: 'govuk-button',
+                      'data-module': 'govuk-button',
+                      id: 'submit_confirm_details_button'

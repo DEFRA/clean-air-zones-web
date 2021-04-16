@@ -14,9 +14,9 @@ describe UsersManagement::AddUserPermissionsForm, type: :model do
   let(:user) { create_user }
   let(:new_user_data) do
     {
-      'name': 'New User Name',
-      'email': 'new_user@example.com',
-      'permissions': permissions
+      name: 'New User Name',
+      email: 'new_user@example.com',
+      permissions: permissions
     }
   end
   let(:verification_url) { 'http://www.example.com/users/set_up' }
@@ -27,7 +27,7 @@ describe UsersManagement::AddUserPermissionsForm, type: :model do
 
     it { is_expected.to be_valid }
 
-    context 'empty permissions' do
+    context 'when empty permissions' do
       let(:permissions) { [] }
 
       it { is_expected.not_to be_valid }

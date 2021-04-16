@@ -2,19 +2,20 @@
 
 require 'rails_helper'
 
-describe 'PaymentsController - POST #local_authority' do
+describe 'PaymentsController - POST #local_authority', type: :request do
   subject { post local_authority_payments_path, params: { caz_id: caz_id } }
 
-  let(:caz_id) { @uuid }
+  let(:caz_id) { SecureRandom.uuid }
   let(:user) { make_payments_user }
 
-  context 'correct permissions' do
-    let(:chargeable_vehicles_exists) { true }
+  context 'when correct permissions' do
+    let(:total_vehicles_count) { 3 }
+    let(:any_undetermined_vehicles) { false }
 
     before do
-      fleet_mock = instance_double('VehiclesManagement::Fleet',
-                                   any_chargeable_vehicles_in_caz?: chargeable_vehicles_exists)
-      allow(VehiclesManagement::Fleet).to receive(:new).and_return(fleet_mock)
+      allow(PaymentsApi).to receive(:chargeable_vehicles)
+        .and_return({ 'totalVehiclesCount' => total_vehicles_count,
+                      'anyUndeterminedVehicles' => any_undetermined_vehicles })
       sign_in user
     end
 
@@ -22,17 +23,26 @@ describe 'PaymentsController - POST #local_authority' do
       context 'without upload data in redis' do
         before { subject }
 
-        context 'when user has chargeable vehicles in the selected CAZ' do
+        context 'when user has chargeable and no undetermined vehicles in the selected CAZ' do
           it 'redirects to the matrix' do
             expect(response).to redirect_to(matrix_payments_path)
           end
         end
 
-        context 'when user has no chargeable vehicles in the selected CAZ' do
-          let(:chargeable_vehicles_exists) { false }
+        context 'when user has no chargeable and no undetermined vehicles in the selected CAZ' do
+          let(:total_vehicles_count) { 0 }
 
           it 'redirects to the no chargeable vehicles page' do
             expect(response).to redirect_to(no_chargeable_vehicles_payments_path)
+          end
+        end
+
+        context 'when user has no chargeable and undetermined vehicles in the selected CAZ' do
+          let(:total_vehicles_count) { 0 }
+          let(:any_undetermined_vehicles) { true }
+
+          it 'redirects to the undetermined vehicles page' do
+            expect(response).to redirect_to(undetermined_vehicles_payments_path)
           end
         end
 
@@ -50,7 +60,7 @@ describe 'PaymentsController - POST #local_authority' do
 
         let(:upload_job_redis_key) { "account_id_#{user.account_id}" }
 
-        context 'and when status is SUCCESS' do
+        context 'with when status is SUCCESS' do
           let(:status) { 'SUCCESS' }
 
           it 'redirects to the matrix page' do
@@ -62,7 +72,7 @@ describe 'PaymentsController - POST #local_authority' do
           end
         end
 
-        context 'and when status is CHARGEABILITY_CALCULATION_IN_PROGRESS' do
+        context 'with when status is CHARGEABILITY_CALCULATION_IN_PROGRESS' do
           let(:status) { 'CHARGEABILITY_CALCULATION_IN_PROGRESS' }
 
           it 'redirects to the calculating chargeability page' do
@@ -74,7 +84,7 @@ describe 'PaymentsController - POST #local_authority' do
           end
         end
 
-        context 'and when status is RUNNING' do
+        context 'with when status is RUNNING' do
           let(:status) { 'RUNNING' }
 
           it 'redirects to the process uploading page' do
@@ -86,7 +96,7 @@ describe 'PaymentsController - POST #local_authority' do
           end
         end
 
-        context 'and when status is unknown' do
+        context 'with when status is unknown' do
           let(:status) { 'UNKNOWN' }
 
           it 'redirects to the matrix page' do
@@ -134,7 +144,7 @@ describe 'PaymentsController - POST #local_authority' do
       end
 
       it 'not removes caz lock from redis' do
-        expect(REDIS.hget(caz_lock_redis_key, 'caz_id')).to_not be_nil
+        expect(REDIS.hget(caz_lock_redis_key, 'caz_id')).not_to be_nil
       end
     end
 
@@ -150,7 +160,7 @@ describe 'PaymentsController - POST #local_authority' do
       end
 
       it 'not removes caz lock from redis' do
-        expect(REDIS.hget(caz_lock_redis_key, 'caz_id')).to_not be_nil
+        expect(REDIS.hget(caz_lock_redis_key, 'caz_id')).not_to be_nil
       end
     end
   end

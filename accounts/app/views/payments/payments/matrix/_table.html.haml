@@ -10,7 +10,7 @@
         - if direction.equal?(:past) && @dates[direction].count < 6
           %th.govuk-table__header{scope: 'col', colspan: 6 - @dates[direction].count}
     %tbody.govuk-table__body
-      - @charges.vehicle_list.each do |vehicle|
+      - @pagination.vehicle_list.each do |vehicle|
         %tr.govuk-table__row
           %td.govuk-table__cell.vrn
             = vehicle.vrn

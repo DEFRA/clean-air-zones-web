@@ -121,6 +121,7 @@ module VehiclesManagement
       ENV.fetch('S3_AWS_BUCKET', 'bucket_name')
     end
 
+    # Metadata hash added to uploaded file
     def metadata
       { 'account-user-id': user.user_id, 'account-id': user.account_id }
     end

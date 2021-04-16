@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe SessionManipulation::CalculateTotalCharge do
-  subject(:service) do
+describe SessionManipulation::CalculateTotalCharge do
+  subject do
     described_class.call(session: session, dates: dates, weekly: weekly)
   end
 
@@ -19,7 +19,7 @@ RSpec.describe SessionManipulation::CalculateTotalCharge do
       'vrn' => 'CU123AB',
       'country' => 'UK',
       'la_id' => SecureRandom.uuid,
-      'la_name' => 'Leeds',
+      'la_name' => 'Taxidiscountcaz',
       'daily_charge' => 20
     }
   end
@@ -30,7 +30,7 @@ RSpec.describe SessionManipulation::CalculateTotalCharge do
     let(:weekly) { false }
     let(:dates) { %w[2019-11-01 2019-11-02 2019-11-03] }
 
-    before { service }
+    before { subject }
 
     it 'sets total_charge' do
       expect(session[:vehicle_details]['total_charge']).to eq(60)
@@ -45,12 +45,12 @@ RSpec.describe SessionManipulation::CalculateTotalCharge do
     end
   end
 
-  context 'when discounted Leeds path is selected' do
+  context 'when Taxidiscountcaz path is selected' do
     let(:weekly) { true }
     let(:dates) { ['2019-11-01'] }
     let(:expected_dates) { (1..7).map { |day| "2019-11-0#{day}" } }
 
-    before { service }
+    before { subject }
 
     it 'sets total_charge' do
       expect(session[:vehicle_details]['total_charge']).to eq(50)
@@ -73,7 +73,7 @@ RSpec.describe SessionManipulation::CalculateTotalCharge do
         first_date.upto(first_date + 13.days).map { |d| d.strftime('%Y-%m-%d') }
       end
 
-      before { service }
+      before { subject }
 
       it 'sets total_charge' do
         expect(session[:vehicle_details]['total_charge']).to eq(100)

@@ -20,6 +20,8 @@ module AuthenticationStrategies
       # authentication_hash doesn't include the password
       auth_params = authentication_hash
       auth_params[:password] = password
+      # add request IP for security reasons
+      auth_params[:login_ip] = request.remote_ip
 
       # mapping.to is a wrapper over the resource model
       resource = mapping.to.new
@@ -35,6 +37,7 @@ module AuthenticationStrategies
       authentication_hash[:username]
     end
 
+    # remote_authentication method is defined in Devise::Models::RemoteAuthenticatable
     def authenticate_user(resource, auth_params)
       # remote_authentication method is defined in Devise::Models::RemoteAuthenticatable
       #

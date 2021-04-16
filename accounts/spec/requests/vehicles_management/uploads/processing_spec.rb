@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe 'VehiclesManagement::UploadsController - GET #processing' do
+describe 'VehiclesManagement::UploadsController - GET #processing', type: :request do
   subject { get processing_uploads_path }
 
-  context 'correct permissions' do
+  context 'when correct permissions' do
     before { sign_in user }
 
     let(:user) { manage_vehicles_user }
@@ -32,8 +32,8 @@ describe 'VehiclesManagement::UploadsController - GET #processing' do
       end
 
       it 'calls FleetsApi.job_status with proper params' do
-        expect(FleetsApi).to receive(:job_status).with(job_id: job_id, correlation_id: correlation_id)
         subject
+        expect(FleetsApi).to have_received(:job_status).with(job_id: job_id, correlation_id: correlation_id)
       end
 
       describe 'job status' do
@@ -43,7 +43,7 @@ describe 'VehiclesManagement::UploadsController - GET #processing' do
         end
 
         context 'when status is CHARGEABILITY_CALCULATION_IN_PROGRESS' do
-          context 'and large_fleet is true' do
+          context 'with large_fleet is true' do
             it 'redirects to the local exemptions page' do
               expect(response).to redirect_to(local_exemptions_vehicles_path)
             end
@@ -53,7 +53,7 @@ describe 'VehiclesManagement::UploadsController - GET #processing' do
             end
           end
 
-          context 'and large_fleet is false' do
+          context 'with large_fleet is false' do
             let(:large_fleet) { false }
 
             it 'renders the processing page' do

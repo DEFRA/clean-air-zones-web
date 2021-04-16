@@ -1,4 +1,3 @@
-
 const redirectToTimeoutNoticeData = document.getElementById("redirect_to_timeout_notice_data");
 const timeoutTimeInMinutes = redirectToTimeoutNoticeData.getAttribute("timeout_time");
 const logoutNoticePath = redirectToTimeoutNoticeData.getAttribute("logout_notice_path");

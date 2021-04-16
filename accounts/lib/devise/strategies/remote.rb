@@ -38,7 +38,7 @@ module Devise
         return true if form.valid?
 
         # Moves form errors to warden errors
-        form.errors.each { |field, msg| errors.add(field, msg) }
+        form.errors.each { |error| errors.add(error.attribute, error.message) }
         false
       end
 
